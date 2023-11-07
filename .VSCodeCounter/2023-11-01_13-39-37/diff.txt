@@ -1,0 +1,195 @@
+Date : 2023-11-01 13:39:37
+Directory : e:\xampp 8.1\htdocs\army\vpcms\config
+Total : 156 files,  -5700 codes, -1055 comments, -1070 blanks, all -7825 lines
+
+Languages
++----------+------------+------------+------------+------------+------------+
+| language | files      | code       | comment    | blank      | total      |
++----------+------------+------------+------------+------------+------------+
+| PHP      |        156 |     -5,700 |     -1,055 |     -1,070 |     -7,825 |
++----------+------------+------------+------------+------------+------------+
+
+Directories
++-----------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                    | files      | code       | comment    | blank      | total      |
++-----------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                       |        156 |     -5,700 |     -1,055 |     -1,070 |     -7,825 |
+| . (Files)                                                                               |         18 |        607 |      1,100 |        312 |      2,019 |
+| ..                                                                                      |        138 |     -6,307 |     -2,155 |     -1,382 |     -9,844 |
+| ..\app                                                                                  |        138 |     -6,307 |     -2,155 |     -1,382 |     -9,844 |
+| ..\app\Console                                                                          |          1 |        -15 |         -7 |         -6 |        -28 |
+| ..\app\DataTables                                                                       |         28 |     -2,524 |       -821 |       -379 |     -3,724 |
+| ..\app\Exceptions                                                                       |          1 |        -17 |         -9 |         -5 |        -31 |
+| ..\app\Http                                                                             |         78 |     -2,995 |     -1,257 |       -799 |     -5,051 |
+| ..\app\Http (Files)                                                                     |          1 |        -46 |        -21 |         -8 |        -75 |
+| ..\app\Http\Controllers                                                                 |         34 |     -1,874 |       -866 |       -546 |     -3,286 |
+| ..\app\Http\Controllers (Files)                                                         |         28 |     -1,777 |       -749 |       -505 |     -3,031 |
+| ..\app\Http\Controllers\Auth                                                            |          6 |        -97 |       -117 |        -41 |       -255 |
+| ..\app\Http\Middleware                                                                  |          9 |       -100 |        -57 |        -39 |       -196 |
+| ..\app\Http\Requests                                                                    |         34 |       -975 |       -313 |       -206 |     -1,494 |
+| ..\app\Models                                                                           |         25 |       -674 |        -18 |       -165 |       -857 |
+| ..\app\Providers                                                                        |          5 |        -82 |        -43 |        -28 |       -153 |
++-----------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++-----------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
+| filename                                                                                | language | code       | comment    | blank      | total      |
++-----------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
+| e:\xampp 8.1\htdocs\army\vpcms\app\Console\Kernel.php                                   | PHP      |        -15 |         -7 |         -6 |        -28 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\DataTables\ActionPendingListDataTable.php            | PHP      |       -137 |        -99 |        -22 |       -258 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\DataTables\ActionTakenListDataTable.php              | PHP      |       -124 |        -54 |        -13 |       -191 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\DataTables\CardDetailDataTable.php                   | PHP      |       -102 |        -20 |        -15 |       -137 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\DataTables\CardIssuanceStatusDataTable.php           | PHP      |        -81 |        -19 |        -11 |       -111 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\DataTables\CardIssueCriteriaDataTable.php            | PHP      |        -82 |        -22 |        -12 |       -116 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\DataTables\CardPrintCloseDataTable.php               | PHP      |        -98 |        -21 |        -14 |       -133 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\DataTables\CardPrintDataTable.php                    | PHP      |        -77 |        -34 |        -14 |       -125 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\DataTables\DSDivisionDataTable.php                   | PHP      |        -82 |        -22 |        -12 |       -116 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\DataTables\DistrictDataTable.php                     | PHP      |        -82 |        -19 |        -11 |       -112 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\DataTables\EthnicityDataTable.php                    | PHP      |        -81 |        -19 |        -11 |       -111 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\DataTables\ForceDataTable.php                        | PHP      |        -82 |        -21 |        -12 |       -115 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\DataTables\MaritalStatusDataTable.php                | PHP      |        -81 |        -19 |        -11 |       -111 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\DataTables\NokDataTable.php                          | PHP      |        -78 |        -32 |        -16 |       -126 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\DataTables\PermissionCategoryDataTable.php           | PHP      |        -81 |        -21 |        -12 |       -114 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\DataTables\PermissionDataTable.php                   | PHP      |        -82 |        -21 |        -12 |       -115 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\DataTables\PersonApprovedDataTable.php               | PHP      |        -95 |        -18 |        -10 |       -123 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\DataTables\PersonDataTable.php                       | PHP      |       -126 |        -53 |        -27 |       -206 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\DataTables\PersonFwdPendingDataTable.php             | PHP      |        -96 |        -21 |        -10 |       -127 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\DataTables\PersonPendingDataTable.php                | PHP      |       -105 |       -101 |        -26 |       -232 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\DataTables\PersonRejectedDataTable.php               | PHP      |       -100 |        -21 |        -11 |       -132 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\DataTables\ProvinceDataTable.php                     | PHP      |        -81 |        -19 |        -11 |       -111 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\DataTables\RanaviruTypeDataTable.php                 | PHP      |        -81 |        -22 |        -12 |       -115 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\DataTables\RankDataTable.php                         | PHP      |        -83 |        -21 |        -12 |       -116 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\DataTables\RegimentDepartmentDataTable.php           | PHP      |        -82 |        -22 |        -12 |       -116 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\DataTables\RelationShipDataTable.php                 | PHP      |        -81 |        -22 |        -12 |       -115 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\DataTables\RoleDataTable.php                         | PHP      |        -65 |        -21 |        -10 |        -96 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\DataTables\UserDataTable.php                         | PHP      |        -98 |        -18 |        -17 |       -133 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\DataTables\UsertypeDataTable.php                     | PHP      |        -81 |        -19 |        -11 |       -111 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Exceptions\Handler.php                               | PHP      |        -17 |         -9 |         -5 |        -31 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Http\Controllers\AjaxController.php                  | PHP      |        -45 |          0 |         -8 |        -53 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Http\Controllers\AuthController.php                  | PHP      |        -79 |        -13 |        -37 |       -129 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Http\Controllers\Auth\ConfirmPasswordController.php  | PHP      |        -14 |        -20 |         -7 |        -41 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Http\Controllers\Auth\ForgotPasswordController.php   | PHP      |         -8 |        -10 |         -5 |        -23 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Http\Controllers\Auth\LoginController.php            | PHP      |        -14 |        -20 |         -7 |        -41 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Http\Controllers\Auth\RegisterController.php         | PHP      |        -35 |        -32 |         -9 |        -76 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Http\Controllers\Auth\ResetPasswordController.php    | PHP      |        -10 |        -15 |         -6 |        -31 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Http\Controllers\Auth\VerificationController.php     | PHP      |        -16 |        -20 |         -7 |        -43 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Http\Controllers\CardDetailController.php            | PHP      |        -40 |        -28 |        -14 |        -82 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Http\Controllers\CardIssuanceStatusController.php    | PHP      |        -56 |        -22 |        -14 |        -92 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Http\Controllers\CardIssueCriteriaController.php     | PHP      |        -56 |        -22 |        -14 |        -92 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Http\Controllers\CardIssuePersonController.php       | PHP      |        -38 |        -26 |        -12 |        -76 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Http\Controllers\CardPrintController.php             | PHP      |        -65 |        -33 |        -21 |       -119 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Http\Controllers\Controller.php                      | PHP      |         -9 |          0 |         -4 |        -13 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Http\Controllers\DSDivisionController.php            | PHP      |        -61 |        -22 |        -15 |        -98 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Http\Controllers\DependenceController.php            | PHP      |        -82 |        -34 |        -22 |       -138 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Http\Controllers\DistrictController.php              | PHP      |        -61 |        -22 |        -14 |        -97 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Http\Controllers\EthnicityController.php             | PHP      |        -56 |        -22 |        -14 |        -92 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Http\Controllers\ForceController.php                 | PHP      |        -58 |        -22 |        -14 |        -94 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Http\Controllers\HomeController.php                  | PHP      |        -38 |        -10 |        -10 |        -58 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Http\Controllers\MaritalStatusController.php         | PHP      |        -56 |        -22 |        -14 |        -92 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Http\Controllers\NokController.php                   | PHP      |        -75 |        -67 |        -30 |       -172 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Http\Controllers\PermissionCategoryController.php    | PHP      |        -59 |        -22 |        -14 |        -95 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Http\Controllers\PermissionController.php            | PHP      |        -56 |        -26 |        -15 |        -97 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Http\Controllers\PersonController.php                | PHP      |       -246 |       -109 |        -85 |       -440 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Http\Controllers\ProvinceController.php              | PHP      |        -56 |        -22 |        -15 |        -93 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Http\Controllers\RanaviruTypeController.php          | PHP      |        -56 |        -22 |        -14 |        -92 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Http\Controllers\RankController.php                  | PHP      |        -59 |        -22 |        -15 |        -96 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Http\Controllers\RegimentDepartmentController.php    | PHP      |        -59 |        -22 |        -15 |        -96 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Http\Controllers\RelationShipController.php          | PHP      |        -58 |        -22 |        -14 |        -94 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Http\Controllers\ReportController.php                | PHP      |         -6 |         -1 |         -4 |        -11 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Http\Controllers\RoleController.php                  | PHP      |        -76 |        -46 |        -17 |       -139 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Http\Controllers\UserController.php                  | PHP      |       -115 |        -48 |        -25 |       -188 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Http\Controllers\UsertypeController.php              | PHP      |        -56 |        -22 |        -15 |        -93 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Http\Kernel.php                                      | PHP      |        -46 |        -21 |         -8 |        -75 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Http\Middleware\Authenticate.php                     | PHP      |        -11 |         -3 |         -4 |        -18 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Http\Middleware\EncryptCookies.php                   | PHP      |         -8 |         -6 |         -4 |        -18 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Http\Middleware\PreventRequestsDuringMaintenance.php | PHP      |         -8 |         -6 |         -4 |        -18 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Http\Middleware\RedirectIfAuthenticated.php          | PHP      |        -20 |         -5 |         -6 |        -31 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Http\Middleware\TrimStrings.php                      | PHP      |        -11 |         -5 |         -4 |        -20 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Http\Middleware\TrustHosts.php                       | PHP      |        -12 |         -5 |         -4 |        -21 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Http\Middleware\TrustProxies.php                     | PHP      |        -14 |        -10 |         -5 |        -29 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Http\Middleware\ValidateSignature.php                | PHP      |         -8 |        -11 |         -4 |        -23 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Http\Middleware\VerifyCsrfToken.php                  | PHP      |         -8 |         -6 |         -4 |        -18 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Http\Requests\StoreCardIssuanceStatusRequest.php     | PHP      |        -23 |         -8 |         -6 |        -37 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Http\Requests\StoreCardIssueCriteriaRequest.php      | PHP      |        -23 |         -8 |         -6 |        -37 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Http\Requests\StoreDSDivisionRequest.php             | PHP      |        -25 |         -8 |         -6 |        -39 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Http\Requests\StoreDependenceRequest.php             | PHP      |        -42 |         -9 |         -6 |        -57 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Http\Requests\StoreDistrictRequest.php               | PHP      |        -25 |         -8 |         -6 |        -39 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Http\Requests\StoreEthnicityRequest.php              | PHP      |        -23 |         -8 |         -6 |        -37 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Http\Requests\StoreForceRequest.php                  | PHP      |        -23 |         -8 |         -6 |        -37 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Http\Requests\StoreMaritalStatusRequest.php          | PHP      |        -23 |         -8 |         -6 |        -37 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Http\Requests\StoreNokRequest.php                    | PHP      |        -38 |        -11 |         -6 |        -55 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Http\Requests\StorePermissionCategoryRequest.php     | PHP      |        -23 |         -8 |         -6 |        -37 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Http\Requests\StorePersonRequest.php                 | PHP      |        -58 |        -16 |         -6 |        -80 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Http\Requests\StoreProvinceRequest.php               | PHP      |        -23 |         -8 |         -6 |        -37 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Http\Requests\StoreRanaviruTypeRequest.php           | PHP      |        -23 |         -8 |         -6 |        -37 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Http\Requests\StoreRankRequest.php                   | PHP      |        -25 |         -8 |         -6 |        -39 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Http\Requests\StoreRegimentDepartmentRequest.php     | PHP      |        -32 |         -8 |         -6 |        -46 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Http\Requests\StoreRelationShipRequest.php           | PHP      |        -23 |         -8 |         -6 |        -37 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Http\Requests\StoreUserTypeRequest.php               | PHP      |        -23 |         -8 |         -6 |        -37 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Http\Requests\UpdateCardIssuanceStatusRequest.php    | PHP      |        -23 |         -8 |         -6 |        -37 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Http\Requests\UpdateCardIssueCriteriaRequest.php     | PHP      |        -23 |         -8 |         -6 |        -37 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Http\Requests\UpdateDSDivisionRequest.php            | PHP      |        -33 |         -8 |         -6 |        -47 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Http\Requests\UpdateDependenceRequest.php            | PHP      |        -42 |         -9 |         -6 |        -57 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Http\Requests\UpdateDistrictRequest.php              | PHP      |        -33 |         -8 |         -6 |        -47 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Http\Requests\UpdateEthnicityRequest.php             | PHP      |        -23 |         -8 |         -6 |        -37 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Http\Requests\UpdateForceRequest.php                 | PHP      |        -23 |         -8 |         -6 |        -37 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Http\Requests\UpdateMaritalStatusRequest.php         | PHP      |        -23 |         -8 |         -6 |        -37 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Http\Requests\UpdateNokRequest.php                   | PHP      |        -41 |        -11 |         -6 |        -58 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Http\Requests\UpdatePermissionCategoryRequest.php    | PHP      |        -23 |         -8 |         -6 |        -37 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Http\Requests\UpdatePersonRequest.php                | PHP      |        -55 |        -19 |         -6 |        -80 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Http\Requests\UpdateProvinceRequest.php              | PHP      |        -23 |         -8 |         -6 |        -37 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Http\Requests\UpdateRanaviruTypeRequest.php          | PHP      |        -23 |         -8 |         -6 |        -37 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Http\Requests\UpdateRankRequest.php                  | PHP      |        -33 |        -12 |         -7 |        -52 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Http\Requests\UpdateRegimentDepartmentRequest.php    | PHP      |        -33 |        -18 |         -7 |        -58 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Http\Requests\UpdateRelationShipRequest.php          | PHP      |        -23 |         -8 |         -6 |        -37 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Http\Requests\UpdateUserTypeRequest.php              | PHP      |        -23 |         -8 |         -6 |        -37 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Models\CardDetail.php                                | PHP      |        -23 |          0 |         -6 |        -29 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Models\CardIssuanceStatus.php                        | PHP      |        -16 |          0 |         -5 |        -21 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Models\CardIssue.php                                 | PHP      |        -30 |          0 |         -8 |        -38 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Models\CardIssueCriteria.php                         | PHP      |        -13 |          0 |         -4 |        -17 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Models\CardIssuePerson.php                           | PHP      |        -20 |          0 |         -5 |        -25 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Models\CardPrint.php                                 | PHP      |        -24 |          0 |         -6 |        -30 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Models\DSDivision.php                                | PHP      |        -21 |          0 |         -6 |        -27 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Models\Dependence.php                                | PHP      |        -58 |          0 |        -11 |        -69 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Models\District.php                                  | PHP      |        -22 |          0 |         -6 |        -28 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Models\Eligibility.php                               | PHP      |        -29 |         -1 |         -7 |        -37 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Models\Ethnicity.php                                 | PHP      |        -16 |          0 |         -5 |        -21 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Models\Forces.php                                    | PHP      |        -21 |          0 |         -5 |        -26 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Models\MaritalStatus.php                             | PHP      |        -16 |          0 |         -5 |        -21 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Models\Nok.php                                       | PHP      |        -50 |          0 |         -9 |        -59 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Models\Permission.php                                | PHP      |        -20 |          0 |         -5 |        -25 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Models\PermissionCategory.php                        | PHP      |        -18 |          0 |         -5 |        -23 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Models\Person.php                                    | PHP      |       -110 |         -1 |        -20 |       -131 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Models\PersonStatus.php                              | PHP      |        -25 |          0 |         -6 |        -31 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Models\Province.php                                  | PHP      |        -16 |          0 |         -5 |        -21 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Models\RanaviruType.php                              | PHP      |        -13 |          0 |         -4 |        -17 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Models\Rank.php                                      | PHP      |        -20 |          0 |         -6 |        -26 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Models\RegimentDepartment.php                        | PHP      |        -19 |          0 |         -6 |        -25 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Models\RelationShip.php                              | PHP      |        -13 |          0 |         -4 |        -17 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Models\User.php                                      | PHP      |        -45 |        -16 |        -11 |        -72 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Models\Usertype.php                                  | PHP      |        -16 |          0 |         -5 |        -21 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Providers\AppServiceProvider.php                     | PHP      |        -14 |         -7 |         -5 |        -26 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Providers\AuthServiceProvider.php                    | PHP      |        -11 |        -11 |         -5 |        -27 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Providers\BroadcastServiceProvider.php               | PHP      |        -12 |         -3 |         -5 |        -20 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Providers\EventServiceProvider.php                   | PHP      |        -21 |        -12 |         -6 |        -39 |
+| e:\xampp 8.1\htdocs\army\vpcms\app\Providers\RouteServiceProvider.php                   | PHP      |        -24 |        -10 |         -7 |        -41 |
+| e:\xampp 8.1\htdocs\army\vpcms\config\app.php                                           | PHP      |         29 |        131 |         32 |        192 |
+| e:\xampp 8.1\htdocs\army\vpcms\config\auth.php                                          | PHP      |         28 |         74 |         14 |        116 |
+| e:\xampp 8.1\htdocs\army\vpcms\config\broadcasting.php                                  | PHP      |         36 |         23 |         13 |         72 |
+| e:\xampp 8.1\htdocs\army\vpcms\config\cache.php                                         | PHP      |         59 |         34 |         19 |        112 |
+| e:\xampp 8.1\htdocs\army\vpcms\config\cors.php                                          | PHP      |          3 |         29 |          3 |         35 |
+| e:\xampp 8.1\htdocs\army\vpcms\config\database.php                                      | PHP      |         83 |         47 |         22 |        152 |
+| e:\xampp 8.1\htdocs\army\vpcms\config\dompdf.php                                        | PHP      |         30 |        229 |         26 |        285 |
+| e:\xampp 8.1\htdocs\army\vpcms\config\filesystems.php                                   | PHP      |         32 |         32 |         13 |         77 |
+| e:\xampp 8.1\htdocs\army\vpcms\config\hashing.php                                       | PHP      |         12 |         32 |          9 |         53 |
+| e:\xampp 8.1\htdocs\army\vpcms\config\logging.php                                       | PHP      |         79 |         34 |         19 |        132 |
+| e:\xampp 8.1\htdocs\army\vpcms\config\mail.php                                          | PHP      |         54 |         53 |         19 |        126 |
+| e:\xampp 8.1\htdocs\army\vpcms\config\permission.php                                    | PHP      |         30 |         91 |         41 |        162 |
+| e:\xampp 8.1\htdocs\army\vpcms\config\queue.php                                         | PHP      |         51 |         42 |         17 |        110 |
+| e:\xampp 8.1\htdocs\army\vpcms\config\sanctum.php                                       | PHP      |         15 |         41 |         12 |         68 |
+| e:\xampp 8.1\htdocs\army\vpcms\config\services.php                                      | PHP      |         17 |         11 |          7 |         35 |
+| e:\xampp 8.1\htdocs\army\vpcms\config\session.php                                       | PHP      |         22 |        147 |         33 |        202 |
+| e:\xampp 8.1\htdocs\army\vpcms\config\snappy.php                                        | PHP      |         17 |         30 |          6 |         53 |
+| e:\xampp 8.1\htdocs\army\vpcms\config\view.php                                          | PHP      |         10 |         20 |          7 |         37 |
+| Total                                                                                   |          |     -5,700 |     -1,055 |     -1,070 |     -7,825 |
++-----------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+

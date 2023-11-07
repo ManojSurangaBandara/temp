@@ -1,0 +1,42 @@
+Date : 2023-11-01 13:39:37
+Directory : e:\xampp 8.1\htdocs\army\vpcms\config
+Total : 18 files,  607 codes, 1100 comments, 312 blanks, all 2019 lines
+
+Languages
++----------+------------+------------+------------+------------+------------+
+| language | files      | code       | comment    | blank      | total      |
++----------+------------+------------+------------+------------+------------+
+| PHP      |         18 |        607 |      1,100 |        312 |      2,019 |
++----------+------------+------------+------------+------------+------------+
+
+Directories
++--------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                   | files      | code       | comment    | blank      | total      |
++--------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                      |         18 |        607 |      1,100 |        312 |      2,019 |
++--------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++--------------------------------------------------------+----------+------------+------------+------------+------------+
+| filename                                               | language | code       | comment    | blank      | total      |
++--------------------------------------------------------+----------+------------+------------+------------+------------+
+| e:\xampp 8.1\htdocs\army\vpcms\config\app.php          | PHP      |         29 |        131 |         32 |        192 |
+| e:\xampp 8.1\htdocs\army\vpcms\config\auth.php         | PHP      |         28 |         74 |         14 |        116 |
+| e:\xampp 8.1\htdocs\army\vpcms\config\broadcasting.php | PHP      |         36 |         23 |         13 |         72 |
+| e:\xampp 8.1\htdocs\army\vpcms\config\cache.php        | PHP      |         59 |         34 |         19 |        112 |
+| e:\xampp 8.1\htdocs\army\vpcms\config\cors.php         | PHP      |          3 |         29 |          3 |         35 |
+| e:\xampp 8.1\htdocs\army\vpcms\config\database.php     | PHP      |         83 |         47 |         22 |        152 |
+| e:\xampp 8.1\htdocs\army\vpcms\config\dompdf.php       | PHP      |         30 |        229 |         26 |        285 |
+| e:\xampp 8.1\htdocs\army\vpcms\config\filesystems.php  | PHP      |         32 |         32 |         13 |         77 |
+| e:\xampp 8.1\htdocs\army\vpcms\config\hashing.php      | PHP      |         12 |         32 |          9 |         53 |
+| e:\xampp 8.1\htdocs\army\vpcms\config\logging.php      | PHP      |         79 |         34 |         19 |        132 |
+| e:\xampp 8.1\htdocs\army\vpcms\config\mail.php         | PHP      |         54 |         53 |         19 |        126 |
+| e:\xampp 8.1\htdocs\army\vpcms\config\permission.php   | PHP      |         30 |         91 |         41 |        162 |
+| e:\xampp 8.1\htdocs\army\vpcms\config\queue.php        | PHP      |         51 |         42 |         17 |        110 |
+| e:\xampp 8.1\htdocs\army\vpcms\config\sanctum.php      | PHP      |         15 |         41 |         12 |         68 |
+| e:\xampp 8.1\htdocs\army\vpcms\config\services.php     | PHP      |         17 |         11 |          7 |         35 |
+| e:\xampp 8.1\htdocs\army\vpcms\config\session.php      | PHP      |         22 |        147 |         33 |        202 |
+| e:\xampp 8.1\htdocs\army\vpcms\config\snappy.php       | PHP      |         17 |         30 |          6 |         53 |
+| e:\xampp 8.1\htdocs\army\vpcms\config\view.php         | PHP      |         10 |         20 |          7 |         37 |
+| Total                                                  |          |        607 |      1,100 |        312 |      2,019 |
++--------------------------------------------------------+----------+------------+------------+------------+------------+

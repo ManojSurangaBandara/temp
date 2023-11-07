@@ -1,0 +1,131 @@
+# Diff Details
+
+Date : 2023-11-01 13:41:18
+
+Directory e:\\xampp 8.1\\htdocs\\army\\vpcms\\routes
+
+Total : 116 files,  -9383 codes, -67 comments, -1545 blanks, all -10995 lines
+
+[Summary](results.md) / [Details](details.md) / [Diff Summary](diff.md) / Diff Details
+
+## Files
+| filename | language | code | comment | blank | total |
+| :--- | :--- | ---: | ---: | ---: | ---: |
+| [resources/css/app.css](/resources/css/app.css) | CSS | 0 | 0 | -1 | -1 |
+| [resources/js/app.js](/resources/js/app.js) | JavaScript | -5 | -12 | -6 | -23 |
+| [resources/js/bootstrap.js](/resources/js/bootstrap.js) | JavaScript | -4 | -22 | -8 | -34 |
+| [resources/sass/_variables.scss](/resources/sass/_variables.scss) | SCSS | -10 | -1 | -2 | -13 |
+| [resources/sass/app.scss](/resources/sass/app.scss) | SCSS | -7 | -17 | -10 | -34 |
+| [resources/views/auth/login.blade.php](/resources/views/auth/login.blade.php) | PHP | -89 | 0 | -20 | -109 |
+| [resources/views/auth/login_old.blade.php](/resources/views/auth/login_old.blade.php) | PHP | -54 | 0 | -13 | -67 |
+| [resources/views/auth/passwords/confirm.blade.php](/resources/views/auth/passwords/confirm.blade.php) | PHP | -36 | 0 | -9 | -45 |
+| [resources/views/auth/passwords/email.blade.php](/resources/views/auth/passwords/email.blade.php) | PHP | -46 | 0 | -8 | -54 |
+| [resources/views/auth/passwords/reset.blade.php](/resources/views/auth/passwords/reset.blade.php) | PHP | -67 | 0 | -12 | -79 |
+| [resources/views/auth/register.blade.php](/resources/views/auth/register.blade.php) | PHP | -92 | 0 | -12 | -104 |
+| [resources/views/auth/verify.blade.php](/resources/views/auth/verify.blade.php) | PHP | -28 | 0 | -2 | -30 |
+| [resources/views/card_details/create.blade.php](/resources/views/card_details/create.blade.php) | PHP | -82 | 0 | -11 | -93 |
+| [resources/views/card_details/edit.blade.php](/resources/views/card_details/edit.blade.php) | PHP | -82 | 0 | -13 | -95 |
+| [resources/views/card_details/index.blade.php](/resources/views/card_details/index.blade.php) | PHP | -38 | 0 | -9 | -47 |
+| [resources/views/card_details/show.blade.php](/resources/views/card_details/show.blade.php) | PHP | -53 | 0 | -11 | -64 |
+| [resources/views/card_issuance_status/create.blade.php](/resources/views/card_issuance_status/create.blade.php) | PHP | -55 | 0 | -8 | -63 |
+| [resources/views/card_issuance_status/edit.blade.php](/resources/views/card_issuance_status/edit.blade.php) | PHP | -56 | 0 | -11 | -67 |
+| [resources/views/card_issuance_status/index.blade.php](/resources/views/card_issuance_status/index.blade.php) | PHP | -39 | 0 | -9 | -48 |
+| [resources/views/card_issuance_status/show.blade.php](/resources/views/card_issuance_status/show.blade.php) | PHP | -45 | 0 | -7 | -52 |
+| [resources/views/card_issue_criterias/create.blade.php](/resources/views/card_issue_criterias/create.blade.php) | PHP | -55 | 0 | -8 | -63 |
+| [resources/views/card_issue_criterias/edit.blade.php](/resources/views/card_issue_criterias/edit.blade.php) | PHP | -56 | 0 | -11 | -67 |
+| [resources/views/card_issue_criterias/index.blade.php](/resources/views/card_issue_criterias/index.blade.php) | PHP | -39 | 0 | -9 | -48 |
+| [resources/views/card_issue_criterias/show.blade.php](/resources/views/card_issue_criterias/show.blade.php) | PHP | -45 | 0 | -7 | -52 |
+| [resources/views/card_issue_persons/create.blade.php](/resources/views/card_issue_persons/create.blade.php) | PHP | -63 | 0 | -10 | -73 |
+| [resources/views/card_issue_persons/edit.blade.php](/resources/views/card_issue_persons/edit.blade.php) | PHP | -82 | 0 | -13 | -95 |
+| [resources/views/card_issue_persons/index.blade.php](/resources/views/card_issue_persons/index.blade.php) | PHP | -38 | 0 | -9 | -47 |
+| [resources/views/card_issue_persons/show.blade.php](/resources/views/card_issue_persons/show.blade.php) | PHP | -53 | 0 | -11 | -64 |
+| [resources/views/card_prints/cardho.blade.php](/resources/views/card_prints/cardho.blade.php) | PHP | -38 | 0 | -9 | -47 |
+| [resources/views/card_prints/cardprint.blade.php](/resources/views/card_prints/cardprint.blade.php) | PHP | -38 | 0 | -9 | -47 |
+| [resources/views/card_prints/create.blade.php](/resources/views/card_prints/create.blade.php) | PHP | -82 | 0 | -11 | -93 |
+| [resources/views/card_prints/edit.blade.php](/resources/views/card_prints/edit.blade.php) | PHP | -82 | 0 | -13 | -95 |
+| [resources/views/card_prints/show.blade.php](/resources/views/card_prints/show.blade.php) | PHP | -53 | 0 | -11 | -64 |
+| [resources/views/district/create.blade.php](/resources/views/district/create.blade.php) | PHP | -74 | 0 | -10 | -84 |
+| [resources/views/district/edit.blade.php](/resources/views/district/edit.blade.php) | PHP | -77 | 0 | -11 | -88 |
+| [resources/views/district/index.blade.php](/resources/views/district/index.blade.php) | PHP | -39 | 0 | -9 | -48 |
+| [resources/views/district/show.blade.php](/resources/views/district/show.blade.php) | PHP | -53 | 0 | -11 | -64 |
+| [resources/views/dsdivision/create.blade.php](/resources/views/dsdivision/create.blade.php) | PHP | -74 | 0 | -10 | -84 |
+| [resources/views/dsdivision/edit.blade.php](/resources/views/dsdivision/edit.blade.php) | PHP | -77 | 0 | -11 | -88 |
+| [resources/views/dsdivision/index.blade.php](/resources/views/dsdivision/index.blade.php) | PHP | -39 | 0 | -9 | -48 |
+| [resources/views/dsdivision/show.blade.php](/resources/views/dsdivision/show.blade.php) | PHP | -53 | 0 | -11 | -64 |
+| [resources/views/ethnicity/create.blade.php](/resources/views/ethnicity/create.blade.php) | PHP | -55 | 0 | -8 | -63 |
+| [resources/views/ethnicity/edit.blade.php](/resources/views/ethnicity/edit.blade.php) | PHP | -56 | 0 | -11 | -67 |
+| [resources/views/ethnicity/index.blade.php](/resources/views/ethnicity/index.blade.php) | PHP | -39 | 0 | -9 | -48 |
+| [resources/views/ethnicity/show.blade.php](/resources/views/ethnicity/show.blade.php) | PHP | -45 | 0 | -7 | -52 |
+| [resources/views/forces/create.blade.php](/resources/views/forces/create.blade.php) | PHP | -55 | 0 | -8 | -63 |
+| [resources/views/forces/edit.blade.php](/resources/views/forces/edit.blade.php) | PHP | -56 | 0 | -11 | -67 |
+| [resources/views/forces/index.blade.php](/resources/views/forces/index.blade.php) | PHP | -39 | 0 | -9 | -48 |
+| [resources/views/forces/show.blade.php](/resources/views/forces/show.blade.php) | PHP | -45 | 0 | -7 | -52 |
+| [resources/views/home.blade.php](/resources/views/home.blade.php) | PHP | -77 | 0 | -10 | -87 |
+| [resources/views/layouts/app.blade.php](/resources/views/layouts/app.blade.php) | PHP | -115 | 0 | -22 | -137 |
+| [resources/views/layouts/menu.blade.php](/resources/views/layouts/menu.blade.php) | PHP | -364 | 0 | -39 | -403 |
+| [resources/views/layouts/sidebar.blade.php](/resources/views/layouts/sidebar.blade.php) | PHP | -15 | 0 | -3 | -18 |
+| [resources/views/marital_status/create.blade.php](/resources/views/marital_status/create.blade.php) | PHP | -55 | 0 | -8 | -63 |
+| [resources/views/marital_status/edit.blade.php](/resources/views/marital_status/edit.blade.php) | PHP | -56 | 0 | -11 | -67 |
+| [resources/views/marital_status/index.blade.php](/resources/views/marital_status/index.blade.php) | PHP | -39 | 0 | -9 | -48 |
+| [resources/views/marital_status/show.blade.php](/resources/views/marital_status/show.blade.php) | PHP | -45 | 0 | -7 | -52 |
+| [resources/views/permission_categories/create.blade.php](/resources/views/permission_categories/create.blade.php) | PHP | -55 | 0 | -8 | -63 |
+| [resources/views/permission_categories/edit.blade.php](/resources/views/permission_categories/edit.blade.php) | PHP | -56 | 0 | -11 | -67 |
+| [resources/views/permission_categories/index.blade.php](/resources/views/permission_categories/index.blade.php) | PHP | -39 | 0 | -9 | -48 |
+| [resources/views/permission_categories/show.blade.php](/resources/views/permission_categories/show.blade.php) | PHP | -45 | 0 | -7 | -52 |
+| [resources/views/permissions/edit.blade.php](/resources/views/permissions/edit.blade.php) | PHP | -83 | 0 | -13 | -96 |
+| [resources/views/permissions/index.blade.php](/resources/views/permissions/index.blade.php) | PHP | -38 | 0 | -9 | -47 |
+| [resources/views/persons/create.blade.php](/resources/views/persons/create.blade.php) | PHP | -464 | -44 | -58 | -566 |
+| [resources/views/persons/dependence/create.blade.php](/resources/views/persons/dependence/create.blade.php) | PHP | -259 | 0 | -34 | -293 |
+| [resources/views/persons/dependence/edit.blade.php](/resources/views/persons/dependence/edit.blade.php) | PHP | -255 | 0 | -30 | -285 |
+| [resources/views/persons/dependence/index.blade.php](/resources/views/persons/dependence/index.blade.php) | PHP | -38 | 0 | -9 | -47 |
+| [resources/views/persons/dependence/show.blade.php](/resources/views/persons/dependence/show.blade.php) | PHP | -265 | 0 | -56 | -321 |
+| [resources/views/persons/dependence/show_neo.blade.php](/resources/views/persons/dependence/show_neo.blade.php) | PHP | -171 | 0 | -41 | -212 |
+| [resources/views/persons/edit.blade.php](/resources/views/persons/edit.blade.php) | PHP | -418 | -1 | -48 | -467 |
+| [resources/views/persons/index.blade.php](/resources/views/persons/index.blade.php) | PHP | -38 | 0 | -9 | -47 |
+| [resources/views/persons/noks/create.blade.php](/resources/views/persons/noks/create.blade.php) | PHP | -204 | 0 | -28 | -232 |
+| [resources/views/persons/noks/edit.blade.php](/resources/views/persons/noks/edit.blade.php) | PHP | -199 | 0 | -28 | -227 |
+| [resources/views/persons/noks/index.blade.php](/resources/views/persons/noks/index.blade.php) | PHP | -38 | 0 | -9 | -47 |
+| [resources/views/persons/noks/show.blade.php](/resources/views/persons/noks/show.blade.php) | PHP | -265 | 0 | -56 | -321 |
+| [resources/views/persons/noks/show_neo.blade.php](/resources/views/persons/noks/show_neo.blade.php) | PHP | -171 | 0 | -41 | -212 |
+| [resources/views/persons/show.blade.php](/resources/views/persons/show.blade.php) | PHP | -535 | -10 | -81 | -626 |
+| [resources/views/persons/show_neo.blade.php](/resources/views/persons/show_neo.blade.php) | PHP | -171 | 0 | -41 | -212 |
+| [resources/views/province/create.blade.php](/resources/views/province/create.blade.php) | PHP | -55 | 0 | -8 | -63 |
+| [resources/views/province/edit.blade.php](/resources/views/province/edit.blade.php) | PHP | -56 | 0 | -11 | -67 |
+| [resources/views/province/index.blade.php](/resources/views/province/index.blade.php) | PHP | -39 | 0 | -9 | -48 |
+| [resources/views/province/show.blade.php](/resources/views/province/show.blade.php) | PHP | -45 | 0 | -7 | -52 |
+| [resources/views/ranaviru_types/create.blade.php](/resources/views/ranaviru_types/create.blade.php) | PHP | -55 | 0 | -8 | -63 |
+| [resources/views/ranaviru_types/edit.blade.php](/resources/views/ranaviru_types/edit.blade.php) | PHP | -56 | 0 | -11 | -67 |
+| [resources/views/ranaviru_types/index.blade.php](/resources/views/ranaviru_types/index.blade.php) | PHP | -39 | 0 | -9 | -48 |
+| [resources/views/ranaviru_types/show.blade.php](/resources/views/ranaviru_types/show.blade.php) | PHP | -45 | 0 | -7 | -52 |
+| [resources/views/ranks/create.blade.php](/resources/views/ranks/create.blade.php) | PHP | -82 | 0 | -11 | -93 |
+| [resources/views/ranks/edit.blade.php](/resources/views/ranks/edit.blade.php) | PHP | -82 | 0 | -13 | -95 |
+| [resources/views/ranks/index.blade.php](/resources/views/ranks/index.blade.php) | PHP | -39 | 0 | -9 | -48 |
+| [resources/views/ranks/show.blade.php](/resources/views/ranks/show.blade.php) | PHP | -53 | 0 | -11 | -64 |
+| [resources/views/regiment_departments/create.blade.php](/resources/views/regiment_departments/create.blade.php) | PHP | -74 | 0 | -10 | -84 |
+| [resources/views/regiment_departments/edit.blade.php](/resources/views/regiment_departments/edit.blade.php) | PHP | -74 | 0 | -12 | -86 |
+| [resources/views/regiment_departments/index.blade.php](/resources/views/regiment_departments/index.blade.php) | PHP | -39 | 0 | -9 | -48 |
+| [resources/views/regiment_departments/show.blade.php](/resources/views/regiment_departments/show.blade.php) | PHP | -53 | 0 | -11 | -64 |
+| [resources/views/relation_ships/create.blade.php](/resources/views/relation_ships/create.blade.php) | PHP | -55 | 0 | -8 | -63 |
+| [resources/views/relation_ships/edit.blade.php](/resources/views/relation_ships/edit.blade.php) | PHP | -56 | 0 | -11 | -67 |
+| [resources/views/relation_ships/index.blade.php](/resources/views/relation_ships/index.blade.php) | PHP | -39 | 0 | -9 | -48 |
+| [resources/views/relation_ships/show.blade.php](/resources/views/relation_ships/show.blade.php) | PHP | -45 | 0 | -7 | -52 |
+| [resources/views/reports/person_profile.blade.php](/resources/views/reports/person_profile.blade.php) | PHP | -176 | 0 | -25 | -201 |
+| [resources/views/roles/create.blade.php](/resources/views/roles/create.blade.php) | PHP | -84 | 0 | -10 | -94 |
+| [resources/views/roles/edit.blade.php](/resources/views/roles/edit.blade.php) | PHP | -81 | 0 | -12 | -93 |
+| [resources/views/roles/index.blade.php](/resources/views/roles/index.blade.php) | PHP | -40 | 0 | -9 | -49 |
+| [resources/views/roles/show.blade.php](/resources/views/roles/show.blade.php) | PHP | -57 | 0 | -7 | -64 |
+| [resources/views/users/create.blade.php](/resources/views/users/create.blade.php) | PHP | -252 | -4 | -34 | -290 |
+| [resources/views/users/edit.blade.php](/resources/views/users/edit.blade.php) | PHP | -247 | -4 | -34 | -285 |
+| [resources/views/users/index.blade.php](/resources/views/users/index.blade.php) | PHP | -39 | 0 | -9 | -48 |
+| [resources/views/users/show.blade.php](/resources/views/users/show.blade.php) | PHP | -89 | 0 | -11 | -100 |
+| [resources/views/usertype/create.blade.php](/resources/views/usertype/create.blade.php) | PHP | -55 | 0 | -8 | -63 |
+| [resources/views/usertype/edit.blade.php](/resources/views/usertype/edit.blade.php) | PHP | -56 | 0 | -11 | -67 |
+| [resources/views/usertype/index.blade.php](/resources/views/usertype/index.blade.php) | PHP | -39 | 0 | -9 | -48 |
+| [resources/views/usertype/show.blade.php](/resources/views/usertype/show.blade.php) | PHP | -45 | 0 | -7 | -52 |
+| [resources/views/welcome.blade.php](/resources/views/welcome.blade.php) | PHP | -118 | 0 | -23 | -141 |
+| [routes/api.php](/routes/api.php) | PHP | 10 | 13 | 9 | 32 |
+| [routes/channels.php](/routes/channels.php) | PHP | 5 | 10 | 4 | 19 |
+| [routes/console.php](/routes/console.php) | PHP | 6 | 10 | 4 | 20 |
+| [routes/web.php](/routes/web.php) | PHP | 116 | 15 | 38 | 169 |
+
+[Summary](results.md) / [Details](details.md) / [Diff Summary](diff.md) / Diff Details
