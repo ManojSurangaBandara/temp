@@ -24,13 +24,16 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
-        'password',
-        'force_id',
+        'username',
+        'password',       
         'rank_id',
         'status',
         'svc_no',
-        'regiment_department_id',
-        'user_type_id'
+        'regiment_id',
+        'mobile_no',
+        'last_login_date',
+        'last_login_ip',
+        'location_id'
     ];
 
     /**

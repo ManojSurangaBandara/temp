@@ -12,9 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->unsignedBigInteger('rank_id')->nullable();
-            $table->tinyInteger('status')->default(1);//active->1, in-active->0
+            $table->string('last_login_ip',15)->nullable();
+            $table->date('last_login_date')->nullable();           
+            $table->string('mobile_no')->unique();
             $table->string('svc_no')->unique();
+            $table->string('username')->unique();
+            $table->unsignedBigInteger('rank_id')->nullable();
         });
     }
 
@@ -24,9 +27,12 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('rank_id');
+            $table->dropColumn('last_login_ip');
+            $table->dropColumn('suspend');
             $table->dropColumn('status');
-            $table->dropColumn('svc_no');
+            $table->dropColumn('phone');
+            $table->dropColumn('attempts');
+            $table->dropColumn('backlist');
         });
     }
 };
