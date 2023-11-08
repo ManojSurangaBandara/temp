@@ -78,7 +78,7 @@ class UserDataTable extends DataTable
      */
     public function query(User $model): QueryBuilder
     {
-        return $model->newQuery();
+        return $model->newQuery()->with('location');
     }
 
     /**
@@ -117,6 +117,7 @@ class UserDataTable extends DataTable
                   ->addClass('text-center'),
             Column::make('name')->data('name')->title('Name'),
             Column::make('email')->data('email')->title('Email'),
+            //Column::make('regiment.name')->data('regiment.name')->title('Email'),
             Column::computed('roles'),
             Column::computed('status'),
         ];

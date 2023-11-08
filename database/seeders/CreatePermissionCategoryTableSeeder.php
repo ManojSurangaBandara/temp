@@ -16,8 +16,6 @@ class CreatePermissionCategoryTableSeeder extends Seeder
         $permissionCategories = [
             'Master Data',
             'System Management',
-            'Person Management',
-            'Card Issue'
         ];
       
         foreach ($permissionCategories as $permissionCategory) {

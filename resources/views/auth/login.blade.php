@@ -31,7 +31,7 @@
       <p width="350px" align="centere"  style="color:rgb(255, 165, 0); font-size:35px; text-align: center; font-family: sans-serif; text-shadow: 1px 1px 2px black;"  >
 
         {{-- {{ config('app.name') }} --}}
-        Virusara Privilege Card Management System
+        Residence Reservation System
       </p> 
           </div>
      <br>  

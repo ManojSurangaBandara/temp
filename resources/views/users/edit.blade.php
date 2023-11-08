@@ -39,19 +39,38 @@
                             <div class="card-body">
 
                                 <div class="form-group row">
-                                    <label for="force_id" class="col-sm-2 col-form-label">Force</label>
+                                    <label for="regiment_id" class="col-sm-2 col-form-label">Regiment</label>
                                     <div class="col-sm-6">
-                                        <select class="form-control @error('force_id') is-invalid @enderror"
-                                            name="force_id" value="{{ old('force_id') }}" id="force_id" required>
+                                        <select class="form-control @error('regiment_id') is-invalid @enderror"
+                                            name="regiment_id" value="{{ old('regiment_id') }}" id="regiment_id" required>
                                             <option value="">Please Select</option>
-                                            @foreach ($forces as $item)
-                                                <option value="{{ $item->id }}" {{ $user->force_id == $item->id ? 'selected':'' }}>
-                                                    {{ $item->name }}
+                                            @foreach ($regiments as $item)
+                                                <option value="{{ $item['id'] }}" {{ $user->regiment_id == $item['id'] ? 'selected':'' }}>
+                                                    {{ $item['name'] }}
                                                 </option>
                                             @endforeach
                                         </select>
                                         <span class="text-danger">
-                                            @error('force_id')
+                                            @error('regiment_id')
+                                                {{ $message }}
+                                            @enderror
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="location_id" class="col-sm-2 col-form-label">Location</label>
+                                    <div class="col-sm-6">
+                                        <select class="form-control @error('location_id') is-invalid @enderror" name="location_id" id="location_id" required>
+                                            <option value="">Please Select</option>
+                                            @foreach ($directorates as $item)
+                                                <option value="{{ $item['id'] }}" {{ $user->location_id == $item['id'] ? 'selected':'' }}>
+                                                    {{ $item['name'] }}
+                                                </option>
+                                            @endforeach                                                            
+                                        </select>
+                                        <span class="text-danger">
+                                            @error('location_id')
                                                 {{ $message }}
                                             @enderror
                                         </span>
@@ -63,9 +82,9 @@
                                     <div class="col-sm-6">
                                         <select class="form-control @error('rank_id') is-invalid @enderror" name="rank_id" id="rank_id" required>
                                             <option value="">Please Select</option>
-                                            @foreach ($ranks as $item)
-                                                <option value="{{ $item->id }}" {{ $user->rank_id == $item->id ? 'selected':'' }}>
-                                                    {{ $item->abbr }}
+                                            @foreach ($directorates as $item)
+                                                <option value="{{ $item['id'] }}" {{ $user->rank_id == $item['id'] ? 'selected':'' }}>
+                                                    {{ $item['name'] }}
                                                 </option>
                                             @endforeach                                                            
                                         </select>
@@ -75,26 +94,7 @@
                                             @enderror
                                         </span>
                                     </div>
-                                </div>
-
-                                <div class="form-group row">
-                                    <label for="regiment_department_id" class="col-sm-2 col-form-label">Regiment/Department</label>
-                                    <div class="col-sm-6">
-                                        <select class="form-control @error('regiment_department_id') is-invalid @enderror" name="regiment_department_id" id="regiment_department_id" required>
-                                            <option value="">Please Select</option>
-                                            @foreach ($regimentDepartments as $item)
-                                                <option value="{{ $item->id }}" {{ $user->regiment_department_id == $item->id ? 'selected':'' }}>
-                                                    {{ $item->name }}
-                                                </option>
-                                            @endforeach                                                            
-                                        </select>
-                                        <span class="text-danger">
-                                            @error('regiment_department_id')
-                                                {{ $message }}
-                                            @enderror
-                                        </span>
-                                    </div>
-                                </div>
+                                </div>                                
 
                                 <div class="form-group row">
                                     <label for="svc_no" class="col-sm-2 col-form-label">Service No</label>
@@ -115,13 +115,31 @@
                                 </div>
 
                                 <div class="form-group row">
+                                    <label for="username" class="col-sm-2 col-form-label">Username</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control @error('username')
+                                        is-invalid @enderror" name="username" value="{{ $user->username }}" id="username" autocomplete="off">
+                                        <span class="text-danger">@error('username') {{ $message }} @enderror</span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
                                     <label for="email" class="col-sm-2 col-form-label">Email</label>
                                     <div class="col-sm-6">
                                         <input type="text" class="form-control @error('email')
                                         is-invalid @enderror" name="email" value="{{ $user->email }}" id="email" autocomplete="off">
                                         <span class="text-danger">@error('email') {{ $message }} @enderror</span>
                                     </div>
-                                </div>                               
+                                </div>
+                                
+                                <div class="form-group row">
+                                    <label for="mobile_no" class="col-sm-2 col-form-label">Mobile No</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control @error('mobile_no')
+                                        is-invalid @enderror" name="mobile_no" value="{{ $user->mobile_no }}" id="mobile_no" autocomplete="off">
+                                        <span class="text-danger">@error('mobile_no') {{ $message }} @enderror</span>
+                                    </div>
+                                </div>
 
                                 <div class="form-group row">
                                     <label class="col-sm-2" for="roles">Role</label>
@@ -141,27 +159,7 @@
                                             </span>
                                         @enderror
                                     </div>
-                                </div>
-
-                                <div class="form-group row">
-                                    <label for="user_type_id" class="col-sm-2 col-form-label">User Type</label>
-                                    <div class="col-sm-6">
-                                        <select class="form-control @error('user_type_id') is-invalid @enderror"
-                                            name="user_type_id" value="{{ old('user_type_id') }}" id="user_type_id" required>
-                                            <option value="">Please Select</option>
-                                            @foreach ($usertypes as $item)
-                                                <option value="{{ $item->id }}" {{ $user->user_type_id == $item->id ? 'selected':'' }}>
-                                                    {{ $item->name }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                        <span class="text-danger">
-                                            @error('user_type_id')
-                                                {{ $message }}
-                                            @enderror
-                                        </span>
-                                    </div>
-                                </div>
+                                </div>                               
 
                                 <div class="form-group row">
                                     <label for="password" class="col-sm-2 col-form-label">Password</label>
@@ -242,7 +240,7 @@
     })
 </script> --}}
 
-<script type="text/javascript">
+{{-- <script type="text/javascript">
     $('#force_id').change(function () {
         var id = $(this).val();
         console.log("in");
@@ -280,5 +278,5 @@
             }
         });
     });
-</script>
+</script> --}}
 @endsection

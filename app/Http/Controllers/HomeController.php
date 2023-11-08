@@ -27,31 +27,9 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $active_users_count = User::where('status',1)
-                                ->where('force_id', Auth::user()->force_id)
-                                ->where('user_type_id', Auth::user()->user_type_id)
-                                ->get()->count();
+        $active_users_count = User::where('status',1)                                
+                                    ->get()->count();
         
-        if(Auth::user()->user_type_id == 1)
-        {
-            $forces = Forces::where('status',1)->get();
-
-            $counts = Person::select('force_id', 'ranaviru_types_id')
-                ->selectRaw('count(*) as count')
-                ->groupBy('force_id', 'ranaviru_types_id')
-                ->get();
-
-        }else{
-            $forces = Forces::where('status',1)
-                        ->where('id',Auth::user()->force_id)->get();
-
-            $counts = Person::select('force_id', 'ranaviru_types_id')
-                        ->where('force_id',Auth::user()->force_id)
-                        ->selectRaw('count(*) as count')
-                        ->groupBy('force_id', 'ranaviru_types_id')
-                        ->get();
-        }
-        
-        return view('home',compact('active_users_count','forces','counts'));
+        return view('home',compact('active_users_count'));
     }
 }

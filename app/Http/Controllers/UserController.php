@@ -4,12 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Rank;
 use App\Models\User;
-use App\Models\Forces;
-use App\Models\Usertype;
+use App\Models\Location;
 use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use App\DataTables\UserDataTable;
-use App\Models\RegimentDepartment;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Auth;
@@ -46,13 +44,21 @@ class UserController extends Controller
      */
     public function create()
     {
-        $forces = Forces::where('status',1)->get();        
-
         $roles = Role::pluck('name','name')->all();
 
-        $usertypes = Usertype::where('status',1)->get();
+        $locations = Location::getLocationsFromAPI();
 
-        return view('users.create',compact('roles','forces','usertypes'));
+        $regiments = array_filter($locations, function ($location) {
+            return $location['type'] === '10';
+        });
+
+        $directorates = array_filter($locations, function ($location) {
+            return $location['type'] === '4';
+        });
+
+        //dd($directorates);
+
+        return view('users.create',compact('roles','regiments','directorates'));
     }
 
     /**
@@ -67,13 +73,14 @@ class UserController extends Controller
         $this->validate($request, [
             'name' => 'required',
             'email' => 'required|email|unique:users,email',
+            'username' => 'required|unique:users,username',
             'password' => 'required|same:confirm-password',
             'roles' => 'required',
-            'force_id' => 'required',
+            'regiment_id' => 'required',
+            'location_id' => 'required',
             'rank_id' => 'required',
             'svc_no' => 'required|unique:users,svc_no',
-            'regiment_department_id' => 'required',
-            'user_type_id' => 'required',
+            'mobile_no' => 'required|unique:users,mobile_no',
         ]);
 
         $input = $request->all();
@@ -109,14 +116,19 @@ class UserController extends Controller
         $user = User::find($id);
         $roles = Role::pluck('name','name')->all();
         $userRole = $user->roles->pluck('name','name')->toArray();
-        $forces = Forces::where('status',1)->get();
-        $ranks = Rank::where('status',1)->get();
-        $regimentDepartments = RegimentDepartment::where('status',1)->get();
-        $usertypes = Usertype::where('status',1)->get();
 
-        $userForce = Auth::user()->force_id;
+        $locations = Location::getLocationsFromAPI();
 
-        return view('users.edit',compact('user','roles','userRole','forces','ranks','regimentDepartments','usertypes','userForce'));
+        $regiments = array_filter($locations, function ($location) {
+            return $location['type'] === '10';
+        });
+
+        $directorates = array_filter($locations, function ($location) {
+            return $location['type'] === '4';
+        });
+        
+
+        return view('users.edit',compact('user','roles','userRole','regiments','directorates'));
     }
 
     /**
@@ -132,12 +144,14 @@ class UserController extends Controller
         $this->validate($request, [
             'name' => 'required',
             'email' => 'required|email|unique:users,email,'.$id,
+            'username' => 'required|unique:users,username'.$id,
             'password' => 'same:confirm-password',
             'roles' => 'required',
-            'force_id' => 'required',
+            'regiment_id' => 'required',
+            'location_id' => 'required',
             'rank_id' => 'required',
-            'svc_no' => 'required|unique:users,svc_no,'.$id,
-            'regiment_department_id' => 'required',
+            'svc_no' => 'required|unique:users,svc_no'.$id,
+            'mobile_no' => 'required|unique:users,mobile_no'.$id,
         ]);
 
         $input = $request->all();

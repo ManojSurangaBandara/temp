@@ -18,6 +18,9 @@ return new class extends Migration
             $table->string('svc_no')->unique();
             $table->string('username')->unique();
             $table->unsignedBigInteger('rank_id')->nullable();
+            $table->unsignedBigInteger('regiment_id')->nullable();
+            $table->unsignedBigInteger('location_id')->nullable();
+            $table->tinyInteger('status')->default(1);//active->1, in-active->0
         });
     }
 
@@ -28,11 +31,14 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('last_login_ip');
-            $table->dropColumn('suspend');
+            $table->dropColumn('last_login_date');
+            $table->dropColumn('mobile_no');
+            $table->dropColumn('svc_no');
+            $table->dropColumn('username');
+            $table->dropColumn('rank_id');
+            $table->dropColumn('regiment_id');
+            $table->dropColumn('location_id');
             $table->dropColumn('status');
-            $table->dropColumn('phone');
-            $table->dropColumn('attempts');
-            $table->dropColumn('backlist');
         });
     }
 };

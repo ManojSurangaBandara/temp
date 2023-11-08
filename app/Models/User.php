@@ -4,8 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Rank;
-use App\Models\Forces;
-use App\Models\Usertype;
+use App\Models\Location;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
@@ -56,19 +55,19 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function force()
+    public function regiment()
     {
-        return $this->belongsTo(Forces::class, 'force_id', 'id');
+        return $this->hasOne(Location::class, 'id', 'regiment_id');
+    }
+
+    public function location()
+    {
+        return $this->hasOne(Location::class, 'id', 'location_id');
     }
 
     public function rank()
     {
-        return $this->belongsTo(Rank::class, 'rank_id', 'id');
-    }
-
-    public function usertype()
-    {
-        return $this->belongsTo(Usertype::class, 'user_type_id', 'id');
+        return $this->hasOne(Rank::class, 'id', 'rank_id');
     }
     
 }

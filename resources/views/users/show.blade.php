@@ -36,21 +36,14 @@
 
                     <div class="form-group row">
                         <label class="col-sm-2">
-                            <strong>Force:</strong>
+                            <strong>Regiment:</strong>
                         </label>
                         <div class="col-sm-10">
-                            {{ $user->force->name }}
+                            {{ $user->regiment }}
                         </div>
                     </div>
 
-                    <div class="form-group row">
-                        <label class="col-sm-2">
-                            <strong>Rank:</strong>
-                        </label>
-                        <div class="col-sm-10">
-                            {{ $user->rank->name }}
-                        </div>
-                    </div>
+                    
 
                     <div class="form-group row">
                         <label class="col-sm-2">
