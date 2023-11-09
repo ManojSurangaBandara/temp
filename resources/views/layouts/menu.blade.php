@@ -123,3 +123,10 @@
 
     </li>
 @endcan
+
+<li class="nav-item">
+    <a href="{{ route('change.index') }}" class="nav-link {{ Request::is('change.index') ? 'active' : '' }}">
+        <i class="nav-icon fas fa-key text-orange"></i>
+        <p>Change Password</p>
+    </a>
+</li>

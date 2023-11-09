@@ -29,6 +29,7 @@
                                 class="fas fa-bars"></i></a>
                     </li>
                 </ul>
+                <b>Residence Reservation System</b>
 
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item dropdown user-menu">

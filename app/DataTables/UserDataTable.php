@@ -2,15 +2,17 @@
 
 namespace App\DataTables;
 
+use Carbon\Carbon;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Builder as QueryBuilder;
-use Yajra\DataTables\EloquentDataTable;
-use Yajra\DataTables\Html\Builder as HtmlBuilder;
+use App\Models\Location;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
+use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
+use Yajra\DataTables\Html\Builder as HtmlBuilder;
+use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 
 class UserDataTable extends DataTable
 {
@@ -19,13 +21,66 @@ class UserDataTable extends DataTable
      *
      * @param QueryBuilder $query Results from query() method.
      */
+    
+    //  protected $searchColumns = [
+    //     'name',
+    //     'email',
+    //     'location', // Add 'location' as a searchable column
+    //     'regiment', // Add 'regiment' as a searchable column
+    //     'last_login_ip',
+    //     'last_login_date',
+    // ];
+
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
+        $locations = Location::getLocationsFromAPI();
+
         return (new EloquentDataTable($query))
             ->addIndexColumn()
+            ->editColumn('last_login_date', function ($user) {
+                if($user->last_login_date)
+                {
+                    return Carbon::parse($user->last_login_date)->format('Y-m-d');
+                }else{
+                    return 'N/A';
+                }
+                
+            })
             ->addColumn('status', function($status){
                 return ($status->status==1)?'<h5><span class="badge badge-primary">Active</span></h5>':
                 '<h5><span class="badge badge-warning">Inactive</span></h5>';
+            })            
+            ->addColumn('location', function ($user) use ($locations) {
+                //$locations = Location::getLocationsFromAPI();
+                $location_id = $user->location_id;
+            
+                if ($location_id) {
+                    $key = array_search($location_id, array_column($locations, 'id'));
+                    
+                    if ($key !== false) {
+                        return $locations[$key]['name'];
+                    } else {
+                        return 'Location not found';
+                    }
+                } else {
+                    return 'N/A';
+                }
+            })
+            ->addColumn('regiment', function ($user) use ($locations) {
+                //$locations = Location::getLocationsFromAPI();
+                $location_id = $user->regiment_id;
+            
+                if ($location_id) {
+                    $key = array_search($location_id, array_column($locations, 'id'));
+                    
+                    if ($key !== false) {
+                        return $locations[$key]['name'];
+                    } else {
+                        return 'Location not found';
+                    }
+                } else {
+                    return 'N/A';
+                }
             })
             ->addColumn('action', function ($user) {
                 $btn = '';
@@ -70,7 +125,7 @@ class UserDataTable extends DataTable
 
                 return $badges;
             })
-            ->rawColumns(['action','roles','status']);
+            ->rawColumns(['action','roles','status','location','regiment']);
     }
 
     /**
@@ -78,7 +133,7 @@ class UserDataTable extends DataTable
      */
     public function query(User $model): QueryBuilder
     {
-        return $model->newQuery()->with('location');
+        return $model->newQuery();
     }
 
     /**
@@ -97,10 +152,11 @@ class UserDataTable extends DataTable
                         Button::make('add'),
                         Button::make('excel'),
                         Button::make('csv'),
-                        //Button::make('pdf'),
+                        Button::make('pdf'),
                         Button::make('print'),
                         Button::make('reset'),
                     ]);
+                    // ->searchBuilder();
     }
 
     /**
@@ -116,10 +172,13 @@ class UserDataTable extends DataTable
                   ->width(90)
                   ->addClass('text-center'),
             Column::make('name')->data('name')->title('Name'),
-            Column::make('email')->data('email')->title('Email'),
-            //Column::make('regiment.name')->data('regiment.name')->title('Email'),
+            Column::make('email')->data('email')->title('Email'),            
             Column::computed('roles'),
+            Column::computed('location')->title('Location'),
+            Column::computed('regiment')->title('Regiment'),                
             Column::computed('status'),
+            Column::make('last_login_ip')->data('last_login_ip')->title('Last Login IP'),
+            Column::make('last_login_date')->data('last_login_date')->title('Last Login Date'),
         ];
     }
 

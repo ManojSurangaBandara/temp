@@ -6,6 +6,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\ChangePasswordController;
 use App\Http\Controllers\PermissionCategoryController;
 
 /*
@@ -48,7 +49,8 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/permissions/activate/{id}',[PermissionController::class,'activate'])->name('permissions.activate');
     Route::resource('permissions', PermissionController::class);
 
-    
+    Route::get('/change-password',  [ChangePasswordController::class,'index'])->name('change.index');
+    Route::post('/change-password', [ChangePasswordController::class,'store'])->name('change.password');
 
     Route::get('/reports/person_profile/',[ReportController::class,'person_profile'])->name('reports.person_profile');
 });
