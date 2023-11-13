@@ -11,7 +11,7 @@ class StoreDirectorateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,15 @@ class StoreDirectorateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => 'required|unique:directorates',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'name.required' => 'The Name field is required.',           
+            'name.unique' => 'This Name is already exists',         
         ];
     }
 }

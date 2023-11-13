@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateRegimentRequest extends FormRequest
+class UpdateRankRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,7 +22,7 @@ class UpdateRegimentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|unique:regiments,name,'.$this->regiment->id,
+            'name' => 'required|unique:ranks,name,'.$this->rank->id,
         ];
     }
 

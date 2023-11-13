@@ -11,12 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('units', function (Blueprint $table) {
+        Schema::create('ranks', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
             $table->tinyInteger('status')->default(1);//active->1, in-active->0
-            $table->unsignedBigInteger('regiment_id');
-            $table->foreign('regiment_id')->references('id')->on('regiments')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -26,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('units');
+        Schema::dropIfExists('ranks');
     }
 };

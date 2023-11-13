@@ -38,8 +38,8 @@
 </li>
 
 {{-- @can('card-issuance-status-list','ethnicity-list') --}}
-    <li class="nav-item {{ request()->routeIs('forces*','ranks*','ranaviru_types*',
-    'card_issue_criterias*','regiment_departments*','dsdivision*','usertype*','district*','marital_status*','province*','ethnicity*','card_issuance_status*','card_issue_criterias*','regiment_departments*','relation_ships*')?'menu-open':'' }}">
+    <li class="nav-item {{ request()->routeIs('directorates*','ranks*','regiments*',
+    'units*')?'menu-open':'' }}">
         <a href="#" class="nav-link">
             <i class="nav-icon fas fa-cogs text-blue"></i>
             <p>
@@ -48,17 +48,53 @@
             </p>
         </a>        
 
-        @can('user-type-list')
+        {{-- @can('user-type-list') --}}
             <ul class="nav nav-treeview">
                 <li class="nav-item">
-                    <a href="{{route('usertype.index')}}" class="nav-link
-                    {{ request()->routeIs('usertype*')?'active':'' }}">
+                    <a href="{{route('directorates.index')}}" class="nav-link
+                    {{ request()->routeIs('directorates*')?'active':'' }}">
                         <i class="far fa-circle nav-icon text-blue"></i>
-                        <p>User Type</p>
+                        <p>Directorates</p>
                     </a>
                 </li>
             </ul>
-        @endcan
+        {{-- @endcan --}}
+
+        {{-- @can('user-type-list') --}}
+        <ul class="nav nav-treeview">
+            <li class="nav-item">
+                <a href="{{route('regiments.index')}}" class="nav-link
+                {{ request()->routeIs('regiments*')?'active':'' }}">
+                    <i class="far fa-circle nav-icon text-blue"></i>
+                    <p>Regiments</p>
+                </a>
+            </li>
+        </ul>
+    {{-- @endcan --}}
+
+    {{-- @can('user-type-list') --}}
+    <ul class="nav nav-treeview">
+        <li class="nav-item">
+            <a href="{{route('units.index')}}" class="nav-link
+            {{ request()->routeIs('units*')?'active':'' }}">
+                <i class="far fa-circle nav-icon text-blue"></i>
+                <p>Units</p>
+            </a>
+        </li>
+    </ul>
+    {{-- @endcan --}}
+
+    {{-- @can('user-type-list') --}}
+    <ul class="nav nav-treeview">
+        <li class="nav-item">
+            <a href="{{route('ranks.index')}}" class="nav-link
+            {{ request()->routeIs('ranks*')?'active':'' }}">
+                <i class="far fa-circle nav-icon text-blue"></i>
+                <p>Ranks</p>
+            </a>
+        </li>
+    </ul>
+    {{-- @endcan --}}
 
     </li>
     {{-- @endcan --}}

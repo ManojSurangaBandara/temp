@@ -32,7 +32,8 @@ class User extends Authenticatable
         'mobile_no',
         'last_login_date',
         'last_login_ip',
-        'location_id'
+        'directorate_id',
+        'rank_id',
     ];
 
     /**

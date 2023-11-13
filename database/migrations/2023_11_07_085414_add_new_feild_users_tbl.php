@@ -14,12 +14,12 @@ return new class extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->string('last_login_ip',15)->nullable();
             $table->date('last_login_date')->nullable();           
-            $table->string('mobile_no')->unique();
-            $table->string('svc_no')->unique();
-            $table->string('username')->unique();
-            $table->unsignedBigInteger('rank_id')->nullable();
-            $table->unsignedBigInteger('regiment_id')->nullable();
-            $table->unsignedBigInteger('location_id')->nullable();
+            $table->string('mobile_no')->unique()->nullable();
+            $table->string('svc_no')->unique()->nullable();
+            $table->string('username')->unique()->nullable();
+            // $table->unsignedBigInteger('rank_id')->nullable();
+            // $table->unsignedBigInteger('regiment_id')->nullable();
+            // $table->unsignedBigInteger('location_id')->nullable();
             $table->tinyInteger('status')->default(1);//active->1, in-active->0
         });
     }
@@ -35,9 +35,9 @@ return new class extends Migration
             $table->dropColumn('mobile_no');
             $table->dropColumn('svc_no');
             $table->dropColumn('username');
-            $table->dropColumn('rank_id');
-            $table->dropColumn('regiment_id');
-            $table->dropColumn('location_id');
+            // $table->dropColumn('rank_id');
+            // $table->dropColumn('regiment_id');
+            // $table->dropColumn('location_id');
             $table->dropColumn('status');
         });
     }

@@ -8,6 +8,8 @@ use App\Models\Location;
 use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use App\DataTables\UserDataTable;
+use App\Models\Directorate;
+use App\Models\Regiment;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Auth;
@@ -46,19 +48,23 @@ class UserController extends Controller
     {
         $roles = Role::pluck('name','name')->all();
 
-        $locations = Location::getLocationsFromAPI();
+        // $locations = Location::getLocationsFromAPI();
 
-        $regiments = array_filter($locations, function ($location) {
-            return $location['type'] === '10';
-        });
+        // $regiments = array_filter($locations, function ($location) {
+        //     return $location['type'] === '10';
+        // });
 
-        $directorates = array_filter($locations, function ($location) {
-            return $location['type'] === '4';
-        });
+        // $directorates = array_filter($locations, function ($location) {
+        //     return $location['type'] === '4';
+        // });
 
         //dd($directorates);
 
-        return view('users.create',compact('roles','regiments','directorates'));
+        $regiments = Regiment::where('status', 1)->get();
+        $directorates = Directorate::where('status', 1)->get();
+        $ranks = Rank::where('status', 1)->get();
+
+        return view('users.create',compact('roles','regiments','directorates','ranks'));
     }
 
     /**
@@ -77,7 +83,7 @@ class UserController extends Controller
             'password' => 'required|same:confirm-password',
             'roles' => 'required',
             'regiment_id' => 'required',
-            'location_id' => 'required',
+            'directorate_id' => 'required',
             'rank_id' => 'required',
             'svc_no' => 'required|unique:users,svc_no',
             'mobile_no' => 'required|unique:users,mobile_no',
@@ -117,18 +123,22 @@ class UserController extends Controller
         $roles = Role::pluck('name','name')->all();
         $userRole = $user->roles->pluck('name','name')->toArray();
 
-        $locations = Location::getLocationsFromAPI();
+        // $locations = Location::getLocationsFromAPI();
 
-        $regiments = array_filter($locations, function ($location) {
-            return $location['type'] === '10';
-        });
+        // $regiments = array_filter($locations, function ($location) {
+        //     return $location['type'] === '10';
+        // });
 
-        $directorates = array_filter($locations, function ($location) {
-            return $location['type'] === '4';
-        });
+        // $directorates = array_filter($locations, function ($location) {
+        //     return $location['type'] === '4';
+        // });
+
+        $regiments = Regiment::where('status', 1)->get();
+        $directorates = Directorate::where('status', 1)->get();
+        $ranks = Rank::where('status', 1)->get(); 
         
 
-        return view('users.edit',compact('user','roles','userRole','regiments','directorates'));
+        return view('users.edit',compact('user','roles','userRole','regiments','directorates','ranks'));
     }
 
     /**
@@ -148,7 +158,7 @@ class UserController extends Controller
             'password' => 'same:confirm-password',
             'roles' => 'required',
             'regiment_id' => 'required',
-            'location_id' => 'required',
+            'directorate_id' => 'required',
             'rank_id' => 'required',
             'svc_no' => 'required|unique:users,svc_no'.$id,
             'mobile_no' => 'required|unique:users,mobile_no'.$id,

@@ -2,10 +2,14 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\RankController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UnitController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\RegimentController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\DirectorateController;
 use App\Http\Controllers\ChangePasswordController;
 use App\Http\Controllers\PermissionCategoryController;
 
@@ -39,7 +43,21 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/users/resetpass/{id}',[UserController::class,'resetpass'])->name('users.resetpass');
     Route::resource('users', UserController::class);
 
-    
+    Route::get('/ranks/activate/{id}',[RankController::class,'activate'])->name('ranks.activate');
+    Route::get('/ranks/resetpass/{id}',[RankController::class,'resetpass'])->name('ranks.resetpass');
+    Route::resource('ranks', RankController::class);
+
+    Route::get('/regiments/activate/{id}',[RegimentController::class,'activate'])->name('regiments.activate');
+    Route::get('/regiments/resetpass/{id}',[RegimentController::class,'resetpass'])->name('regiments.resetpass');
+    Route::resource('regiments', RegimentController::class);
+
+    Route::get('/directorates/activate/{id}',[DirectorateController::class,'activate'])->name('directorates.activate');
+    Route::get('/directorates/resetpass/{id}',[DirectorateController::class,'resetpass'])->name('directorates.resetpass');
+    Route::resource('directorates',DirectorateController::class);
+
+    Route::get('/units/activate/{id}',[UnitController::class,'activate'])->name('units.activate');
+    Route::get('/units/resetpass/{id}',[UnitController::class,'resetpass'])->name('units.resetpass');
+    Route::resource('units',UnitController::class);
 
     Route::get('/permissioncategories/inactive/{id}',[PermissionCategoryController::class,'inactive'])->name('permissioncategories.inactive');
     Route::get('/permissioncategories/activate/{id}',[PermissionCategoryController::class,'activate'])->name('permissioncategories.activate');

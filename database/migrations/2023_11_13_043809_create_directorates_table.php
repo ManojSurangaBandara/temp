@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('directorates', function (Blueprint $table) {
             $table->id();
+            $table->string('name')->unique();
+            $table->tinyInteger('status')->default(1);//active->1, in-active->0
             $table->timestamps();
         });
     }

@@ -2,7 +2,7 @@
 
 namespace App\DataTables;
 
-use App\Models\Regiment;
+use App\Models\Rank;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
@@ -12,7 +12,7 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class RegimentDataTable extends DataTable
+class RankDataTable extends DataTable
 {
     /**
      * Build the DataTable class.
@@ -23,30 +23,30 @@ class RegimentDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             ->addIndexColumn()
-            ->addColumn('status', function($regiment){
-                return ($regiment->status==1)?'<h5><span class="badge badge-primary">Active</span></h5>':
+            ->addColumn('status', function($rank){
+                return ($rank->status==1)?'<h5><span class="badge badge-primary">Active</span></h5>':
                 '<h5><span class="badge badge-warning">Inactive</span></h5>';
             })
-            ->addColumn('action', function ($regiment) {
-                $id = $regiment->id;
+            ->addColumn('action', function ($rank) {
+                $id = $rank->id;
                 $btn = '';
-                    $btn .= '<a href="'.route('regiments.edit',$id).'"
+                    $btn .= '<a href="'.route('ranks.edit',$id).'"
                     class="btn btn-xs btn-info" data-toggle="tooltip" title="Edit">
                     <i class="fa fa-pen-alt"></i> </a> ';
-
-                    if($regiment->status==1)
+    
+                    if($rank->status==1)
                     {
-                        $btn .='<a href="'.route('regiments.inactive',$id).'"
+                        $btn .='<a href="'.route('ranks.inactive',$id).'"
                         class="btn btn-xs btn-danger" data-toggle="tooltip"
                         title="Suspend"><i class="fa fa-trash"></i> </a> ';
-
-                    }elseif($regiment->status==0)
+    
+                    }elseif($rank->status==0)
                     {
-                        $btn .='<a href="'.route('regiments.activate',$id).'"
+                        $btn .='<a href="'.route('ranks.activate',$id).'"
                         class="btn btn-xs btn-danger" data-toggle="tooltip"
                         title="Activate"><i class="fa fa-unlock"></i> </a> ';
                     }
-
+    
                 return $btn;
             })
             ->rawColumns(['action','status']);
@@ -55,7 +55,7 @@ class RegimentDataTable extends DataTable
     /**
      * Get the query source of dataTable.
      */
-    public function query(Regiment $model): QueryBuilder
+    public function query(Rank $model): QueryBuilder
     {
         return $model->newQuery();
     }
@@ -66,7 +66,7 @@ class RegimentDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-                    ->setTableId('regiment-table')
+                    ->setTableId('rank-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
                     //->dom('Bfrtip')
@@ -95,6 +95,7 @@ class RegimentDataTable extends DataTable
                   ->width(100)
                   ->addClass('text-center'),
             Column::make('name')->data('name')->title('Name'),
+            Column::make('force.name')->data('force.name')->title('Force'),
             Column::computed('status'),
         ];
     }
@@ -104,6 +105,6 @@ class RegimentDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'Regiment_' . date('YmdHis');
+        return 'Rank_' . date('YmdHis');
     }
 }
