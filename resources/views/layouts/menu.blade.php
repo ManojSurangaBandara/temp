@@ -38,7 +38,7 @@
 </li>
 
 {{-- @can('card-issuance-status-list','ethnicity-list') --}}
-    {{-- <li class="nav-item {{ request()->routeIs('forces*','ranks*','ranaviru_types*',
+    <li class="nav-item {{ request()->routeIs('forces*','ranks*','ranaviru_types*',
     'card_issue_criterias*','regiment_departments*','dsdivision*','usertype*','district*','marital_status*','province*','ethnicity*','card_issuance_status*','card_issue_criterias*','regiment_departments*','relation_ships*')?'menu-open':'' }}">
         <a href="#" class="nav-link">
             <i class="nav-icon fas fa-cogs text-blue"></i>
@@ -60,7 +60,7 @@
             </ul>
         @endcan
 
-    </li> --}}
+    </li>
     {{-- @endcan --}}
 
 @can('role-list','user-list','permission-category-list','permission-list')
