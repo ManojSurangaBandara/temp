@@ -7,6 +7,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\BungalowController;
 use App\Http\Controllers\RegimentController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\DirectorateController;
@@ -58,6 +59,10 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/units/inactive/{id}',[UnitController::class,'inactive'])->name('units.inactive');
     Route::get('/units/activate/{id}',[UnitController::class,'activate'])->name('units.activate');
     Route::resource('units',UnitController::class);
+
+    Route::get('/bungalows/inactive/{id}',[BungalowController::class,'inactive'])->name('bungalows.inactive');
+    Route::get('/bungalows/activate/{id}',[BungalowController::class,'activate'])->name('bungalows.activate');
+    Route::resource('bungalows',BungalowController::class);
 
     Route::get('/permissioncategories/inactive/{id}',[PermissionCategoryController::class,'inactive'])->name('permissioncategories.inactive');
     Route::get('/permissioncategories/activate/{id}',[PermissionCategoryController::class,'activate'])->name('permissioncategories.activate');
