@@ -11,6 +11,12 @@ class Rank extends Model
 {
     use HasFactory;
 
+    protected $table = 'ranks';
+    protected $fillable = [
+        'name',
+        'status',
+    ];
+
     public static function getRanksFromAPI()
     {
         return Cache::remember('ranks', now()->addHours(24), function () {

@@ -154,14 +154,14 @@ class UserController extends Controller
         $this->validate($request, [
             'name' => 'required',
             'email' => 'required|email|unique:users,email,'.$id,
-            'username' => 'required|unique:users,username'.$id,
+            'username' => 'required|unique:users,username,'.$id,
             'password' => 'same:confirm-password',
             'roles' => 'required',
             'regiment_id' => 'required',
             'directorate_id' => 'required',
             'rank_id' => 'required',
-            'svc_no' => 'required|unique:users,svc_no'.$id,
-            'mobile_no' => 'required|unique:users,mobile_no'.$id,
+            'svc_no' => 'required|unique:users,svc_no,'.$id,
+            'mobile_no' => 'required|unique:users,mobile_no,'.$id,
         ]);
 
         $input = $request->all();

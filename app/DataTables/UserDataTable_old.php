@@ -50,38 +50,38 @@ class UserDataTable extends DataTable
                 return ($status->status==1)?'<h5><span class="badge badge-primary">Active</span></h5>':
                 '<h5><span class="badge badge-warning">Inactive</span></h5>';
             })            
-            // ->addColumn('location', function ($user) use ($locations) {
-            //     //$locations = Location::getLocationsFromAPI();
-            //     $location_id = $user->location_id;
+            ->addColumn('location', function ($user) use ($locations) {
+                //$locations = Location::getLocationsFromAPI();
+                $location_id = $user->location_id;
             
-            //     if ($location_id) {
-            //         $key = array_search($location_id, array_column($locations, 'id'));
+                if ($location_id) {
+                    $key = array_search($location_id, array_column($locations, 'id'));
                     
-            //         if ($key !== false) {
-            //             return $locations[$key]['name'];
-            //         } else {
-            //             return 'Location not found';
-            //         }
-            //     } else {
-            //         return 'N/A';
-            //     }
-            // })
-            // ->addColumn('regiment', function ($user) use ($locations) {
-            //     //$locations = Location::getLocationsFromAPI();
-            //     $location_id = $user->regiment_id;
+                    if ($key !== false) {
+                        return $locations[$key]['name'];
+                    } else {
+                        return 'Location not found';
+                    }
+                } else {
+                    return 'N/A';
+                }
+            })
+            ->addColumn('regiment', function ($user) use ($locations) {
+                //$locations = Location::getLocationsFromAPI();
+                $location_id = $user->regiment_id;
             
-            //     if ($location_id) {
-            //         $key = array_search($location_id, array_column($locations, 'id'));
+                if ($location_id) {
+                    $key = array_search($location_id, array_column($locations, 'id'));
                     
-            //         if ($key !== false) {
-            //             return $locations[$key]['name'];
-            //         } else {
-            //             return 'Location not found';
-            //         }
-            //     } else {
-            //         return 'N/A';
-            //     }
-            // })
+                    if ($key !== false) {
+                        return $locations[$key]['name'];
+                    } else {
+                        return 'Location not found';
+                    }
+                } else {
+                    return 'N/A';
+                }
+            })
             ->addColumn('action', function ($user) {
                 $btn = '';
                     $btn .= '<a href="'.route('users.edit',$user->id).'"
@@ -125,7 +125,7 @@ class UserDataTable extends DataTable
 
                 return $badges;
             })
-            ->rawColumns(['action','roles','status']);
+            ->rawColumns(['action','roles','status','location','regiment']);
     }
 
     /**
@@ -133,7 +133,7 @@ class UserDataTable extends DataTable
      */
     public function query(User $model): QueryBuilder
     {
-        return $model->newQuery()->with('regiment','directorate','rank');
+        return $model->newQuery();
     }
 
     /**
@@ -174,8 +174,8 @@ class UserDataTable extends DataTable
             Column::make('name')->data('name')->title('Name'),
             Column::make('email')->data('email')->title('Email'),            
             Column::computed('roles'),
-            Column::make('regiment.name')->data('regiment.name')->title('Regiment'),
-            Column::make('directorate.name')->data('directorate.name')->title('Directorate'),                
+            Column::computed('location')->title('Location'),
+            Column::computed('regiment')->title('Regiment'),                
             Column::computed('status'),
             Column::make('last_login_ip')->data('last_login_ip')->title('Last Login IP'),
             Column::make('last_login_date')->data('last_login_date')->title('Last Login Date'),

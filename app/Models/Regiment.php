@@ -8,4 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Regiment extends Model
 {
     use HasFactory;
+
+    protected $table = 'regiments';
+    protected $fillable = [
+        'name',
+        'status',
+    ];
 }

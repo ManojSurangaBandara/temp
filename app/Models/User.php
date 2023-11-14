@@ -5,6 +5,8 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Rank;
 use App\Models\Location;
+use App\Models\Regiment;
+use App\Models\Directorate;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
@@ -56,14 +58,24 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+    // public function regiment()
+    // {
+    //     return $this->hasOne(Location::class, 'id', 'regiment_id');
+    // }
+
+    // public function location()
+    // {
+    //     return $this->hasOne(Location::class, 'id', 'location_id');
+    // }
+
     public function regiment()
     {
-        return $this->hasOne(Location::class, 'id', 'regiment_id');
+        return $this->hasOne(Regiment::class, 'id', 'regiment_id');
     }
 
-    public function location()
+    public function directorate()
     {
-        return $this->hasOne(Location::class, 'id', 'location_id');
+        return $this->hasOne(Directorate::class, 'id', 'directorate_id');
     }
 
     public function rank()

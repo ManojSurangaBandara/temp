@@ -24,7 +24,8 @@ class UnitController extends Controller
      */
     public function create()
     {
-        return view('units.create');
+        $regiments = Regiment::where('status', 1)->get();
+        return view('units.create',compact('regiments'));
     }
 
     /**

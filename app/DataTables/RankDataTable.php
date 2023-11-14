@@ -95,7 +95,6 @@ class RankDataTable extends DataTable
                   ->width(100)
                   ->addClass('text-center'),
             Column::make('name')->data('name')->title('Name'),
-            Column::make('force.name')->data('force.name')->title('Force'),
             Column::computed('status'),
         ];
     }

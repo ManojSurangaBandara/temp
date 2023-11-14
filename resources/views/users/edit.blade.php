@@ -59,18 +59,18 @@
                                 </div>
 
                                 <div class="form-group row">
-                                    <label for="location_id" class="col-sm-2 col-form-label">Location</label>
+                                    <label for="directorate_id" class="col-sm-2 col-form-label">Directorate</label>
                                     <div class="col-sm-6">
-                                        <select class="form-control @error('location_id') is-invalid @enderror" name="location_id" id="location_id" required>
+                                        <select class="form-control @error('directorate_id') is-invalid @enderror" name="directorate_id" id="directorate_id" required>
                                             <option value="">Please Select</option>
                                             @foreach ($directorates as $item)
-                                                <option value="{{ $item['id'] }}" {{ $user->location_id == $item['id'] ? 'selected':'' }}>
+                                                <option value="{{ $item['id'] }}" {{ $user->directorate_id == $item['id'] ? 'selected':'' }}>
                                                     {{ $item['name'] }}
                                                 </option>
                                             @endforeach                                                            
                                         </select>
                                         <span class="text-danger">
-                                            @error('location_id')
+                                            @error('directorate_id')
                                                 {{ $message }}
                                             @enderror
                                         </span>
@@ -82,7 +82,7 @@
                                     <div class="col-sm-6">
                                         <select class="form-control @error('rank_id') is-invalid @enderror" name="rank_id" id="rank_id" required>
                                             <option value="">Please Select</option>
-                                            @foreach ($directorates as $item)
+                                            @foreach ($ranks as $item)
                                                 <option value="{{ $item['id'] }}" {{ $user->rank_id == $item['id'] ? 'selected':'' }}>
                                                     {{ $item['name'] }}
                                                 </option>

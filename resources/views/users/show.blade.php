@@ -39,7 +39,7 @@
                             <strong>Regiment:</strong>
                         </label>
                         <div class="col-sm-10">
-                            {{ $user->regiment }}
+                            {{ $user->regiment->name }}
                         </div>
                     </div>
 
