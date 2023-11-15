@@ -30,7 +30,9 @@ Route::post('/generate-otp', [AuthController::class, 'generateOTP']);
 // Verify OTP and generate JWT token
 Route::post('/verify-otp', [AuthController::class, 'verifyOTP']);
 
-Route::get('/bungalows', [BungalowController::class, 'index']); 
+Route::get('/bungalows', [BungalowController::class, 'index']);
+
+Route::get('/bookings', [BookingController::class, 'index']); 
 
 Route::post('/store-booking', [BookingController::class, 'storeBooking']);
 

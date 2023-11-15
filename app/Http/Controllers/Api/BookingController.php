@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use Carbon\Carbon;
 use App\Models\Booking;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -13,26 +14,34 @@ class BookingController extends Controller
     public function index(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'rank' => 'required|string',
+            'bungalow_id' => 'required',
         ], [
-            'rank.required' => 'The rank is required.',
-            'rank.string' => 'The rank must be a string.',
+            'bungalow_id.required' => 'The bungalow is required.',            
         ]);
 
         if ($validator->fails()) {
             return response()->json(['message' => $validator->errors(), 'status' => 0], 200);
-        }
-
-        $nameToFilter = $request->rank;
+        }        
         
         try {            
-            $bungalows = Booking::select('id','name','no_ac_room','no_none_ac_room','no_guest','serving_price','retired_price','death_price')
-                        ->whereHas('bunglowrank.rank', function ($query) use ($nameToFilter) {
-                            $query->where('name', $nameToFilter);
-                        })
+            $bookings = Booking::select('check_in','check_out',)
+                        ->where('bungalow_id',$request->bungalow_id)
                         ->get();
 
-            return response()->json(['bungalows' => $bungalows],200);
+            $allDays = [];
+            foreach ($bookings as $booking) {
+                $checkIn = new Carbon($booking->check_in);
+                $checkOut = new Carbon($booking->check_out);
+
+                while ($checkIn->lt($checkOut)) { // Use $checkIn->lt($checkOut) instead of $checkIn->lte($checkOut)
+                    $allDays[] = $checkIn->toDateString();
+                    $checkIn->addDay();
+                }
+            }
+
+            //return response()->json(['bookings' => $bookings],200);
+
+            return response()->json(['all_days' => $allDays], 200);
 
         } catch (Exception $e) {
 
@@ -122,6 +131,7 @@ class BookingController extends Controller
             return response()->json([
                 'message' => 'Success',
                 'status' => 1,
+                'booking_id' => $booking->id,
             ], 200);
 
         } catch (Exception $e) {

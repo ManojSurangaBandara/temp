@@ -107,7 +107,7 @@
                                 <div class="form-group row">
                                     <label class="col-sm-2 col-form-label" for="ranks">Ranks</label>
                                     <div class="col-sm-6 select2-purple">
-                                        <select name="ranks[]" id="ranks" class="multiple form-control" multiple>
+                                        <select name="ranks[]" id="ranks" class="multiple form-control" multiple required>
                                             @foreach($ranks as $item)
                                                 <option value="{{ $item->id }}">{{ $item->name}}</option>
                                             @endforeach
