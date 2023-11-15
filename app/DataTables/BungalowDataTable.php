@@ -3,14 +3,15 @@
 namespace App\DataTables;
 
 use App\Models\Bungalow;
-use Illuminate\Database\Eloquent\Builder as QueryBuilder;
-use Yajra\DataTables\EloquentDataTable;
-use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
+use Illuminate\Support\Facades\Auth;
+use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
+use Yajra\DataTables\Html\Builder as HtmlBuilder;
+use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 
 class BungalowDataTable extends DataTable
 {
@@ -22,8 +23,34 @@ class BungalowDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-            ->addColumn('action', 'bungalow.action')
-            ->setRowId('id');
+            ->addIndexColumn()
+            ->addColumn('status', function($bungalow){
+                return ($bungalow->status==1)?'<h5><span class="badge badge-primary">Active</span></h5>':
+                '<h5><span class="badge badge-warning">Inactive</span></h5>';
+            })
+            ->addColumn('action', function ($bungalow) {
+                $id = $bungalow->id;
+                $btn = '';
+                    $btn .= '<a href="'.route('bungalows.edit',$id).'"
+                    class="btn btn-xs btn-info" data-toggle="tooltip" title="Edit">
+                    <i class="fa fa-pen-alt"></i> </a> ';
+
+                    if($bungalow->status==1)
+                    {
+                        $btn .='<a href="'.route('bungalows.inactive',$id).'"
+                        class="btn btn-xs btn-danger" data-toggle="tooltip"
+                        title="Suspend"><i class="fa fa-trash"></i> </a> ';
+
+                    }elseif($bungalow->status==0)
+                    {
+                        $btn .='<a href="'.route('bungalows.activate',$id).'"
+                        class="btn btn-xs btn-danger" data-toggle="tooltip"
+                        title="Activate"><i class="fa fa-unlock"></i> </a> ';
+                    }
+
+                return $btn;
+            })
+            ->rawColumns(['action','status']);
     }
 
     /**
@@ -31,7 +58,7 @@ class BungalowDataTable extends DataTable
      */
     public function query(Bungalow $model): QueryBuilder
     {
-        return $model->newQuery();
+        return $model->where('directorate_id',Auth::user()->directorate_id)->newQuery();
     }
 
     /**
@@ -47,12 +74,12 @@ class BungalowDataTable extends DataTable
                     ->orderBy(1)
                     ->selectStyleSingle()
                     ->buttons([
+                        Button::make('add'),
                         Button::make('excel'),
                         Button::make('csv'),
                         Button::make('pdf'),
                         Button::make('print'),
-                        Button::make('reset'),
-                        Button::make('reload')
+                        Button::make('reset')
                     ]);
     }
 
@@ -62,15 +89,14 @@ class BungalowDataTable extends DataTable
     public function getColumns(): array
     {
         return [
+            Column::make('DT_RowIndex')->title('#')->searchable(false)->orderColumn(false)->width(40),
             Column::computed('action')
                   ->exportable(false)
                   ->printable(false)
-                  ->width(60)
+                  ->width(100)
                   ->addClass('text-center'),
-            Column::make('id'),
-            Column::make('add your columns'),
-            Column::make('created_at'),
-            Column::make('updated_at'),
+            Column::make('name')->data('name')->title('Name'),
+            Column::computed('status'),
         ];
     }
 

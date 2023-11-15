@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\DataTables\BungalowDataTable;
 use App\Http\Requests\StoreBungalowRequest;
+use App\Http\Requests\UpdateBungalowRequest;
 
 class BungalowController extends Controller
 {
@@ -75,15 +76,23 @@ class BungalowController extends Controller
 
         //dd($bungalow_rank);
 
-        return view('bungalows.edit',compact('ranks','bungalow'));
+        return view('bungalows.edit',compact('ranks','bungalow','bungalow_rank'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Bungalow $bungalow)
+    public function update(UpdateBungalowRequest $request, Bungalow $bungalow)
     {
-        //
+        $bungalow->update($request->toArray());
+
+        if($request->ranks){
+            $bungalow->ranks()->sync($request->ranks);
+        }else {
+            $bungalow->ranks()->detach();
+        }
+
+        return redirect()->route('bungalows.index')->with('success', 'Bungalow Updated');
     }
 
     /**
@@ -92,5 +101,17 @@ class BungalowController extends Controller
     public function destroy(Bungalow $bungalow)
     {
         //
+    }
+
+    public function inactive($id)
+    {
+        Bungalow::where('id', $id)->update(['status' => '0']);
+        return redirect()->route('bungalows.index')->with('success', 'Bungalow De-Activated');
+    }
+
+    public function activate($id)
+    {
+        Bungalow::where('id', $id)->update(['status' => '1']);
+        return redirect()->route('bungalows.index')->with('success', 'Bungalow Activated');
     }
 }

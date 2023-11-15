@@ -14,6 +14,14 @@
     </a>
 </li> --}}
 
+<li class="nav-item">
+    <a href="{{route('bungalows.index')}}" class="nav-link
+    {{ request()->routeIs('bungalows*')?'active':'' }}">
+    <i class="nav-icon fas fa-hotel text-green"></i>
+            <p>Bungalow Mgt</p>
+    </a>
+</li>
+
 
 
 <li class="nav-item {{ request()->routeIs('reports*')?'menu-open':'' }}">

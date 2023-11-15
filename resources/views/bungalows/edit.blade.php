@@ -6,12 +6,12 @@
         <div class="container-fluid">
           <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Guardiance</h1>
+                <h1>Bungalow</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                   <li class="breadcrumb-item"><a href="#">Home</a></li>
-                  <li class="breadcrumb-item ">Guardiance Management</li>
+                  <li class="breadcrumb-item ">Bungalow Management</li>
                   <li class="breadcrumb-item active">Update</li>
                 </ol>
             </div>
@@ -24,142 +24,100 @@
                 <div class="col-md-12">
                     <div class="card card-cyan">
                         <div class="card-header">
-                            <h3 class="card-title">Guardiance</h3>
+                            <h3 class="card-title">Bungalow</h3>
                             {{-- <div class="card-tools">
                                 <a class="btn btn-primary" href="{{ route('users.index') }}"> Back</a>
                             </div> --}}
                         </div>
 
-                        <form role="form" action="{{ route('guardiances.update',$guardiance->id) }}" method="post"
+                        <form role="form" action="{{ route('bungalows.update',$bungalow->id) }}" method="post"
                               enctype="multipart/form-data">
                               @csrf
                               @method('PUT')
 
-                            <div class="card-body">
-
-                                <div class="form-group row">
-                                    <label for="guardiance_type_id" class="col-sm-2 col-form-label">Type</label>
-                                    <div class="col-sm-6">
-                                        <select class="form-control @error('guardiance_type_id') is-invalid @enderror"
-                                            name="guardiance_type_id" value="{{ old('guardiance_type_id') }}" id="guardiance_type_id" required>
-                                            @foreach ($guardiance_types as $item)
-                                                <option value="{{ $item->id }}" {{$guardiance->guardiance_type_id == $item->id ? 'selected':''}}>
-                                                    {{ $item->name }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                        <span class="text-danger">
-                                            @error('under_command')
-                                                {{ $message }}
-                                            @enderror
-                                        </span>
-                                    </div>
-                                </div>
+                            <div class="card-body">                                
 
                                 <div class="form-group row">
                                     <label for="name" class="col-sm-2 col-form-label">Name</label>
                                     <div class="col-sm-6">
                                         <input type="text" class="form-control @error('name')
-                                        is-invalid @enderror" name="name" value="{{ $guardiance->user->name }}" id="name" autocomplete="off">
+                                        is-invalid @enderror" name="name" value="{{ $bungalow->name }}" id="name" autocomplete="off">
                                         <span class="text-danger">@error('name') {{ $message }} @enderror</span>
                                     </div>
                                 </div>
 
                                 <div class="form-group row">
-                                    <label for="email" class="col-sm-2 col-form-label">Email</label>
+                                    <label for="no_ac_room" class="col-sm-2 col-form-label">No. AC Rooms</label>
                                     <div class="col-sm-6">
-                                        <input type="text" class="form-control @error('email')
-                                        is-invalid @enderror" name="email" value="{{ $guardiance->user->email }}" id="email" autocomplete="off">
-                                        <span class="text-danger">@error('email') {{ $message }} @enderror</span>
+                                        <input type="number" class="form-control @error('no_ac_room')
+                                        is-invalid @enderror" name="no_ac_room" value="{{ $bungalow->no_ac_room }}" id="no_ac_room" autocomplete="off"
+                                        min="0">
+                                        <span class="text-danger">@error('no_ac_room') {{ $message }} @enderror</span>
                                     </div>
                                 </div>
 
                                 <div class="form-group row">
-                                    <label for="username" class="col-sm-2 col-form-label">Username</label>
+                                    <label for="no_none_ac_room" class="col-sm-2 col-form-label">No. None AC Rooms</label>
                                     <div class="col-sm-6">
-                                        <input type="text" class="form-control @error('username')
-                                        is-invalid @enderror" name="username" value="{{ $guardiance->user->username }}" id="username" autocomplete="off">
-                                        <span class="text-danger">@error('username') {{ $message }} @enderror</span>
+                                        <input type="number" class="form-control @error('no_none_ac_room')
+                                        is-invalid @enderror" name="no_none_ac_room" value="{{ $bungalow->no_none_ac_room }}" id="no_none_ac_room" autocomplete="off"
+                                        min="0">
+                                        <span class="text-danger">@error('no_none_ac_room') {{ $message }} @enderror</span>
                                     </div>
                                 </div>
 
                                 <div class="form-group row">
-                                    <label for="password" class="col-sm-2 col-form-label">Password</label>
+                                    <label for="no_guest" class="col-sm-2 col-form-label">No. Guest</label>
                                     <div class="col-sm-6">
-                                        <input type="password" class="form-control @error('password')
-                                        is-invalid @enderror" name="password" value="{{ old('password') }}" id="password" autocomplete="off">
-                                        <span class="text-danger">@error('password') {{ $message }} @enderror</span>
+                                        <input type="number" class="form-control @error('no_guest')
+                                        is-invalid @enderror" name="no_guest" value="{{ $bungalow->no_guest }}" id="no_guest" autocomplete="off"
+                                        min="0">
+                                        <span class="text-danger">@error('no_guest') {{ $message }} @enderror</span>
                                     </div>
                                 </div>
 
                                 <div class="form-group row">
-                                    <label for="confirm-password" class="col-sm-2 col-form-label">Confirm Password</label>
+                                    <label for="serving_price" class="col-sm-2 col-form-label">Serving Price</label>
                                     <div class="col-sm-6">
-                                        <input type="password" class="form-control @error('confirm-password')
-                                        is-invalid @enderror" name="confirm-password" value="{{ old('confirm-password') }}" id="confirm-password" autocomplete="off">
-                                        <span class="text-danger">@error('confirm-password') {{ $message }} @enderror</span>
+                                        <input type="number" class="form-control @error('serving_price')
+                                        is-invalid @enderror" name="serving_price" value="{{ $bungalow->serving_price }}" id="serving_price" autocomplete="off"
+                                        min="0">
+                                        <span class="text-danger">@error('serving_price') {{ $message }} @enderror</span>
                                     </div>
                                 </div>
 
                                 <div class="form-group row">
-                                    <label for="contact" class="col-sm-2 col-form-label">Default Contact</label>
+                                    <label for="retired_price" class="col-sm-2 col-form-label">Retired Price</label>
                                     <div class="col-sm-6">
-                                        <input type="text" class="form-control @error('contact')
-                                        is-invalid @enderror" name="contact" value="{{ $guardiance->user->contact }}" id="contact" autocomplete="off">
-                                        <span class="text-danger">@error('contact') {{ $message }} @enderror</span>
+                                        <input type="number" class="form-control @error('retired_price')
+                                        is-invalid @enderror" name="retired_price" value="{{ $bungalow->retired_price }}" id="retired_price" autocomplete="off"
+                                        min="0">
+                                        <span class="text-danger">@error('retired_price') {{ $message }} @enderror</span>
                                     </div>
                                 </div>
 
                                 <div class="form-group row">
-                                    <label for="sec_contact" class="col-sm-2 col-form-label">Contact</label>
+                                    <label for="death_price" class="col-sm-2 col-form-label">Death Price</label>
                                     <div class="col-sm-6">
-                                        <input type="text" class="form-control @error('sec_contact')
-                                        is-invalid @enderror" name="sec_contact" value="{{ $guardiance->sec_contact }}" id="sec_contact" autocomplete="off">
-                                        <span class="text-danger">@error('sec_contact') {{ $message }} @enderror</span>
+                                        <input type="number" class="form-control @error('death_price')
+                                        is-invalid @enderror" name="death_price" value="{{ $bungalow->death_price }}" id="death_price" autocomplete="off"
+                                        min="0">
+                                        <span class="text-danger">@error('death_price') {{ $message }} @enderror</span>
                                     </div>
-                                </div>
+                                </div>                                
 
                                 <div class="form-group row">
-                                    <label for="nic" class="col-sm-2 col-form-label">NIC / Passport</label>
-                                    <div class="col-sm-6">
-                                        <input type="text" class="form-control @error('nic')
-                                        is-invalid @enderror" name="nic" value="{{ $guardiance->nic }}" id="nic" autocomplete="off">
-                                        <span class="text-danger">@error('nic') {{ $message }} @enderror</span>
-                                    </div>
-                                </div>
-
-                                <div class="form-group row">
-                                    <label class="col-sm-2" for="roles">Role</label>
-                                    <div class="col-sm-6 select2-blue">
-                                        <select required name="roles[]" id="roles"
-                                                class="multiple form-control" multiple>
-                                            @foreach($roles as $roleValue => $roleName)
-                                                <option value="{{ $roleValue }}" @if(in_array($roleValue, $userRole)) selected @endif>
-                                                    {{ $roleName }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-
-                                        @error('roles')
-                                        <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-                                </div>
-
-                                <div class="form-group row">
-                                    <label class="col-sm-2 col-form-label" for="students">Students</label>
+                                    <label class="col-sm-2 col-form-label" for="ranks">Ranks</label>
                                     <div class="col-sm-6 select2-purple">
-                                        <select name="students[]" id="students" class="multiple form-control" multiple>
-                                            @foreach($students as $item)
-                                                <option value="{{ $item->id }}" @if(in_array($item->name_initials, $guardiance_student)) selected @endif>
-                                                    {{ $item->name_initials}}
+                                        <select name="ranks[]" id="ranks" class="multiple form-control" multiple>
+                                            @foreach($ranks as $item)
+                                                <option value="{{ $item->id }}" @if(in_array($item->name, $bungalow_rank)) selected @endif>
+                                                    {{ $item->name}}
                                                 </option>
                                             @endforeach
                                         </select>
 
-                                        @error('students')
+                                        @error('ranks')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
