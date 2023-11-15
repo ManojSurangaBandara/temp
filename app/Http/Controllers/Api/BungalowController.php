@@ -26,7 +26,7 @@ class BungalowController extends Controller
         
         try {            
             $bungalows = Bungalow::select('id','name','no_ac_room','no_none_ac_room','no_guest','serving_price','retired_price','death_price')
-                        ->whereHas('ranks', function ($query) use ($nameToFilter) {
+                        ->whereHas('bunglowrank.rank', function ($query) use ($nameToFilter) {
                             $query->where('name', $nameToFilter);
                         })
                         ->get();
