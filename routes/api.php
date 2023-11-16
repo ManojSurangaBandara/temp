@@ -36,4 +36,10 @@ Route::get('/bookings', [BookingController::class, 'index']);
 
 Route::post('/store-booking', [BookingController::class, 'storeBooking']);
 
+Route::get('/search-by-eno', [BookingController::class, 'serachbyEno']);
+
+Route::post('/store-booking-guest', [BookingController::class, 'storeGuest']);
+
+Route::post('/store-booking-vehicle', [BookingController::class, 'storeVehicle']);
+
 

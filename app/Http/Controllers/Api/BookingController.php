@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\Api;
 
+use Exception;
 use Carbon\Carbon;
 use App\Models\Booking;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\BookingGuest;
+use App\Models\Bungalow;
 use Illuminate\Support\Facades\Validator;
 
 class BookingController extends Controller
@@ -50,6 +53,35 @@ class BookingController extends Controller
         
     }
 
+    public function serachbyEno(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'eno' => 'required',
+        ], [
+            'eno.required' => 'The eno is required.',            
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['message' => $validator->errors(), 'status' => 0], 200);
+        }        
+        
+        try {            
+            $bookings = Booking::select('check_in','check_out','paid_amount','created_at')
+                        ->where('eno',$request->eno)
+                        ->where('save',0)
+                        ->orderBy('created_at', 'asc')
+                        ->get();
+            
+
+            return response()->json(['bookings' => $bookings],200);            
+
+        } catch (Exception $e) {
+
+            return response()->json(['error' => 'An error occurred.'], 500);
+        }
+        
+    }
+
     public function storeBooking(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -66,6 +98,7 @@ class BookingController extends Controller
             'check_out' => 'required|date',
             'type' => 'required',
             'level' => 'required',
+            'paid_amount' => 'required',
         ], [
             'regiment.required' => 'The regiment is required.',
             'regiment.string' => 'The regiment must be a string.',
@@ -103,6 +136,8 @@ class BookingController extends Controller
             'type.required' => 'The type id is required.',
 
             'level.required' => 'The level id is required.',
+
+            'paid_amount.required' => 'The paid amount is required.',
         ]);
 
         if ($validator->fails()) {
@@ -126,7 +161,189 @@ class BookingController extends Controller
                 'save' => 0,
                 'level' => $request->level,
                 'eno' => $request->eno,
+                'paid_amount' =>$request->paid_amount,
             ]);
+    
+            return response()->json([
+                'message' => 'Success',
+                'status' => 1,
+                'booking_id' => $booking->id,
+            ], 200);
+
+        } catch (Exception $e) {
+
+            return response()->json(['error' => 'An error occurred.'], 500);
+        }
+        
+    }
+
+    public function storeGuest(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            // 'booking_id' => 'required',
+            // 'name' => 'required|string|array',
+            // 'nic'  => 'string|array',
+
+            'booking_id' => 'required|exists:bookings,id', // Ensure the provided booking_id exists
+            'guests' => 'required|array|min:1',
+            'guests.*.name' => 'required|string',
+            'guests.*.nic' => 'nullable|string',
+            'level' => 'required',
+        ], [
+            'booking_id.required' => 'The booking ID is required.',
+            'booking_id.exists' => 'The provided booking ID does not exist.',
+            'guests.required' => 'At least one guest is required.',
+            'guests.array' => 'The guests field must be an array.',
+            'guests.min' => 'At least one guest is required.',
+            'guests.*.name.required' => 'The name field for each guest is required.',
+            'guests.*.name.string' => 'The name field must be a string.',
+            'guests.*.nic.nullable' => 'The NIC field must be nullable.',
+            'guests.*.nic.string' => 'The NIC field must be a string.',
+            'level.required' => 'The Level is required.',            
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['message' => $validator->errors(), 'status' => 0], 200);
+        }
+        
+        $booking = Booking::findOrFail($request->input('booking_id'));
+
+        $guestData = $request->input('guests');
+
+        //dd($guestData);
+
+        // // Find the existing BookingGuest records for the specified booking_id
+        // $bookingGuests = BookingGuest::where('booking_id', $request->input('booking_id'))->get();
+
+        // // Delete the existing BookingGuest records
+        // foreach ($bookingGuests as $bookingGuest) {
+        //     $bookingGuest->delete();
+        // }
+        
+        try {
+            foreach ($guestData as $guest) {
+                $booking->bookingGuests()->create([
+                    'name' => $guest['name'],
+                    'nic' => $guest['nic'],
+                ]);
+            }
+    
+            return response()->json([
+                'message' => 'Success',
+                'status' => 1,
+                'booking_id' => $booking->id,
+            ], 200);
+
+        } catch (Exception $e) {
+
+            return response()->json(['error' => 'An error occurred.'], 500);
+        }
+        
+    }
+
+    // public function storeGuest(Request $request)
+    // {
+    //     $validator = Validator::make($request->all(), [
+    //         'booking_id' => 'required|exists:bookings,id',
+    //         'guests' => 'required|array|min:1',
+    //         'guests.*.name' => 'required|string',
+    //         'guests.*.nic' => 'nullable|string',
+    //         'level' => 'required',
+    //     ], [
+    //         'booking_id.required' => 'The booking ID is required.',
+    //         'booking_id.exists' => 'The provided booking ID does not exist.',
+    //         'guests.required' => 'At least one guest is required.',
+    //         'guests.array' => 'The guests field must be an array.',
+    //         'guests.min' => 'At least one guest is required.',
+    //         'guests.*.name.required' => 'The name field for each guest is required.',
+    //         'guests.*.name.string' => 'The name field must be a string.',
+    //         'guests.*.nic.nullable' => 'The NIC field must be nullable.',
+    //         'guests.*.nic.string' => 'The NIC field must be a string.',
+    //         'level.required' => 'The Level is required.',            
+    //     ]);
+
+    //     if ($validator->fails()) {
+    //         return response()->json(['message' => $validator->errors(), 'status' => 0], 200);
+    //     }
+        
+    //     $booking = Booking::findOrFail($request->input('booking_id'));
+
+    //     $guestData = $request->input('guests');
+
+    //     // Find the existing BookingGuest records for the specified booking_id
+    //     $existingBookingGuests = BookingGuest::where('booking_id', $request->input('booking_id'))->get();
+
+    //     // Compare the existing and new guest data
+    //     $guestsToDelete = $existingBookingGuests->filter(function ($existingGuest) use ($guestData) {
+    //         foreach ($guestData as $newGuest) {
+    //             if ($existingGuest->name === $newGuest['name'] && $existingGuest->nic === $newGuest['nic']) {
+    //                 return false; // Details match, do not delete
+    //             }
+    //         }
+    //         return true; // Details are different, delete
+    //     });
+
+    //     // Delete the filtered existing BookingGuest records
+    //     foreach ($guestsToDelete as $guestToDelete) {
+    //         $guestToDelete->delete();
+    //     }
+        
+    //     try {
+    //         // Create and associate new BookingGuest records
+    //         foreach ($guestData as $guest) {
+    //             $booking->bookingGuests()->create([
+    //                 'name' => $guest['name'],
+    //                 'nic' => $guest['nic'],
+    //             ]);
+    //         }
+
+    //         return response()->json([
+    //             'message' => 'Success',
+    //             'status' => 1,
+    //             'booking_id' => $booking->id,
+    //         ], 200);
+
+    //     } catch (Exception $e) {
+
+    //         return response()->json(['error' => 'An error occurred.'], 500);
+    //     }
+    // }
+
+
+    public function storeVehicle(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'booking_id' => 'required|exists:bookings,id', // Ensure the provided booking_id exists
+            'vehicles' => 'required|array|min:1',
+            'vehicles.*.reg_no' => 'required|string',
+            'level' => 'required',
+        ], [
+            'booking_id.required' => 'The booking ID is required.',
+            'booking_id.exists' => 'The provided booking ID does not exist.',
+            'vehicles.required' => 'At least one guest is required.',
+            'vehicles.array' => 'The vehicles field must be an array.',
+            'vehicles.min' => 'At least one vehicle is required.',
+            'vehicles.*.reg_no.required' => 'The reg no field for each vehicle is required.',
+            'vehicles.*.reg_no.string' => 'The reg no field must be a string.',
+            'level.required' => 'The Level is required.',            
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['message' => $validator->errors(), 'status' => 0], 200);
+        }
+        
+        $booking = Booking::findOrFail($request->input('booking_id'));
+
+        $vehicleData = $request->input('vehicles');
+
+        //dd($vehicleData);
+        
+        try {
+            foreach ($vehicleData as $vehicle) {
+                $booking->bookingvehicles()->create([
+                    'reg_no' => $vehicle['reg_no'],
+                ]);
+            }
     
             return response()->json([
                 'message' => 'Success',

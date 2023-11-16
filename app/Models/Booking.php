@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\BookingGuest;
+use App\Models\BookingVehicle;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Booking extends Model
 {
@@ -37,4 +39,14 @@ class Booking extends Model
         'cancel_msg_contain',
         'eno',
     ];
+
+    public function bookingguests()
+    {
+        return $this->hasMany(BookingGuest::class);
+    }
+
+    public function bookingvehicles()
+    {
+        return $this->hasMany(BookingVehicle::class);
+    }
 }
