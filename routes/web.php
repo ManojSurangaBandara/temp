@@ -2,11 +2,13 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AjaxController;
 use App\Http\Controllers\RankController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\BookingController;
 use App\Http\Controllers\BungalowController;
 use App\Http\Controllers\RegimentController;
 use App\Http\Controllers\PermissionController;
@@ -72,10 +74,16 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/permissions/activate/{id}',[PermissionController::class,'activate'])->name('permissions.activate');
     Route::resource('permissions', PermissionController::class);
 
+    Route::resource('bookings',BookingController::class);
+
     Route::get('/change-password',  [ChangePasswordController::class,'index'])->name('change.index');
     Route::post('/change-password', [ChangePasswordController::class,'store'])->name('change.password');
 
     Route::get('/reports/person_profile/',[ReportController::class,'person_profile'])->name('reports.person_profile');
+
+    Route::get('/ajax/getBungalow',[AjaxController::class,'getBungalow'])->name('ajax.getBungalow');
+
+    Route::get('/ajax/getPayment',[AjaxController::class,'getPayment'])->name('ajax.getPayment');
 });
 
 

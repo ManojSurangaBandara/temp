@@ -38,6 +38,7 @@ class Booking extends Model
         'confirm_msg_contain',
         'cancel_msg_contain',
         'eno',
+        'rank',
     ];
 
     public function bookingguests()

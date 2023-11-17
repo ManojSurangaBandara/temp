@@ -20,8 +20,9 @@ class Bungalow extends Model
         'no_guest',
         'serving_price',
         'retired_price',
-        'death_price',
+        'official_price',
         'directorate_id',
+        'location',
     ];
 
     public function ranks()

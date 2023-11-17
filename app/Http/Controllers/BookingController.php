@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Rank;
 use App\Models\Booking;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use Exception;
 
 class BookingController extends Controller
 {
@@ -20,7 +23,8 @@ class BookingController extends Controller
      */
     public function create()
     {
-        //
+        $ranks = Rank::where('status',1)->get();
+        return view('bookings.create',compact('ranks'));
     }
 
     /**
@@ -28,8 +32,167 @@ class BookingController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        dd($request);
+        $this->validate($request,[
+            // 'regiment' => 'required|string',
+            // 'eno' => 'required|string',
+            // 'unit'  => 'required|string',
+            // 'svc_no'  => 'required|string',
+            // 'name' => 'required|string',
+            // 'nic'  => 'required|string',
+            // 'contact_no' => 'required|string',
+            'army_id' => 'required',
+            'bungalow_id' => 'required',
+            'check_in' => 'required|date',
+            'check_out' => 'required|date|after:check_in',
+            // 'type' => 'required',
+            // 'level' => 'required',
+            'payment' => 'required',
+        ], [
+            // 'regiment.required' => 'The regiment is required.',
+            // 'regiment.string' => 'The regiment must be a string.',
+
+            // 'unit.required' => 'The unit is required.',
+            // 'unit.string' => 'The unit must be a string.',
+
+            // 'svc_no.required' => 'The service no is required.',
+            // 'svc_no.string' => 'The service no must be a string.',
+
+            // 'name.required' => 'The name is required.',
+            // 'name.string' => 'The name must be a string.',
+
+            // 'nic.required' => 'The nic is required.',
+            // 'nic.string' => 'The nic must be a string.',
+
+            // 'contact_no.required' => 'The contact number is required.',
+            // 'contact_no.string' => 'The contact number must be a string.',
+
+            'army_id.required' => 'The army id is required.',            
+
+            'bungalow_id.required' => 'The bungalow id is required.',
+            'bungalow_id.string' => 'The bungalow id must be a string.',
+
+            'check_in.required' => 'The check in id is required.',
+            'check_in.date' => 'The check in id must be a date.',
+
+            'check_out.required' => 'The check out id is required.',
+            'check_out.date' => 'The check out id must be a date.',
+            'check_out.after' => 'The check out date must be a after check in date.',
+
+            // 'eno.required' => 'The eno is required.',
+            // 'eno.string' => 'The eno must be a string.',
+
+            // 'type.required' => 'The type id is required.',
+
+            // 'level.required' => 'The level id is required.',            
+        ]);
+
+        $checkIn = $request->check_in;
+        $checkOut = $request->check_out;
+
+        $results = Booking::where('bungalow_id',$request->bungalow_id)->where(function ($query) use ($checkIn, $checkOut) {
+                    $query->where('check_in', '<=', $checkIn)
+                    ->where('check_out', '>=', $checkOut);
+                    })
+                    ->get();
+
+        //dd($results);
+
+        if ($results) 
+        {
+            return redirect()->back()->with('success', 'Already booked');
+        }        
+
+        try {
+
+            $booking = Booking::create([
+                // 'regiment' => $request->regiment,
+                // 'unit'  => $request->unit,
+                // 'svc_no'  => $request->svc_no,
+                // 'name' => $request->name,
+                // 'nic'  => $request->nic,
+                // 'contact_no' => $request->contact_no,
+                'regiment' => 'SLSC',
+                'unit'  => '6 SLSC',
+                'svc_no'  => 'O/70239',
+                'name' => 'APL Madhushanka',
+                'nic'  => '902051031V',
+                'contact_no' => '0719449908',
+                'rank' => 'Major',
+                'army_id' => $request->army_id,
+                'bungalow_id' => $request->bungalow_id,
+                'check_in' => $request->check_in,
+                'check_out' => $request->check_out,
+                'type' => $request->type,
+                'save' => 0,
+                'level' => $request->level,
+                'eno' => $request->eno,
+                'paid_amount' =>$request->payment,
+            ]);
+
+            $guestData = $request->input('guests');
+
+            if($guestData)
+            {
+                foreach ($guestData as $guest) {
+                    $booking->bookingGuests()->create([
+                        'name' => $guest['name'],
+                        'nic' => $guest['nic'],
+                    ]);
+                }
+            }
+
+            $vehicleData = $request->input('vehicles');
+
+            if($vehicleData)
+            {
+                foreach ($vehicleData as $vehicle) {
+                    $booking->bookingvehicles()->create([
+                        'reg_no' => $vehicle['reg_no'],
+                    ]);
+                }
+            }
+    
+            return redirect()->route('bookings.index')->with('success', 'Booking Created');
+
+        } catch (Exception $e) {
+
+            return redirect()->back()->with('danger', 'Something went wrong');
+        }
+
+        
     }
+
+    
+
+
+    public function checkBookingAvailability(Request $request)
+    {
+        $request->validate([
+            'check_in' => 'required|date',
+            'check_out' => 'required|date|after:check_in',
+        ]);
+
+        $checkIn = $request->input('check_in');
+        $checkOut = $request->input('check_out');
+
+        // Check if there is a booking overlapping with the specified date range
+        $bookingExists = Booking::where(function ($query) use ($checkIn, $checkOut) {
+            $query->whereBetween('check_in', [$checkIn, $checkOut])
+                ->orWhereBetween('check_out', [$checkIn, $checkOut])
+                ->orWhere(function ($orQuery) use ($checkIn, $checkOut) {
+                    $orQuery->where('check_in', '<=', $checkIn)
+                        ->where('check_out', '>=', $checkOut);
+                });
+        })->exists();
+
+        if ($bookingExists) {
+            return response()->json(['message' => 'Booking not available for the specified dates.'], 200);
+        }
+
+        return response()->json(['message' => 'Booking available for the specified dates.'], 200);
+    }
+
 
     /**
      * Display the specified resource.

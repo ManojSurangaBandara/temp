@@ -95,12 +95,12 @@
                                 </div>
 
                                 <div class="form-group row">
-                                    <label for="death_price" class="col-sm-2 col-form-label">Death Price</label>
+                                    <label for="official_price" class="col-sm-2 col-form-label">Official Price</label>
                                     <div class="col-sm-6">
-                                        <input type="number" class="form-control @error('death_price')
-                                        is-invalid @enderror" name="death_price" value="{{ old('death_price') }}" id="death_price" autocomplete="off"
+                                        <input type="number" class="form-control @error('official_price')
+                                        is-invalid @enderror" name="official_price" value="{{ old('official_price') }}" id="official_price" autocomplete="off"
                                         min="0">
-                                        <span class="text-danger">@error('death_price') {{ $message }} @enderror</span>
+                                        <span class="text-danger">@error('official_price') {{ $message }} @enderror</span>
                                     </div>
                                 </div>
 

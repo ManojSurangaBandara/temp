@@ -7,8 +7,6 @@ use Carbon\Carbon;
 use App\Models\Booking;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\BookingGuest;
-use App\Models\Bungalow;
 use Illuminate\Support\Facades\Validator;
 
 class BookingController extends Controller
@@ -66,7 +64,7 @@ class BookingController extends Controller
         }        
         
         try {            
-            $bookings = Booking::select('check_in','check_out','paid_amount','created_at')
+            $bookings = Booking::select('check_in','check_out','paid_amount','created_at','level')
                         ->where('eno',$request->eno)
                         ->where('save',0)
                         ->orderBy('created_at', 'asc')
@@ -99,6 +97,7 @@ class BookingController extends Controller
             'type' => 'required',
             'level' => 'required',
             'paid_amount' => 'required',
+            'rank' => 'required|string',
         ], [
             'regiment.required' => 'The regiment is required.',
             'regiment.string' => 'The regiment must be a string.',
@@ -138,6 +137,9 @@ class BookingController extends Controller
             'level.required' => 'The level id is required.',
 
             'paid_amount.required' => 'The paid amount is required.',
+
+            'rank.required' => 'The rank is required.',
+            'rank.string' => 'The rank must be a string.',
         ]);
 
         if ($validator->fails()) {
@@ -162,6 +164,7 @@ class BookingController extends Controller
                 'level' => $request->level,
                 'eno' => $request->eno,
                 'paid_amount' =>$request->paid_amount,
+                'rank' => $request->rank,
             ]);
     
             return response()->json([
