@@ -22,7 +22,13 @@
     </a>
 </li>
 
-
+<li class="nav-item">
+    <a href="{{route('bookings.index')}}" class="nav-link
+    {{ request()->routeIs('bookings*')?'active':'' }}">
+    <i class="nav-icon fas fa-hot-tub text-Aqua"></i>
+            <p>Booking Mgt</p>
+    </a>
+</li>
 
 <li class="nav-item {{ request()->routeIs('reports*')?'menu-open':'' }}">
     <a href="#" class="nav-link">

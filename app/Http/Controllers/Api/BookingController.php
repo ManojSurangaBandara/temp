@@ -24,7 +24,8 @@ class BookingController extends Controller
             return response()->json(['message' => $validator->errors(), 'status' => 0], 200);
         }        
         
-        try {            
+        try {
+
             $bookings = Booking::select('check_in','check_out',)
                         ->where('bungalow_id',$request->bungalow_id)
                         ->get();
@@ -39,6 +40,17 @@ class BookingController extends Controller
                     $checkIn->addDay();
                 }
             }
+
+            // $allDays = [];
+            // foreach ($bookings as $booking) {
+            //     $checkIn = new Carbon($booking->check_in);
+            //     $checkOut = new Carbon($booking->check_out);
+
+            //     while ($checkIn->lt($checkOut)) {
+            //         $allDays[] = ['date' => $checkIn->toDateString()];
+            //         $checkIn->addDay();
+            //     }
+            // }
 
             //return response()->json(['bookings' => $bookings],200);
 
@@ -90,7 +102,7 @@ class BookingController extends Controller
             'name' => 'required|string',
             'nic'  => 'required|string',
             'contact_no' => 'required|string',
-            'army_id' => 'required|string',
+            'army_id' => 'nullable|string',
             'bungalow_id' => 'required',
             'check_in' => 'required|date',
             'check_out' => 'required|date',
@@ -98,6 +110,7 @@ class BookingController extends Controller
             'level' => 'required',
             'paid_amount' => 'required',
             'rank' => 'required|string',
+            'no_of_days' => 'required',
         ], [
             'regiment.required' => 'The regiment is required.',
             'regiment.string' => 'The regiment must be a string.',
@@ -117,7 +130,7 @@ class BookingController extends Controller
             'contact_no.required' => 'The contact number is required.',
             'contact_no.string' => 'The contact number must be a string.',
 
-            'army_id.required' => 'The army id is required.',
+            'army_id.nullable' => 'The army id is required.',
             'army_id.string' => 'The army id must be a string.',
 
             'bungalow_id.required' => 'The bungalow id is required.',
@@ -140,6 +153,8 @@ class BookingController extends Controller
 
             'rank.required' => 'The rank is required.',
             'rank.string' => 'The rank must be a string.',
+
+            'no_of_days.required' => 'The number of days is required.',
         ]);
 
         if ($validator->fails()) {
@@ -165,6 +180,7 @@ class BookingController extends Controller
                 'eno' => $request->eno,
                 'paid_amount' =>$request->paid_amount,
                 'rank' => $request->rank,
+                'no_of_days' => $request->no_of_days,
             ]);
     
             return response()->json([

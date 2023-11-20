@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Bungalow;
 use App\Models\BookingGuest;
 use App\Models\BookingVehicle;
 use Illuminate\Database\Eloquent\Model;
@@ -49,5 +50,10 @@ class Booking extends Model
     public function bookingvehicles()
     {
         return $this->hasMany(BookingVehicle::class);
+    }
+
+    public function bungalow()
+    {
+        return $this->belongsTo(Bungalow::class, 'bungalow_id', 'id');
     }
 }

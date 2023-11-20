@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use App\Models\Rank;
 use App\Models\Booking;
+use App\Models\Bungalow;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-use Exception;
+use App\DataTables\BookingDataTable;
 
 class BookingController extends Controller
 {
@@ -15,7 +17,13 @@ class BookingController extends Controller
      */
     public function index()
     {
-        //
+        $bungalows  = Bungalow::where('status','=',1)->get();
+        return view('bookings.bungalows',compact('bungalows'));
+    }
+
+    public function bookings(BookingDataTable $dataTable, Bungalow $bungalow){
+        //($bungalow); 
+        return $dataTable->with(['bungalow'=>$bungalow])->render('bookings.index',compact('bungalow'));
     }
 
     /**
@@ -32,7 +40,7 @@ class BookingController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request);
+        //dd($request);
         $this->validate($request,[
             // 'regiment' => 'required|string',
             // 'eno' => 'required|string',
@@ -90,17 +98,42 @@ class BookingController extends Controller
         $checkIn = $request->check_in;
         $checkOut = $request->check_out;
 
-        $results = Booking::where('bungalow_id',$request->bungalow_id)->where(function ($query) use ($checkIn, $checkOut) {
-                    $query->where('check_in', '<=', $checkIn)
-                    ->where('check_out', '>=', $checkOut);
+        //dd($checkIn);
+
+        // $results = Booking::where('bungalow_id', $request->bungalow_id)
+        // ->where(function ($query) use ($checkIn, $checkOut) {
+        //     $query->where(function ($subquery) use ($checkIn, $checkOut) {
+        //         $subquery->where('check_in', '<=', $checkIn)
+        //             ->where('check_out', '>=', $checkOut);
+        //     });
+        // })
+        // ->get();
+
+        // $results = Booking::where(function ($query) use ($checkIn, $checkOut) {
+        //             $query->where('check_in', '<=', $checkIn)
+        //               ->where('check_out', '>=', $checkOut);
+        //             })
+        //             ->get();
+
+        $results = Booking::where(function ($query) use ($checkIn, $checkOut) {
+                    $query->where('check_in', '<=', $checkOut)
+                        ->where('check_out', '>=', $checkIn);
+                    })
+                    ->orWhere(function ($query) use ($checkIn, $checkOut) {
+                        $query->where('check_in', '>=', $checkIn)
+                            ->where('check_in', '<=', $checkOut);
+                    })
+                    ->orWhere(function ($query) use ($checkIn, $checkOut) {
+                        $query->where('check_out', '>=', $checkIn)
+                            ->where('check_out', '<=', $checkOut);
                     })
                     ->get();
 
         //dd($results);
 
-        if ($results) 
+        if (!$results->isEmpty()) 
         {
-            return redirect()->back()->with('success', 'Already booked');
+            return redirect()->back()->with('danger', 'Already booked');
         }        
 
         try {
@@ -119,14 +152,14 @@ class BookingController extends Controller
                 'nic'  => '902051031V',
                 'contact_no' => '0719449908',
                 'rank' => 'Major',
+                'eno' => '100213550',
                 'army_id' => $request->army_id,
                 'bungalow_id' => $request->bungalow_id,
                 'check_in' => $request->check_in,
                 'check_out' => $request->check_out,
                 'type' => $request->type,
                 'save' => 0,
-                'level' => $request->level,
-                'eno' => $request->eno,
+                'level' => 3,                
                 'paid_amount' =>$request->payment,
             ]);
 

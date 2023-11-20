@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Rank;
+use App\Models\Booking;
 use App\Models\BungalowRank;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -31,5 +32,9 @@ class Bungalow extends Model
             ->using(BungalowRank::class); // Using the custom pivot model
     }
 
-
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class,'bungalow_id');
+    }    
+    
 }

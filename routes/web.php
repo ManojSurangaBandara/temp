@@ -74,6 +74,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/permissions/activate/{id}',[PermissionController::class,'activate'])->name('permissions.activate');
     Route::resource('permissions', PermissionController::class);
 
+    Route::get('/bungalow/bookings/{bungalow}',[BookingController::class,'bookings'])->name('bookings.bungalow_bookings');
     Route::resource('bookings',BookingController::class);
 
     Route::get('/change-password',  [ChangePasswordController::class,'index'])->name('change.index');
