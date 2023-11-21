@@ -5,9 +5,12 @@ namespace App\Http\Controllers\Api;
 use Exception;
 use Carbon\Carbon;
 use App\Models\Booking;
+use App\Models\BookingGuest;
 use Illuminate\Http\Request;
+use App\Models\BookingVehicle;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\File;
 
 class BookingController extends Controller
 {
@@ -30,16 +33,16 @@ class BookingController extends Controller
                         ->where('bungalow_id',$request->bungalow_id)
                         ->get();
 
-            $allDays = [];
-            foreach ($bookings as $booking) {
-                $checkIn = new Carbon($booking->check_in);
-                $checkOut = new Carbon($booking->check_out);
+            // $allDays = [];
+            // foreach ($bookings as $booking) {
+            //     $checkIn = new Carbon($booking->check_in);
+            //     $checkOut = new Carbon($booking->check_out);
 
-                while ($checkIn->lt($checkOut)) { // Use $checkIn->lt($checkOut) instead of $checkIn->lte($checkOut)
-                    $allDays[] = $checkIn->toDateString();
-                    $checkIn->addDay();
-                }
-            }
+            //     while ($checkIn->lt($checkOut)) { // Use $checkIn->lt($checkOut) instead of $checkIn->lte($checkOut)
+            //         $allDays[] = $checkIn->toDateString();
+            //         $checkIn->addDay();
+            //     }
+            // }
 
             // $allDays = [];
             // foreach ($bookings as $booking) {
@@ -54,7 +57,30 @@ class BookingController extends Controller
 
             //return response()->json(['bookings' => $bookings],200);
 
+            //return response()->json(['all_days' => $allDays], 200);
+
+            $allDays = [];
+            $uniqueDays = [];
+
+            foreach ($bookings as $booking) {
+                $checkIn = new Carbon($booking->check_in);
+                $checkOut = new Carbon($booking->check_out);
+
+                while ($checkIn->lt($checkOut)) {
+                    $currentDate = $checkIn->toDateString();
+
+                    // Check if the date is not already in the uniqueDays array
+                    if (!in_array($currentDate, $uniqueDays)) {
+                        $allDays[] = $currentDate;
+                        $uniqueDays[] = $currentDate;
+                    }
+
+                    $checkIn->addDay();
+                }
+            }
+
             return response()->json(['all_days' => $allDays], 200);
+
 
         } catch (Exception $e) {
 
@@ -76,11 +102,21 @@ class BookingController extends Controller
         }        
         
         try {            
-            $bookings = Booking::select('check_in','check_out','paid_amount','created_at','level')
-                        ->where('eno',$request->eno)
-                        ->where('save',0)
+            // $bookings = Booking::select('check_in', 'check_out', 'paid_amount', 'created_at', 'level', 'bungalow_id', 'id')
+            //             ->with('bungalow') // Assuming 'name' is the attribute you want to retrieve from the Bungalow model
+            //             ->where('eno', $request->eno)
+            //             ->orderBy('created_at', 'asc')
+            //             ->get();
+
+            $bookings = Booking::select('check_in', 'check_out', 'paid_amount', 'created_at', 'level', 'bungalow_id', 'id')
+                        ->with('bungalow:id,name') // Specify the attributes you want to retrieve from the Bungalow model
+                        ->where('eno', $request->eno)
                         ->orderBy('created_at', 'asc')
-                        ->get();
+                        ->get()
+                        ->map(function ($booking) {
+                            $booking->bungalow = $booking->bungalow->pluck('name')->first();
+                            return $booking->only(['check_in', 'check_out', 'paid_amount', 'created_at', 'level', 'id', 'bungalow']);
+                        });
             
 
             return response()->json(['bookings' => $bookings],200);            
@@ -260,6 +296,51 @@ class BookingController extends Controller
         
     }
 
+    public function storeGuestOne(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'booking_id' => 'required|exists:bookings,id',
+            'name' => 'required|string',
+            'nic' => 'nullable|string',
+            // 'level' => 'required',
+        ], [
+            'booking_id.required' => 'The booking ID is required.',
+            'booking_id.exists' => 'The provided booking ID does not exist.',           
+            'name.required' => 'The name field for each guest is required.',
+            'name.string' => 'The name field must be a string.',
+            'nic.nullable' => 'The NIC field can be nullable.',
+            'nic.string' => 'The NIC field must be a string.',
+            // 'level.required' => 'The Level is required.',            
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['message' => $validator->errors(), 'status' => 0], 200);
+        }
+        
+        $booking = Booking::findOrFail($request->input('booking_id'));
+
+        //$guest = $request->input('guests');       
+        
+        try {            
+            $booking->bookingGuests()->create([
+                'name' => $request->name,
+                'nic' => $request->nic,
+            ]);
+            
+    
+            return response()->json([
+                'message' => 'Success',
+                'status' => 1,
+                'booking_id' => $booking->id,
+            ], 200);
+
+        } catch (Exception $e) {
+
+            return response()->json(['error' => 'An error occurred.'], 500);
+        }
+        
+    }
+
     // public function storeGuest(Request $request)
     // {
     //     $validator = Validator::make($request->all(), [
@@ -335,7 +416,7 @@ class BookingController extends Controller
             'booking_id' => 'required|exists:bookings,id', // Ensure the provided booking_id exists
             'vehicles' => 'required|array|min:1',
             'vehicles.*.reg_no' => 'required|string',
-            'level' => 'required',
+            //'level' => 'required',
         ], [
             'booking_id.required' => 'The booking ID is required.',
             'booking_id.exists' => 'The provided booking ID does not exist.',
@@ -344,7 +425,7 @@ class BookingController extends Controller
             'vehicles.min' => 'At least one vehicle is required.',
             'vehicles.*.reg_no.required' => 'The reg no field for each vehicle is required.',
             'vehicles.*.reg_no.string' => 'The reg no field must be a string.',
-            'level.required' => 'The Level is required.',            
+            //'level.required' => 'The Level is required.',            
         ]);
 
         if ($validator->fails()) {
@@ -361,6 +442,284 @@ class BookingController extends Controller
             foreach ($vehicleData as $vehicle) {
                 $booking->bookingvehicles()->create([
                     'reg_no' => $vehicle['reg_no'],
+                ]);
+            }
+    
+            return response()->json([
+                'message' => 'Success',
+                'status' => 1,
+                'booking_id' => $booking->id,
+            ], 200);
+
+        } catch (Exception $e) {
+
+            return response()->json(['error' => 'An error occurred.'], 500);
+        }        
+    }
+
+    public function storeVehicleOne(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'booking_id' => 'required|exists:bookings,id', 
+            'reg_no' => 'required|string',            
+        ], [
+            'booking_id.required' => 'The booking ID is required.',
+            'booking_id.exists' => 'The provided booking ID does not exist.',            
+            'reg_no.required' => 'The reg no field for each vehicle is required.',
+            'reg_no.string' => 'The reg no field must be a string.',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['message' => $validator->errors(), 'status' => 0], 200);
+        }
+        
+        $booking = Booking::findOrFail($request->input('booking_id'));        
+
+        //dd($vehicleData);
+        
+        try {            
+            $booking->bookingvehicles()->create([
+                'reg_no' => $request->reg_no,
+            ]);
+            
+    
+            return response()->json([
+                'message' => 'Success',
+                'status' => 1,
+                'booking_id' => $booking->id,
+            ], 200);
+
+        } catch (Exception $e) {
+
+            return response()->json(['error' => 'An error occurred.'], 500);
+        }        
+    }
+
+    public function getVehicles(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'booking_id' => 'required',
+        ], [
+            'booking_id.required' => 'The booking id is required.',            
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['message' => $validator->errors(), 'status' => 0], 200);
+        }        
+        
+        try {
+
+            $vehicles = BookingVehicle::select('id','reg_no')
+                        ->where('booking_id',$request->booking_id)
+                        ->orderBy('created_at', 'asc')
+                        ->get();
+            
+
+            return response()->json(['vehicles' => $vehicles],200);            
+
+        } catch (Exception $e) {
+
+            return response()->json(['error' => 'An error occurred.'], 500);
+        }
+    }
+
+    public function getGuests(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'booking_id' => 'required',
+        ], [
+            'booking_id.required' => 'The booking id is required.',            
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['message' => $validator->errors(), 'status' => 0], 200);
+        }        
+        
+        try {
+
+            $guests = BookingGuest::select('id','name','nic')
+                        ->where('booking_id',$request->booking_id)
+                        ->orderBy('created_at', 'asc')
+                        ->get();
+            
+
+            return response()->json(['guests' => $guests],200);            
+
+        } catch (Exception $e) {
+
+            return response()->json(['error' => 'An error occurred.'], 500);
+        }
+
+    }
+
+    public function updateGuest(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'id' => 'required',
+            'name' => 'required',
+            'nic' => 'nullable',
+        ], [
+            'id.required' => 'The guest id is required.',
+            'name.required' => 'The name is required.',
+            'nic.nullable' => 'The NIC can be nullable.',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['message' => $validator->errors(), 'status' => 0], 200);
+        }
+
+        try {
+            $guest = BookingGuest::find($request->id);
+
+            if (!$guest) {
+                return response()->json(['message' => 'Guest not found.', 'status' => 0], 404);
+            }
+
+            // Update guest details
+            $guest->name = $request->name;
+            $guest->nic = $request->nic;
+            $guest->save();
+
+            return response()->json(['message' => 'Guest updated successfully.', 'status' => 1], 200);
+
+        } catch (Exception $e) {
+            return response()->json(['error' => 'An error occurred.'], 500);
+        }
+    }
+
+    public function updateVehicle(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'id' => 'required',
+            'reg_no' => 'required',
+        ], [
+            'id.required' => 'The vehicle id is required.',
+            'reg_no.required' => 'The reg number is required.',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['message' => $validator->errors(), 'status' => 0], 200);
+        }
+
+        try {
+            $vehicle = BookingVehicle::find($request->id);
+
+            if (!$vehicle) {
+                return response()->json(['message' => 'vehicle not found.', 'status' => 0], 404);
+            }
+
+            // Update vehicle details
+            $vehicle->reg_no = $request->reg_no;
+            $vehicle->save();
+
+            return response()->json(['message' => 'vehicle updated successfully.', 'status' => 1], 200);
+
+        } catch (Exception $e) {
+            return response()->json(['error' => 'An error occurred.'], 500);
+        }
+    }
+
+    public function deleteGuest(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'id' => 'required',
+        ], [
+            'id.required' => 'The guest id is required.',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['message' => $validator->errors(), 'status' => 0], 200);
+        }
+
+        try {
+            $guest = BookingGuest::find($request->id);
+
+            if (!$guest) {
+                return response()->json(['message' => 'Guest not found.', 'status' => 0], 404);
+            }
+
+            // Delete the guest
+            $guest->delete();
+
+            return response()->json(['message' => 'Guest deleted successfully.', 'status' => 1], 200);
+
+        } catch (Exception $e) {
+            return response()->json(['error' => 'An error occurred.'], 500);
+        }
+    }
+
+    public function deleteVehicle(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'id' => 'required',
+        ], [
+            'id.required' => 'The vehicle id is required.',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['message' => $validator->errors(), 'status' => 0], 200);
+        }
+
+        try {
+            $vehicle = BookingVehicle::find($request->id);
+
+            if (!$vehicle) {
+                return response()->json(['message' => 'vehicle not found.', 'status' => 0], 404);
+            }
+
+            // Delete the vehicle
+            $vehicle->delete();
+
+            return response()->json(['message' => 'vehicle deleted successfully.', 'status' => 1], 200);
+
+        } catch (Exception $e) {
+            return response()->json(['error' => 'An error occurred.'], 500);
+        }
+    }
+
+    public function storePayment(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'booking_id' => 'required|exists:bookings,id', // Ensure the provided booking_id exists
+            'bank_id' => 'required|exists:banks,id',
+            'acc_no' => 'required',
+            'payment' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ], [
+            'booking_id.required' => 'The booking ID is required.',
+            'booking_id.exists' => 'The provided booking ID does not exist.',
+            'bank_id.required' => 'The bank ID is required.',
+            'bank_id.exists' => 'The provided bank ID does not exist.',
+            'acc_no.required' => 'The Account number is required.',
+            'payment.required' => 'The payment field is required.',
+            'payment.image' => 'The payment must be an image.',
+            'payment.mimes' => 'The payment must be a file of type: jpeg, png, jpg, gif.',
+            'payment.max' => 'The payment may not be greater than 2048 kilobytes.',            
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['message' => $validator->errors(), 'status' => 0], 200);
+        }
+        
+        $booking = Booking::findOrFail($request->input('booking_id'));
+
+        $paymentDirectory = public_path('/upload/payment/'.$request->booking_id.'/');
+
+        if (!File::isDirectory($paymentDirectory)) {
+            File::makeDirectory($paymentDirectory, 0777, true, true);
+        }
+
+        $extpayment = $request->file('payment')->extension();
+        $filepayment = $request->booking_id.'.'.$extpayment;
+
+        $request->file('payment')->move($paymentDirectory, $filepayment);
+
+        
+        try {
+            if ($booking) {
+                $booking->update([
+                    'filpath' => '/upload/payment/'.$request->booking_id.'/'.$filepayment,
+                    'bank_id' => $request->bank_id,
+                    'acc_no' => $request->acc_no, 
                 ]);
             }
     

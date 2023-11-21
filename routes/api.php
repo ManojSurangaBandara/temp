@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Api\BankController;
 use App\Http\Controllers\Api\BookingController;
 use App\Http\Controllers\Api\BungalowController;
 
@@ -40,6 +41,26 @@ Route::get('/search-by-eno', [BookingController::class, 'serachbyEno']);
 
 Route::post('/store-booking-guest', [BookingController::class, 'storeGuest']);
 
+Route::post('/store-booking-guest-one', [BookingController::class, 'storeGuestOne']);
+
 Route::post('/store-booking-vehicle', [BookingController::class, 'storeVehicle']);
+
+Route::post('/store-booking-vehicle-one', [BookingController::class, 'storeVehicleOne']);
+
+Route::get('/get-booking-vehicles', [BookingController::class, 'getVehicles']);
+
+Route::get('/get-booking-guests', [BookingController::class, 'getGuests']);
+
+Route::put('/update-guest',[BookingController::class, 'updateGuest']);
+
+Route::put('/update-vehicle',[BookingController::class, 'updateVehicle']);
+
+Route::delete('/delete-guest', [BookingController::class, 'deleteGuest']);
+
+Route::delete('/delete-vehicle', [BookingController::class, 'deleteVehicle']);
+
+Route::get('/getbanks', [BankController::class, 'index']);
+
+Route::post('/store-booking-payment', [BookingController::class, 'storePayment']);
 
 
