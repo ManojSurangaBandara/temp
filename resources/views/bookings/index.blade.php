@@ -28,7 +28,7 @@
                 All Bookings
             </h3>
 
-            <div class="card-tools"><a href="{{ url()->previous() }}" class="btn btn-sm bg-dark btn-block">
+            <div class="card-tools"><a href="{{ route('bookings.index') }}" class="btn btn-sm bg-dark btn-block">
                 <i class="fa fa-arrow-circle-left"></i> Back</a>
             </div>
         </div>

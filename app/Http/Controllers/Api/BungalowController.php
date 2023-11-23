@@ -2,16 +2,44 @@
 
 namespace App\Http\Controllers\Api;
 
+use Exception;
+use App\Models\ApiKey;
 use App\Models\Bungalow;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
-use Exception;
 
 class BungalowController extends Controller
 {
+    private function validateApiKey($request)
+    {
+        $apiKey = $request->header('api-key');
+
+        if (!$apiKey) {
+            //return response()->json(['message' => 'API key is missing.'], 200);
+            return false;
+        }
+
+        //$isValid = DB::table('api_keys')->where('key', $apiKey)->exists();
+        $isValid = ApiKey::where('api_key',$apiKey)->exists();
+
+        if (!$isValid) {
+            //return response()->json(['message' => 'Invalid API key.'], 200);
+            return false;
+        }
+
+        // API key is valid
+        return true;
+    }
+    
     public function index(Request $request)
     {
+        // if(!$this->validateApiKey($request))
+        // {
+        //     return response()->json(['message' => 'Invalid API key.'], 200);
+        // }
+        
+
         $validator = Validator::make($request->all(), [
             'rank' => 'required|string',
         ], [

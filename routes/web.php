@@ -75,6 +75,9 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('permissions', PermissionController::class);
 
     Route::get('/bungalow/bookings/{bungalow}',[BookingController::class,'bookings'])->name('bookings.bungalow_bookings');
+    Route::get('/bookings/upload-payment-view/{id}',[BookingController::class,'upload_payment_view'])->name('bookings.upload_payment_view');
+    Route::put('/bookings/upload-payment/{booking}',[BookingController::class,'upload_payment'])->name('bookings.upload_payment');
+    Route::get('/bookings/calender/{bungalow}',[BookingController::class,'calenderView'])->name('bookings.calender');
     Route::resource('bookings',BookingController::class);
 
     Route::get('/change-password',  [ChangePasswordController::class,'index'])->name('change.index');

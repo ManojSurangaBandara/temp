@@ -3,12 +3,17 @@
 namespace App\Http\Controllers;
 
 use Exception;
+use App\Models\Bank;
 use App\Models\Rank;
 use App\Models\Booking;
 use App\Models\Bungalow;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\DataTables\BookingDataTable;
+use Illuminate\Support\Facades\Auth;
+
+use Illuminate\Support\Facades\File;
+use function PHPUnit\Framework\returnSelf;
 
 class BookingController extends Controller
 {
@@ -17,13 +22,38 @@ class BookingController extends Controller
      */
     public function index()
     {
-        $bungalows  = Bungalow::where('status','=',1)->get();
+        $bungalows  = Bungalow::where('status','=',1)->where('directorate_id', Auth::user()->directorate_id)->get();
         return view('bookings.bungalows',compact('bungalows'));
     }
 
     public function bookings(BookingDataTable $dataTable, Bungalow $bungalow){
         //($bungalow); 
         return $dataTable->with(['bungalow'=>$bungalow])->render('bookings.index',compact('bungalow'));
+    }
+
+    public function calenderView(Bungalow $bungalow)
+    {
+        //dd($bungalow->id);
+        $bookings = Booking::where('bungalow_id', $bungalow->id)->get();
+
+        // return view('bookings.calender',compact('bookings'));
+
+        // Prepare an array to store FullCalendar events
+        $events = [];
+
+        foreach ($bookings as $booking) {
+            // Add each booking as an event
+            $events[] = [
+                'title' => $booking->name,
+                'start' => $booking->check_in,
+                'end' => $booking->check_out,
+                // You can add more properties if needed
+            ];
+        }
+        //dd($events);
+
+        // Pass the events to the view
+        return view('bookings.calender', compact('events'));
     }
 
     /**
@@ -40,12 +70,12 @@ class BookingController extends Controller
      */
     public function store(Request $request)
     {
-        //dd($request);
+        dd($request);
         $this->validate($request,[
             // 'regiment' => 'required|string',
-            // 'eno' => 'required|string',
+            'eno' => 'required|string',
             // 'unit'  => 'required|string',
-            // 'svc_no'  => 'required|string',
+            'svc_no'  => 'required|string',
             // 'name' => 'required|string',
             // 'nic'  => 'required|string',
             // 'contact_no' => 'required|string',
@@ -63,8 +93,8 @@ class BookingController extends Controller
             // 'unit.required' => 'The unit is required.',
             // 'unit.string' => 'The unit must be a string.',
 
-            // 'svc_no.required' => 'The service no is required.',
-            // 'svc_no.string' => 'The service no must be a string.',
+            'svc_no.required' => 'The service no is required.',
+            'svc_no.string' => 'The service no must be a string.',
 
             // 'name.required' => 'The name is required.',
             // 'name.string' => 'The name must be a string.',
@@ -87,8 +117,8 @@ class BookingController extends Controller
             'check_out.date' => 'The check out id must be a date.',
             'check_out.after' => 'The check out date must be a after check in date.',
 
-            // 'eno.required' => 'The eno is required.',
-            // 'eno.string' => 'The eno must be a string.',
+            'eno.required' => 'The eno is required.',
+            'eno.string' => 'The eno must be a string.',
 
             // 'type.required' => 'The type id is required.',
 
@@ -145,14 +175,14 @@ class BookingController extends Controller
                 // 'name' => $request->name,
                 // 'nic'  => $request->nic,
                 // 'contact_no' => $request->contact_no,
-                'regiment' => 'SLSC',
-                'unit'  => '6 SLSC',
-                'svc_no'  => 'O/70239',
-                'name' => 'APL Madhushanka',
-                'nic'  => '902051031V',
-                'contact_no' => '0719449908',
-                'rank' => 'Major',
-                'eno' => '100213550',
+                'regiment' => $request->regiment,
+                'unit'  => $request->unit,
+                'svc_no'  => $request->svc_no,
+                'name' => $request->name,
+                'nic'  => $request->nic,
+                'contact_no' => $request->contact_no,
+                'rank' => $request->rank,
+                'eno' => $request->eno,
                 'army_id' => $request->army_id,
                 'bungalow_id' => $request->bungalow_id,
                 'check_in' => $request->check_in,
@@ -257,5 +287,38 @@ class BookingController extends Controller
     public function destroy(Booking $booking)
     {
         //
+    }
+
+    public function upload_payment_view($id)
+    {
+        $booking = Booking::find($id);
+        
+        $banks = Bank::where('status',1)->get();
+
+        return view('bookings.upload_payment',compact('booking','banks'));
+    }
+
+    public function upload_payment(Request $request, Booking $booking)
+    {
+        //dd($booking->id);
+        $paymentDirectory = public_path('/upload/payment/'.$booking->id.'/');
+
+        if (!File::isDirectory($paymentDirectory)) {
+            File::makeDirectory($paymentDirectory, 0777, true, true);
+        }
+
+        $extpayment = $request->file('filpath')->extension();
+        $filepayment = $booking->id.'.'.$extpayment;
+
+        $request->file('filpath')->move($paymentDirectory, $filepayment);
+
+        $booking->update([
+            'filpath' => '/upload/payment/'.$booking->id.'/'.$filepayment,
+            'bank_id' => $request->bank_id,
+            'acc_no' => $request->acc_no,
+            'level' => 3,
+        ]);
+
+        return redirect()->route('bookings.bungalow_bookings',$booking->bungalow_id)->with('success', 'Booking Created');
     }
 }

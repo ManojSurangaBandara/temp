@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Api\BankController;
 use App\Http\Controllers\Api\BookingController;
+use App\Http\Controllers\Api\ContactController;
 use App\Http\Controllers\Api\BungalowController;
 
 /*
@@ -62,5 +63,7 @@ Route::delete('/delete-vehicle', [BookingController::class, 'deleteVehicle']);
 Route::get('/getbanks', [BankController::class, 'index']);
 
 Route::post('/store-booking-payment', [BookingController::class, 'storePayment']);
+
+Route::get('/getContact', [ContactController::class, 'index']);
 
 

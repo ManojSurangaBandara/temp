@@ -32,7 +32,69 @@
                         @csrf
                         <div class="card-body">
                             <!-- Your existing form fields -->
+                            <div class="form-group row">
+                                <label for="eno" class="col-sm-2 col-form-label">E-Number</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control @error('eno')
+                                    is-invalid @enderror" name="eno" value="{{ old('eno') }}" id="eno" autocomplete="off">
+                                    <span class="text-danger">@error('eno') {{ $message }} @enderror</span>
+                                </div>
+                            </div>
 
+                            <div class="form-group row">
+                                <label for="svc_no" class="col-sm-2 col-form-label">Svc Number</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control @error('svc_no')
+                                    is-invalid @enderror" name="svc_no" value="{{ old('svc_no') }}" id="svc_no" autocomplete="off">
+                                    <span class="text-danger">@error('svc_no') {{ $message }} @enderror</span>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group row" style="display: none;">
+                                <label for="regiment" class="col-sm-2 col-form-label">Regiment</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control @error('regiment')
+                                    is-invalid @enderror" name="regiment" value="{{ old('regiment') }}" id="regiment" autocomplete="off">
+                                    <span class="text-danger">@error('regiment') {{ $message }} @enderror</span>
+                                </div>
+                            </div>
+
+                            <div class="form-group row" style="display: none;">
+                                <label for="unit" class="col-sm-2 col-form-label">Unit</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control @error('unit')
+                                    is-invalid @enderror" name="unit" value="{{ old('unit') }}" id="unit" autocomplete="off">
+                                    <span class="text-danger">@error('unit') {{ $message }} @enderror</span>
+                                </div>
+                            </div>
+
+                            <div class="form-group row" style="display: none;">
+                                <label for="name" class="col-sm-2 col-form-label">Name</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control @error('name')
+                                    is-invalid @enderror" name="name" value="{{ old('name') }}" id="name" autocomplete="off">
+                                    <span class="text-danger">@error('name') {{ $message }} @enderror</span>
+                                </div>
+                            </div>
+
+                            <div class="form-group row" style="display: none;">
+                                <label for="nic" class="col-sm-2 col-form-label">NIC</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control @error('nic')
+                                    is-invalid @enderror" name="nic" value="{{ old('nic') }}" id="nic" autocomplete="off">
+                                    <span class="text-danger">@error('nic') {{ $message }} @enderror</span>
+                                </div>
+                            </div>
+
+                            <div class="form-group row" style="display: none;">
+                                <label for="contact_no" class="col-sm-2 col-form-label">Contact Number</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control @error('contact_no')
+                                    is-invalid @enderror" name="contact_no" value="{{ old('contact_no') }}" id="contact_no" autocomplete="off">
+                                    <span class="text-danger">@error('contact_no') {{ $message }} @enderror</span>
+                                </div>
+                            </div>
+                            
                             <div class="form-group row">
                                 <label for="type" class="col-sm-2 col-form-label">Type</label>
                                 <div class="col-sm-6">
@@ -55,7 +117,7 @@
                                 <label for="rank_id" class="col-sm-2 col-form-label">Rank</label>
                                 <div class="col-sm-6">
                                     <select class="form-control @error('rank_id') is-invalid @enderror"
-                                        name="rank_id" value="{{ old('rank_id') }}" id="rank_id" required>
+                                        name="rank_id" value="{{ old('rank_id') }}" id="rank_id" required readonly>
                                         <option value="">Please Select</option>
                                         @foreach ($ranks as $item)
                                             <option value="{{ $item->name }}">
@@ -186,7 +248,57 @@
 
 @section('third_party_scripts')
     <script>
-        $(document).ready(function () {           
+        $(document).ready(function () {
+            
+            // When the eno or svc_no input fields change
+            $('#eno, #svc_no').on('change', function() {
+                var eno = $('#eno').val();
+                var svcNo = $('#svc_no').val();
+
+                // Make an AJAX request to fetch details from the API
+                $.ajax({
+                    url: 'https://10.7.113.84/eportal/api/serach_person_by_no_eno_residence',
+                    method: 'GET',
+                    data: {
+                        service_no: svcNo,
+                        eno: eno,
+                        api_key: '41646d696e40235245265131323341726d79',
+                        // username: '100008948',
+                        // password: 'Danj@0221'
+                    },
+                    success: function(data) {
+                        // Check if the response has a person and relevant information
+                        if (data.person && data.person.length > 0) {
+                            var person = data.person[0];
+
+                            // Extract the required fields
+                            var regiment = person.regiment || '';
+                            var unit = person.unit || '';
+                            // var svcNo = person.svc_no || '';
+                            var name = person.name_with_initial || '';
+                            var nic = person.nic || '';
+                            var contactNo = person.phone || '';
+                            var rank = person.rank || '';
+                            // var eno = person.eno || '';
+
+                            // Set the values in your form fields
+                            $('#regiment').val(regiment);
+                            $('#unit').val(unit);
+                            // $('#svc_no').val(svcNo);
+                            $('#name').val(name);
+                            $('#nic').val(nic);
+                            $('#contact_no').val(contactNo);
+                            $('#rank_id').val(rank).change(); // If using a dropdown, change the selected option
+                            // $('#eno').val(eno);
+                        } else {
+                            console.error('Invalid API response structure or missing rank information.');
+                        }
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+            });
 
             // When the rank dropdown changes
             $('#rank_id').on('change', function() {

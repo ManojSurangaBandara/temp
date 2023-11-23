@@ -20,7 +20,23 @@ class BookingDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-            ->addIndexColumn();
+            ->addIndexColumn()
+            ->addColumn('action', function ($booking) {
+                $id = $booking->id;
+                $btn = '';
+
+                if(!$booking->filpath)
+                {
+                    $btn .= '<a href="'.route('bookings.upload_payment_view',$id).'"
+                    class="btn btn-xs btn-warning" data-toggle="tooltip" title="Edit">
+                    <i class="fa fa-upload"></i> </a> '; 
+                }else{
+                    $btn .= '<h5><span class="badge badge-warning">paid</span></h5>';
+                }                                     
+
+                return $btn;
+            })
+            ->rawColumns(['action']);
     }
 
     /**
@@ -68,6 +84,11 @@ class BookingDataTable extends DataTable
             Column::make('name')->data('name')->title('Name'),
             Column::make('check_in')->data('check_in')->title('check in'),
             Column::make('check_out')->data('check_out')->title('check out'),
+            Column::computed('action')
+                  ->exportable(false)
+                  ->printable(false)
+                  ->width(100)
+                  ->addClass('text-center'),
         ];
     }
 

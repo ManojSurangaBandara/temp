@@ -9,14 +9,40 @@ use App\Models\BookingGuest;
 use Illuminate\Http\Request;
 use App\Models\BookingVehicle;
 use App\Http\Controllers\Controller;
+use App\Models\ApiKey;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\File;
 
 class BookingController extends Controller
 {
+    private function validateApiKey($request)
+    {
+        $apiKey = $request->header('api-key');
+
+        if (!$apiKey) {
+            //return response()->json(['message' => 'API key is missing.'], 200);
+            return false;
+        }
+
+        //$isValid = DB::table('api_keys')->where('key', $apiKey)->exists();
+        $isValid = ApiKey::where('api_key',$apiKey)->exists();
+
+        if (!$isValid) {
+            //return response()->json(['message' => 'Invalid API key.'], 200);
+            return false;
+        }
+
+        // API key is valid
+        return true;
+    }
 
     public function index(Request $request)
     {
+        // if(!$this->validateApiKey($request))
+        // {
+        //     return response()->json(['message' => 'Invalid API key.'], 200);
+        // }
+
         $validator = Validator::make($request->all(), [
             'bungalow_id' => 'required',
         ], [
@@ -91,6 +117,11 @@ class BookingController extends Controller
 
     public function serachbyEno(Request $request)
     {
+        // if(!$this->validateApiKey($request))
+        // {
+        //     return response()->json(['message' => 'Invalid API key.'], 200);
+        // }
+
         $validator = Validator::make($request->all(), [
             'eno' => 'required',
         ], [
@@ -115,7 +146,7 @@ class BookingController extends Controller
                         ->get()
                         ->map(function ($booking) {
                             $booking->bungalow = $booking->bungalow->pluck('name')->first();
-                            return $booking->only(['check_in', 'check_out', 'paid_amount', 'created_at', 'level', 'id', 'bungalow']);
+                            return $booking->only(['check_in', 'check_out', 'paid_amount', 'created_at', 'level', 'id','bungalow_id','bungalow']);
                         });
             
 
@@ -130,6 +161,11 @@ class BookingController extends Controller
 
     public function storeBooking(Request $request)
     {
+        // if(!$this->validateApiKey($request))
+        // {
+        //     return response()->json(['message' => 'Invalid API key.'], 200);
+        // }
+
         $validator = Validator::make($request->all(), [
             'regiment' => 'required|string',
             'eno' => 'required|string',
@@ -147,6 +183,7 @@ class BookingController extends Controller
             'paid_amount' => 'required',
             'rank' => 'required|string',
             'no_of_days' => 'required',
+            'level' => 'required',
         ], [
             'regiment.required' => 'The regiment is required.',
             'regiment.string' => 'The regiment must be a string.',
@@ -191,6 +228,8 @@ class BookingController extends Controller
             'rank.string' => 'The rank must be a string.',
 
             'no_of_days.required' => 'The number of days is required.',
+
+            'level.required' => 'The level is required.',
         ]);
 
         if ($validator->fails()) {
@@ -234,10 +273,12 @@ class BookingController extends Controller
 
     public function storeGuest(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            // 'booking_id' => 'required',
-            // 'name' => 'required|string|array',
-            // 'nic'  => 'string|array',
+        // if(!$this->validateApiKey($request))
+        // {
+        //     return response()->json(['message' => 'Invalid API key.'], 200);
+        // }
+        
+        $validator = Validator::make($request->all(), [  
 
             'booking_id' => 'required|exists:bookings,id', // Ensure the provided booking_id exists
             'guests' => 'required|array|min:1',
@@ -276,6 +317,11 @@ class BookingController extends Controller
         // }
         
         try {
+
+            $booking->update([
+                'level' => $request->input('level')
+            ]);
+
             foreach ($guestData as $guest) {
                 $booking->bookingGuests()->create([
                     'name' => $guest['name'],
@@ -298,11 +344,16 @@ class BookingController extends Controller
 
     public function storeGuestOne(Request $request)
     {
+        // if(!$this->validateApiKey($request))
+        // {
+        //     return response()->json(['message' => 'Invalid API key.'], 200);
+        // }
+
         $validator = Validator::make($request->all(), [
             'booking_id' => 'required|exists:bookings,id',
             'name' => 'required|string',
             'nic' => 'nullable|string',
-            // 'level' => 'required',
+            'level' => 'required',
         ], [
             'booking_id.required' => 'The booking ID is required.',
             'booking_id.exists' => 'The provided booking ID does not exist.',           
@@ -310,7 +361,7 @@ class BookingController extends Controller
             'name.string' => 'The name field must be a string.',
             'nic.nullable' => 'The NIC field can be nullable.',
             'nic.string' => 'The NIC field must be a string.',
-            // 'level.required' => 'The Level is required.',            
+            'level.required' => 'The Level is required.',            
         ]);
 
         if ($validator->fails()) {
@@ -321,7 +372,12 @@ class BookingController extends Controller
 
         //$guest = $request->input('guests');       
         
-        try {            
+        try {
+            
+            $booking->update([
+                'level' => $request->input('level')
+            ]);
+            
             $booking->bookingGuests()->create([
                 'name' => $request->name,
                 'nic' => $request->nic,
@@ -412,6 +468,11 @@ class BookingController extends Controller
 
     public function storeVehicle(Request $request)
     {
+        // if(!$this->validateApiKey($request))
+        // {
+        //     return response()->json(['message' => 'Invalid API key.'], 200);
+        // }
+
         $validator = Validator::make($request->all(), [
             'booking_id' => 'required|exists:bookings,id', // Ensure the provided booking_id exists
             'vehicles' => 'required|array|min:1',
@@ -459,14 +520,21 @@ class BookingController extends Controller
 
     public function storeVehicleOne(Request $request)
     {
+        // if(!$this->validateApiKey($request))
+        // {
+        //     return response()->json(['message' => 'Invalid API key.'], 200);
+        // }
+
         $validator = Validator::make($request->all(), [
             'booking_id' => 'required|exists:bookings,id', 
-            'reg_no' => 'required|string',            
+            'reg_no' => 'required|string', 
+            'level' => 'required',           
         ], [
             'booking_id.required' => 'The booking ID is required.',
             'booking_id.exists' => 'The provided booking ID does not exist.',            
             'reg_no.required' => 'The reg no field for each vehicle is required.',
             'reg_no.string' => 'The reg no field must be a string.',
+            'level.required' => 'The Level is required.',
         ]);
 
         if ($validator->fails()) {
@@ -477,7 +545,12 @@ class BookingController extends Controller
 
         //dd($vehicleData);
         
-        try {            
+        try { 
+
+            $booking->update([
+                'level' => $request->input('level')
+            ]);
+
             $booking->bookingvehicles()->create([
                 'reg_no' => $request->reg_no,
             ]);
@@ -497,6 +570,11 @@ class BookingController extends Controller
 
     public function getVehicles(Request $request)
     {
+        // if(!$this->validateApiKey($request))
+        // {
+        //     return response()->json(['message' => 'Invalid API key.'], 200);
+        // }
+
         $validator = Validator::make($request->all(), [
             'booking_id' => 'required',
         ], [
@@ -525,6 +603,11 @@ class BookingController extends Controller
 
     public function getGuests(Request $request)
     {
+        // if(!$this->validateApiKey($request))
+        // {
+        //     return response()->json(['message' => 'Invalid API key.'], 200);
+        // }
+
         $validator = Validator::make($request->all(), [
             'booking_id' => 'required',
         ], [
@@ -554,6 +637,11 @@ class BookingController extends Controller
 
     public function updateGuest(Request $request)
     {
+        // if(!$this->validateApiKey($request))
+        // {
+        //     return response()->json(['message' => 'Invalid API key.'], 200);
+        // }
+
         $validator = Validator::make($request->all(), [
             'id' => 'required',
             'name' => 'required',
@@ -589,6 +677,11 @@ class BookingController extends Controller
 
     public function updateVehicle(Request $request)
     {
+        // if(!$this->validateApiKey($request))
+        // {
+        //     return response()->json(['message' => 'Invalid API key.'], 200);
+        // }
+
         $validator = Validator::make($request->all(), [
             'id' => 'required',
             'reg_no' => 'required',
@@ -650,6 +743,11 @@ class BookingController extends Controller
 
     public function deleteVehicle(Request $request)
     {
+        // if(!$this->validateApiKey($request))
+        // {
+        //     return response()->json(['message' => 'Invalid API key.'], 200);
+        // }
+
         $validator = Validator::make($request->all(), [
             'id' => 'required',
         ], [
@@ -679,11 +777,17 @@ class BookingController extends Controller
 
     public function storePayment(Request $request)
     {
+        // if(!$this->validateApiKey($request))
+        // {
+        //     return response()->json(['message' => 'Invalid API key.'], 200);
+        // }
+
         $validator = Validator::make($request->all(), [
             'booking_id' => 'required|exists:bookings,id', // Ensure the provided booking_id exists
             'bank_id' => 'required|exists:banks,id',
             'acc_no' => 'required',
             'payment' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'level' => 'required',
         ], [
             'booking_id.required' => 'The booking ID is required.',
             'booking_id.exists' => 'The provided booking ID does not exist.',
@@ -693,7 +797,8 @@ class BookingController extends Controller
             'payment.required' => 'The payment field is required.',
             'payment.image' => 'The payment must be an image.',
             'payment.mimes' => 'The payment must be a file of type: jpeg, png, jpg, gif.',
-            'payment.max' => 'The payment may not be greater than 2048 kilobytes.',            
+            'payment.max' => 'The payment may not be greater than 2048 kilobytes.', 
+            'level.required' => 'The Level is required.'           
         ]);
 
         if ($validator->fails()) {
@@ -719,7 +824,8 @@ class BookingController extends Controller
                 $booking->update([
                     'filpath' => '/upload/payment/'.$request->booking_id.'/'.$filepayment,
                     'bank_id' => $request->bank_id,
-                    'acc_no' => $request->acc_no, 
+                    'acc_no' => $request->acc_no,
+                    'level' => $request->level,                     
                 ]);
             }
     

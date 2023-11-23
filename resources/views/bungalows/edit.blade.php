@@ -47,6 +47,15 @@
                                 </div>
 
                                 <div class="form-group row">
+                                    <label for="location" class="col-sm-2 col-form-label">Location</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control @error('location')
+                                        is-invalid @enderror" name="location" value="{{ $bungalow->location }}" id="location" autocomplete="off">
+                                        <span class="text-danger">@error('location') {{ $message }} @enderror</span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
                                     <label for="no_ac_room" class="col-sm-2 col-form-label">No. AC Rooms</label>
                                     <div class="col-sm-6">
                                         <input type="number" class="form-control @error('no_ac_room')
