@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\CancelRemark;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -7,6 +8,7 @@ use App\Http\Controllers\Api\BankController;
 use App\Http\Controllers\Api\BookingController;
 use App\Http\Controllers\Api\ContactController;
 use App\Http\Controllers\Api\BungalowController;
+use App\Http\Controllers\Api\CancelRemarkController;
 
 /*
 |--------------------------------------------------------------------------
@@ -60,10 +62,18 @@ Route::delete('/delete-guest', [BookingController::class, 'deleteGuest']);
 
 Route::delete('/delete-vehicle', [BookingController::class, 'deleteVehicle']);
 
-Route::get('/getbanks', [BankController::class, 'index']);
-
 Route::post('/store-booking-payment', [BookingController::class, 'storePayment']);
 
+Route::post('/cancel-booking', [BookingController::class, 'cancelBooking']);
+
+Route::post('/refund-recieve-booking', [BookingController::class, 'refundRecieveBooking']);
+
+Route::get('/getbanks', [BankController::class, 'index']);
+
 Route::get('/getContact', [ContactController::class, 'index']);
+
+Route::get('/getcancelremarks', [CancelRemarkController::class, 'index']);
+
+
 
 

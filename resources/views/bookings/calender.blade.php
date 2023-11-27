@@ -64,23 +64,5 @@
             });
         });
     </script>
-    {{-- <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            var calendarEl = document.getElementById('calendar');
     
-            var calendar = new FullCalendar.Calendar(calendarEl, {
-                header: {
-                    left: 'prev,next today',
-                    center: 'title',
-                    right: 'month,agendaWeek,agendaDay'
-                },
-                defaultDate: new Date(),
-                editable: false,
-                eventLimit: true,
-                events: @json($events),
-            });
-    
-            calendar.render();
-        });
-    </script> --}}
 @stop

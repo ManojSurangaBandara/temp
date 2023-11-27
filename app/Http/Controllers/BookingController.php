@@ -10,7 +10,9 @@ use App\Models\Bungalow;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\DataTables\BookingDataTable;
+use App\Models\CancelRemark;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 use Illuminate\Support\Facades\File;
 use function PHPUnit\Framework\returnSelf;
@@ -70,7 +72,7 @@ class BookingController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request);
+        //dd($request);
         $this->validate($request,[
             // 'regiment' => 'required|string',
             'eno' => 'required|string',
@@ -181,7 +183,7 @@ class BookingController extends Controller
                 'name' => $request->name,
                 'nic'  => $request->nic,
                 'contact_no' => $request->contact_no,
-                'rank' => $request->rank,
+                'rank' => $request->rank_id,
                 'eno' => $request->eno,
                 'army_id' => $request->army_id,
                 'bungalow_id' => $request->bungalow_id,
@@ -320,5 +322,39 @@ class BookingController extends Controller
         ]);
 
         return redirect()->route('bookings.bungalow_bookings',$booking->bungalow_id)->with('success', 'Booking Created');
+    }
+
+    public function cancelBookingView($id)
+    {
+        $cancelremakrs = CancelRemark::where('status',1)->whereNotIn('id',[1])->get();
+        $booking = Booking::findOrFail($id);
+
+        return view('bookings.cancel_booking',compact('cancelremakrs','booking'));
+        
+    }
+    
+    public function cancelBooking(Request $request, Booking $booking)
+    {   
+        $booking = Booking::findOrFail($booking->id);
+        
+        $currentDate = Carbon::now();
+        
+        try {
+            if ($booking) {
+                $booking->update([
+                    'cancelremark_id' => $request->cancelremark_id,
+                    'cancel' => 2,
+                    'cancel_time' => $currentDate,
+                    'cancel_user_id' => Auth::user()->id,                     
+                ]);
+            }
+
+            return redirect()->route('bookings.bungalow_bookings',$booking->bungalow_id)->with('success', 'Booking Canceled');
+           
+        } catch (Exception $e) {
+
+            return redirect()->back()->with('danger', 'Something went wrong');
+        }
+        
     }
 }

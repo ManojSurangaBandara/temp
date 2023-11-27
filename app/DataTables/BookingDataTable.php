@@ -32,7 +32,21 @@ class BookingDataTable extends DataTable
                     <i class="fa fa-upload"></i> </a> '; 
                 }else{
                     $btn .= '<h5><span class="badge badge-warning">paid</span></h5>';
-                }                                     
+                }
+                
+                if($booking->cancel == 0)
+                {
+                    $btn .='<a href="'.route('bookings.cancel_booking_view',$id).'"
+                            class="btn btn-xs btn-danger" data-toggle="tooltip"
+                            title="Cancel booking"><i class="fa fa-times"></i> </a> ';
+                }
+                
+                if($booking->filpath && $booking->refund == 0 && ($booking->cancel == 1 || $booking->cancel == 2))
+                {
+                    $btn .='<a href="'.route('bookings.refund_booking',$id).'"
+                            class="btn btn-xs btn-danger" data-toggle="tooltip"
+                            title="Refund booking"><i class="fa fa-refresh"></i> </a> ';
+                }
 
                 return $btn;
             })

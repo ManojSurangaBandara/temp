@@ -291,11 +291,11 @@
                             $('#rank_id').val(rank).change(); // If using a dropdown, change the selected option
                             // $('#eno').val(eno);
                         } else {
-                            console.error('Invalid API response structure or missing rank information.');
+                            alert('Invalid API response structure or missing rank information.');
                         }
                     },
                     error: function(error) {
-                        console.log(error);
+                        alert('Invalid API response');
                     }
                 });
             });

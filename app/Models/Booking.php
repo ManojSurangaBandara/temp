@@ -41,6 +41,14 @@ class Booking extends Model
         'eno',
         'rank',
         'filpath',
+        'cancel_time',
+        'cancel',
+        'cancel_user_id',
+        'refund',
+        'refund_time',
+        'refund_user_id',
+        'refund_recieve',
+        'refund_recieve_time',
     ];
 
     public function bookingguests()

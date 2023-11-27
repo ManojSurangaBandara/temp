@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Models\BookingVehicle;
 use App\Http\Controllers\Controller;
 use App\Models\ApiKey;
+use App\Models\Contact;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\File;
 
@@ -139,14 +140,22 @@ class BookingController extends Controller
             //             ->orderBy('created_at', 'asc')
             //             ->get();
 
-            $bookings = Booking::select('check_in', 'check_out', 'paid_amount', 'created_at', 'level', 'bungalow_id', 'id')
+            $bookings = Booking::select('check_in', 'check_out', 'paid_amount', 'created_at', 'level','cancel',
+                                            'refund','refund_recieve', 'bungalow_id', 'id', 'filpath')
                         ->with('bungalow:id,name') // Specify the attributes you want to retrieve from the Bungalow model
                         ->where('eno', $request->eno)
-                        ->orderBy('created_at', 'asc')
+                        ->orderBy('check_in', 'asc')
                         ->get()
                         ->map(function ($booking) {
                             $booking->bungalow = $booking->bungalow->pluck('name')->first();
-                            return $booking->only(['check_in', 'check_out', 'paid_amount', 'created_at', 'level', 'id','bungalow_id','bungalow']);
+
+                            // Set $has_refund to 1 if $booking->filpath is not null
+                            $has_refund = ($booking->filpath && ($booking->cancel == 1 || $booking->cancel == 2)) ? 1 : 0;
+
+                            $booking->has_refund = $has_refund;
+
+                            return $booking->only(['check_in', 'check_out', 'paid_amount', 'created_at', 'level',
+                                                    'cancel','refund','refund_recieve', 'id','bungalow_id','bungalow', 'has_refund']);
                         });
             
 
@@ -837,6 +846,113 @@ class BookingController extends Controller
 
         } catch (Exception $e) {
 
+            return response()->json(['error' => 'An error occurred.'], 500);
+        }
+        
+    }
+
+    public function cancelBooking(Request $request)
+    {
+        // if(!$this->validateApiKey($request))
+        // {
+        //     return response()->json(['message' => 'Invalid API key.'], 200);
+        // }
+
+        $validator = Validator::make($request->all(), [
+            'booking_id' => 'required|exists:bookings,id', // Ensure the provided booking_id exists                        
+            //'cancel_remark_id' => 'required',
+        ], [
+            'booking_id.required' => 'The booking ID is required.',
+            'booking_id.exists' => 'The provided booking ID does not exist.',            
+            //'cancel_remark_id.required' => 'The Level is required.'           
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['message' => $validator->errors(), 'status' => 0], 200);
+        }
+        
+        $booking = Booking::findOrFail($request->input('booking_id'));
+        $contact = Contact::select('appointment','contact_info')->first();
+        $currentDate = Carbon::now();
+        
+        try {
+            if ($booking) {
+                $booking->update([
+                    'cancelremark_id' => 1,
+                    'cancel_time' => $currentDate,
+                    'cancel' => 1,                     
+                ]);
+            }
+    
+            // return response()->json([
+            //     'message' => 'Success',
+            //     'status' => 1,
+            //     'booking_id' => $booking->id,
+            // ], 200);
+
+            $responseData = [
+                'status' => 1,
+                'booking_id' => $booking->id,
+            ];
+            
+            if ($booking->filpath != null) {
+                $responseData['message'] = 'Successfully cancelled, your payment will be refunded due course. for more details contact '
+                                            .$contact->appointment.' '.$contact->contact_info;
+                $responseData['paid_amount'] = $booking->paid_amount;
+            } else {
+                $responseData['message'] = 'You have Successfully cancelled your booking';
+            }
+            
+            return response()->json($responseData, 200);
+
+        } catch (Exception $e) {
+
+            return response()->json(['error' => 'An error occurred.'], 500);
+        }
+        
+    }
+
+    public function refundRecieveBooking(Request $request)
+    {
+        // if(!$this->validateApiKey($request))
+        // {
+        //     return response()->json(['message' => 'Invalid API key.'], 200);
+        // }
+
+        $validator = Validator::make($request->all(), [
+            'booking_id' => 'required|exists:bookings,id', 
+        ], [
+            'booking_id.required' => 'The booking ID is required.',
+            'booking_id.exists' => 'The provided booking ID does not exist.',             
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['message' => $validator->errors(), 'status' => 0], 200);
+        }
+        
+        $booking = Booking::findOrFail($request->input('booking_id'));
+        $currentDate = Carbon::now();
+        
+        try {
+            if ($booking) {
+                $booking->update([
+                    'refund_recieve' => 1,
+                    'refund_recieve_time' => $currentDate,                     
+                ]);
+            }
+
+            $responseData = [
+                'status' => 1,
+                'booking_id' => $booking->id,
+            ];            
+            
+            $responseData['message'] = 'Refund Recieved';
+            $responseData['paid_amount'] = $booking->paid_amount;
+            
+            
+            return response()->json($responseData, 200);
+
+        } catch (Exception $e) {
             return response()->json(['error' => 'An error occurred.'], 500);
         }
         
