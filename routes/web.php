@@ -79,7 +79,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::put('/bookings/upload-payment/{booking}',[BookingController::class,'upload_payment'])->name('bookings.upload_payment');
     Route::get('/bookings/cancel-booking-view/{id}',[BookingController::class,'cancelBookingView'])->name('bookings.cancel_booking_view');
     Route::put('/bookings/cancel-payment/{booking}',[BookingController::class,'cancelBooking'])->name('bookings.cancel_booking');
-    Route::put('/bookings/refund-payment/{booking}',[BookingController::class,'refundBooking'])->name('bookings.refund_booking');
+    Route::get('/bookings/refund-payment/{booking}',[BookingController::class,'refundBooking'])->name('bookings.refund_booking');
     Route::get('/bookings/calender/{bungalow}',[BookingController::class,'calenderView'])->name('bookings.calender');
     Route::resource('bookings',BookingController::class);
 

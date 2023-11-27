@@ -357,4 +357,28 @@ class BookingController extends Controller
         }
         
     }
+
+    public function refundBooking(Booking $booking)
+    {   
+        $booking = Booking::findOrFail($booking->id);
+        
+        $currentDate = Carbon::now();
+        
+        try {
+            if ($booking) {
+                $booking->update([
+                    'refund' => 1,
+                    'refund_time' => $currentDate,
+                    'refund_user_id' => Auth::user()->id,                     
+                ]);
+            }
+
+            return redirect()->route('bookings.bungalow_bookings',$booking->bungalow_id)->with('success', 'Booking Refunded');
+           
+        } catch (Exception $e) {
+
+            return redirect()->back()->with('danger', 'Something went wrong');
+        }
+        
+    }
 }

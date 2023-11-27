@@ -21,6 +21,13 @@ class BookingDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             ->addIndexColumn()
+            // ->addColumn('status', function($booking){
+            //     $label = '';
+            //     else{
+            //         $btn .= '<h5><span class="badge badge-warning">paid</span></h5>';
+            //     }
+
+            // })
             ->addColumn('action', function ($booking) {
                 $id = $booking->id;
                 $btn = '';
@@ -30,8 +37,6 @@ class BookingDataTable extends DataTable
                     $btn .= '<a href="'.route('bookings.upload_payment_view',$id).'"
                     class="btn btn-xs btn-warning" data-toggle="tooltip" title="Edit">
                     <i class="fa fa-upload"></i> </a> '; 
-                }else{
-                    $btn .= '<h5><span class="badge badge-warning">paid</span></h5>';
                 }
                 
                 if($booking->cancel == 0)
@@ -44,8 +49,8 @@ class BookingDataTable extends DataTable
                 if($booking->filpath && $booking->refund == 0 && ($booking->cancel == 1 || $booking->cancel == 2))
                 {
                     $btn .='<a href="'.route('bookings.refund_booking',$id).'"
-                            class="btn btn-xs btn-danger" data-toggle="tooltip"
-                            title="Refund booking"><i class="fa fa-refresh"></i> </a> ';
+                            class="btn btn-xs btn-success" data-toggle="tooltip"
+                            title="Refund booking"><i class="fa fa-redo"></i> </a> ';
                 }
 
                 return $btn;
@@ -101,7 +106,7 @@ class BookingDataTable extends DataTable
             Column::computed('action')
                   ->exportable(false)
                   ->printable(false)
-                  ->width(100)
+                  ->width(110)
                   ->addClass('text-center'),
         ];
     }
