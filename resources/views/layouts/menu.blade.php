@@ -124,6 +124,16 @@
         </li>
     </ul>
 
+    <ul class="nav nav-treeview">
+        <li class="nav-item">
+            <a href="{{route('cancel_remarks.index')}}" class="nav-link
+            {{ request()->routeIs('cancel_remarks*')?'active':'' }}">
+                <i class="far fa-circle nav-icon text-blue"></i>
+                <p>Cancel Remarks</p>
+            </a>
+        </li>
+    </ul>
+
     </li>
     {{-- @endcan --}}
 
