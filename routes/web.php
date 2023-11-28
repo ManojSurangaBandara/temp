@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AjaxController;
+use App\Http\Controllers\BankController;
 use App\Http\Controllers\RankController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UnitController;
@@ -13,6 +14,7 @@ use App\Http\Controllers\BungalowController;
 use App\Http\Controllers\RegimentController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\DirectorateController;
+use App\Http\Controllers\CancelRemarkController;
 use App\Http\Controllers\ChangePasswordController;
 use App\Http\Controllers\PermissionCategoryController;
 
@@ -82,6 +84,14 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/bookings/refund-payment/{booking}',[BookingController::class,'refundBooking'])->name('bookings.refund_booking');
     Route::get('/bookings/calender/{bungalow}',[BookingController::class,'calenderView'])->name('bookings.calender');
     Route::resource('bookings',BookingController::class);
+
+    Route::get('/banks/inactive/{id}',[BankController::class,'inactive'])->name('banks.inactive');
+    Route::get('/banks/activate/{id}',[BankController::class,'activate'])->name('banks.activate');
+    Route::resource('banks', BankController::class);
+
+    Route::get('/cancel_remarks/inactive/{id}',[CancelRemarkController::class,'inactive'])->name('cancel_remarks.inactive');
+    Route::get('/cancel_remarks/activate/{id}',[CancelRemarkController::class,'activate'])->name('cancel_remarks.activate');
+    Route::resource('cancel_remarks', CancelRemarkController::class);
 
     Route::get('/change-password',  [ChangePasswordController::class,'index'])->name('change.index');
     Route::post('/change-password', [ChangePasswordController::class,'store'])->name('change.password');

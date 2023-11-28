@@ -21,13 +21,34 @@ class BookingDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             ->addIndexColumn()
-            // ->addColumn('status', function($booking){
-            //     $label = '';
-            //     else{
-            //         $btn .= '<h5><span class="badge badge-warning">paid</span></h5>';
-            //     }
+            ->addColumn('status', function($booking){
+                $label = '';
 
-            // })
+                if($booking->filpath)
+                {
+                    $label .= '<h5><span class="badge badge-warning">paid</span></h5>';
+                }
+
+                if($booking->cancel == 1)
+                {
+                    $label .= '<h5><span class="badge badge-danger">Canceled</span></h5>';
+                }
+
+                if($booking->refund == 1)
+                {
+                    $label .= '<h5><span class="badge badge-dark">Refunded</span></h5>';
+                }else{
+                    $label .= '<h5><span class="badge badge-dark">Refunded Pending</span></h5>';
+                }
+
+                if($booking->refund == 1)
+                {
+                    $label .= '<h5><span class="badge badge-dark">Refunded</span></h5>';
+                }else{
+                    $label .= '<h5><span class="badge badge-dark">Refunded Pending</span></h5>';
+                }
+
+            })
             ->addColumn('action', function ($booking) {
                 $id = $booking->id;
                 $btn = '';
@@ -55,7 +76,7 @@ class BookingDataTable extends DataTable
 
                 return $btn;
             })
-            ->rawColumns(['action']);
+            ->rawColumns(['action','status']);
     }
 
     /**
@@ -104,6 +125,11 @@ class BookingDataTable extends DataTable
             Column::make('check_in')->data('check_in')->title('check in'),
             Column::make('check_out')->data('check_out')->title('check out'),
             Column::computed('action')
+                  ->exportable(false)
+                  ->printable(false)
+                  ->width(110)
+                  ->addClass('text-center'),
+            Column::computed('status')
                   ->exportable(false)
                   ->printable(false)
                   ->width(110)

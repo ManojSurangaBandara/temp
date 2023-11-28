@@ -14,21 +14,25 @@
     </a>
 </li> --}}
 
-<li class="nav-item">
-    <a href="{{route('bungalows.index')}}" class="nav-link
-    {{ request()->routeIs('bungalows*')?'active':'' }}">
-    <i class="nav-icon fas fa-hotel text-green"></i>
-            <p>Bungalow Mgt</p>
-    </a>
-</li>
+@can('bungalow-list')    
+    <li class="nav-item">
+        <a href="{{route('bungalows.index')}}" class="nav-link
+        {{ request()->routeIs('bungalows*')?'active':'' }}">
+        <i class="nav-icon fas fa-hotel text-green"></i>
+                <p>Bungalow Mgt</p>
+        </a>
+    </li>
+@endcan
 
-<li class="nav-item">
-    <a href="{{route('bookings.index')}}" class="nav-link
-    {{ request()->routeIs('bookings*')?'active':'' }}">
-    <i class="nav-icon fas fa-hot-tub text-Aqua"></i>
-            <p>Booking Mgt</p>
-    </a>
-</li>
+@can('booking-list')    
+    <li class="nav-item">
+        <a href="{{route('bookings.index')}}" class="nav-link
+        {{ request()->routeIs('bookings*')?'active':'' }}">
+        <i class="nav-icon fas fa-hot-tub text-Aqua"></i>
+                <p>Booking Mgt</p>
+        </a>
+    </li>
+@endcan
 
 <li class="nav-item {{ request()->routeIs('reports*')?'menu-open':'' }}">
     <a href="#" class="nav-link">
@@ -109,6 +113,16 @@
         </li>
     </ul>
     {{-- @endcan --}}
+
+    <ul class="nav nav-treeview">
+        <li class="nav-item">
+            <a href="{{route('banks.index')}}" class="nav-link
+            {{ request()->routeIs('banks*')?'active':'' }}">
+                <i class="far fa-circle nav-icon text-blue"></i>
+                <p>Banks</p>
+            </a>
+        </li>
+    </ul>
 
     </li>
     {{-- @endcan --}}

@@ -2,7 +2,7 @@
 
 namespace App\DataTables;
 
-use App\Models\CancelRemark;
+use App\Models\Bank;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
@@ -12,7 +12,7 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class CancelRemarkDataTable extends DataTable
+class BankDataTable extends DataTable
 {
     /**
      * Build the DataTable class.
@@ -23,26 +23,26 @@ class CancelRemarkDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             ->addIndexColumn()
-            ->addColumn('status', function($cancelRemark){
-                return ($cancelRemark->status==1)?'<h5><span class="badge badge-primary">Active</span></h5>':
+            ->addColumn('status', function($bank){
+                return ($bank->status==1)?'<h5><span class="badge badge-primary">Active</span></h5>':
                 '<h5><span class="badge badge-warning">Inactive</span></h5>';
             })
-            ->addColumn('action', function ($cancelRemark) {
-                $id = $cancelRemark->id;
+            ->addColumn('action', function ($bank) {
+                $id = $bank->id;
                 $btn = '';
-                    $btn .= '<a href="'.route('cancelRemarks.edit',$id).'"
+                    $btn .= '<a href="'.route('banks.edit',$id).'"
                     class="btn btn-xs btn-info" data-toggle="tooltip" title="Edit">
                     <i class="fa fa-pen-alt"></i> </a> ';
 
-                    if($cancelRemark->status==1)
+                    if($bank->status==1)
                     {
-                        $btn .='<a href="'.route('cancelRemarks.inactive',$id).'"
+                        $btn .='<a href="'.route('banks.inactive',$id).'"
                         class="btn btn-xs btn-danger" data-toggle="tooltip"
                         title="Suspend"><i class="fa fa-trash"></i> </a> ';
 
-                    }elseif($cancelRemark->status==0)
+                    }elseif($bank->status==0)
                     {
-                        $btn .='<a href="'.route('cancelRemarks.activate',$id).'"
+                        $btn .='<a href="'.route('banks.activate',$id).'"
                         class="btn btn-xs btn-danger" data-toggle="tooltip"
                         title="Activate"><i class="fa fa-unlock"></i> </a> ';
                     }
@@ -55,7 +55,7 @@ class CancelRemarkDataTable extends DataTable
     /**
      * Get the query source of dataTable.
      */
-    public function query(CancelRemark $model): QueryBuilder
+    public function query(Bank $model): QueryBuilder
     {
         return $model->newQuery();
     }
@@ -66,7 +66,7 @@ class CancelRemarkDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-                    ->setTableId('cancelremark-table')
+                    ->setTableId('bank-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
                     //->dom('Bfrtip')
@@ -104,6 +104,6 @@ class CancelRemarkDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'CancelRemark_' . date('YmdHis');
+        return 'Bank_' . date('YmdHis');
     }
 }

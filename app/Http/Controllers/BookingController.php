@@ -19,6 +19,15 @@ use function PHPUnit\Framework\returnSelf;
 
 class BookingController extends Controller
 {
+    function __construct()
+    {
+         $this->middleware('permission:booking-list|booking-create|booking-edit|booking-delete', ['only' => ['index','store']]);
+         $this->middleware('permission:booking-create', ['only' => ['create','store']]);
+         $this->middleware('permission:booking-edit', ['only' => ['edit','update']]);
+         $this->middleware('permission:booking-delete', ['only' => ['destroy']]);
+         $this->middleware('permission:booking-cancel', ['only' => ['cancelBookingView','cancelBooking']]);
+         $this->middleware('permission:booking-refund', ['only' => ['refundBooking']]);
+    }
     /**
      * Display a listing of the resource.
      */

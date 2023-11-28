@@ -12,6 +12,13 @@ use App\Http\Requests\UpdateBungalowRequest;
 
 class BungalowController extends Controller
 {
+    function __construct()
+    {
+         $this->middleware('permission:bungalow-list|bungalow-create|bungalow-edit|bungalow-delete', ['only' => ['index','store']]);
+         $this->middleware('permission:bungalow-create', ['only' => ['create','store']]);
+         $this->middleware('permission:bungalow-edit', ['only' => ['edit','update']]);
+         $this->middleware('permission:bungalow-delete', ['only' => ['destroy']]);
+    }
     /**
      * Display a listing of the resource.
      */

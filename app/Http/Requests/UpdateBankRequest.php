@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateCancelRemarkRequest extends FormRequest
+class UpdateBankRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,7 +22,7 @@ class UpdateCancelRemarkRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|unique:cancel_remarks,name,'.$this->cancel_remark->id,
+            'name' => 'required|unique:banks,name,'.$this->bank->id,
         ];
     }
 
