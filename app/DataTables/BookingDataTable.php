@@ -21,42 +21,40 @@ class BookingDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             ->addIndexColumn()
-            ->addColumn('status', function($booking){
-                $label = '';
+            ->addColumn('status', function($booking){                
 
-                if($booking->filpath)
+                if($booking->filpath &&($booking->cancel == 1 || $booking->cancel == 2) && $booking->refund == 1 
+                && $booking->refund_recieve == 1)
                 {
-                    $label .= '<h5><span class="badge badge-warning">paid</span></h5>';
+                    return '<h5><span class="badge badge-pill badge-success">Refund Recieve</span></h5>';
+                }
+                
+                if($booking->filpath && ($booking->cancel == 1 || $booking->cancel == 2) && $booking->refund == 1 && $booking->refund_recieve == 0)
+                {
+                    return '<h5><span class="badge badge-pill badge-info">Refund Recieve Pending</span></h5>';
                 }
 
-                if($booking->cancel == 1)
+                if($booking->filpath && ($booking->cancel == 1 || $booking->cancel == 2) && $booking->refund == 0)
                 {
-                    $label .= '<h5><span class="badge badge-danger">Canceled</span></h5>';
+                    return '<h5><span class="badge badge-pill badge-info">Refund Pending</span></h5>';
                 }
 
-                if($booking->refund == 1)
+                if($booking->filpath && $booking->cancel == 0)
                 {
-                    $label .= '<h5><span class="badge badge-dark">Refunded</span></h5>';
+                    return '<h5><span class="badge badge-pill badge-warning">Paid</span></h5>';
                 }else{
-                    $label .= '<h5><span class="badge badge-dark">Refunded Pending</span></h5>';
-                }
-
-                if($booking->refund == 1)
-                {
-                    $label .= '<h5><span class="badge badge-dark">Refunded</span></h5>';
-                }else{
-                    $label .= '<h5><span class="badge badge-dark">Refunded Pending</span></h5>';
+                    return '<h5><span class="badge badge-pill badge-warning">Not-Paid</span></h5>';
                 }
 
             })
             ->addColumn('action', function ($booking) {
                 $id = $booking->id;
-                $btn = '';
+                $btn = ' ';
 
-                if(!$booking->filpath)
+                if(!$booking->filpath && $booking->cancel == 0)
                 {
                     $btn .= '<a href="'.route('bookings.upload_payment_view',$id).'"
-                    class="btn btn-xs btn-warning" data-toggle="tooltip" title="Edit">
+                    class="btn btn-xs btn-warning" data-toggle="tooltip" title="Upload Payment">
                     <i class="fa fa-upload"></i> </a> '; 
                 }
                 

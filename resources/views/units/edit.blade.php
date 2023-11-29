@@ -43,7 +43,7 @@
                             <div class="col-sm-6">
                                 <select class="form-control @error('regiment_id') is-invalid @enderror"
                                     name="regiment_id" value="{{ old('regiment_id') }}" id="regiment_id" required>
-                                    @foreach ($province as $item)
+                                    @foreach ($regiments as $item)
                                     <option value="{{ $item->id }}" {{$unit->regiment_id == $item->id ?
                                         'selected':''}}>
                                         {{ $item->name }}

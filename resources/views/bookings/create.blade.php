@@ -161,7 +161,9 @@
                                 <label for="check_in" class="col-sm-2 col-form-label">Check in</label>
                                 <div class="col-sm-6">
                                     <input type="date" class="form-control @error('check_in')
-                                    is-invalid @enderror" name="check_in" value="{{ old('check_in') }}" id="check_in" autocomplete="off">
+                                    is-invalid @enderror" name="check_in" value="{{ old('check_in') }}" id="check_in" autocomplete="off"
+                                    min="{{ now()->toDateString() }}"
+                                    max="{{ now()->addDays(60)->toDateString() }}">
                                     <span class="text-danger">@error('check_in') {{ $message }} @enderror</span>
                                 </div>
                             </div>
@@ -170,7 +172,9 @@
                                 <label for="check_out" class="col-sm-2 col-form-label">Check out</label>
                                 <div class="col-sm-6">
                                     <input type="date" class="form-control @error('check_out')
-                                    is-invalid @enderror" name="check_out" value="{{ old('check_out') }}" id="check_out" autocomplete="off">
+                                    is-invalid @enderror" name="check_out" value="{{ old('check_out') }}" id="check_out" autocomplete="off"
+                                    min="{{ now()->toDateString() }}"
+                                    max="{{ now()->addDays(60)->toDateString() }}">
                                     <span class="text-danger">@error('check_out') {{ $message }} @enderror</span>
                                 </div>
                             </div>
@@ -189,7 +193,7 @@
                                             <td><input type="text" name="guests[0][name]" placeholder="Enter Name"
                                                        class="form-control" required/></td>
                                             <td><input type="text" name="guests[0][nic]" placeholder="NIC"
-                                                       class="form-control"/></td>
+                                                       class="form-control" pattern="[0-9VXvx]+"/></td>
                                             <td>
                                                 <button type="button" name="addGuest" id="addGuest"
                                                         class="btn btn-dark">
@@ -255,49 +259,52 @@
                 var eno = $('#eno').val();
                 var svcNo = $('#svc_no').val();
 
-                // Make an AJAX request to fetch details from the API
-                $.ajax({
-                    url: 'https://10.7.113.84/eportal/api/serach_person_by_no_eno_residence',
-                    method: 'GET',
-                    data: {
-                        service_no: svcNo,
-                        eno: eno,
-                        api_key: '41646d696e40235245265131323341726d79',
-                        // username: '100008948',
-                        // password: 'Danj@0221'
-                    },
-                    success: function(data) {
-                        // Check if the response has a person and relevant information
-                        if (data.person && data.person.length > 0) {
-                            var person = data.person[0];
+                if(eno && svcNo)
+                {
+                    // Make an AJAX request to fetch details from the API
+                    $.ajax({
+                        url: 'https://eportal.army.lk/eportal/api/serach_person_by_no_eno_residence',
+                        method: 'GET',
+                        data: {
+                            service_no: svcNo,
+                            eno: eno,
+                            api_key: '41646d696e40235245265131323341726d79',
+                            // username: '100008948',
+                            // password: 'Danj@0221'
+                        },
+                        success: function(data) {
+                            // Check if the response has a person and relevant information
+                            if (data.person && data.person.length > 0) {
+                                var person = data.person[0];
 
-                            // Extract the required fields
-                            var regiment = person.regiment || '';
-                            var unit = person.unit || '';
-                            // var svcNo = person.svc_no || '';
-                            var name = person.name_with_initial || '';
-                            var nic = person.nic || '';
-                            var contactNo = person.phone || '';
-                            var rank = person.rank || '';
-                            // var eno = person.eno || '';
+                                // Extract the required fields
+                                var regiment = person.regiment || '';
+                                var unit = person.unit || '';
+                                // var svcNo = person.svc_no || '';
+                                var name = person.name_with_initial || '';
+                                var nic = person.nic || '';
+                                var contactNo = person.phone || '';
+                                var rank = person.rank || '';
+                                // var eno = person.eno || '';
 
-                            // Set the values in your form fields
-                            $('#regiment').val(regiment);
-                            $('#unit').val(unit);
-                            // $('#svc_no').val(svcNo);
-                            $('#name').val(name);
-                            $('#nic').val(nic);
-                            $('#contact_no').val(contactNo);
-                            $('#rank_id').val(rank).change(); // If using a dropdown, change the selected option
-                            // $('#eno').val(eno);
-                        } else {
-                            alert('Invalid API response structure or missing rank information.');
+                                // Set the values in your form fields
+                                $('#regiment').val(regiment);
+                                $('#unit').val(unit);
+                                // $('#svc_no').val(svcNo);
+                                $('#name').val(name);
+                                $('#nic').val(nic);
+                                $('#contact_no').val(contactNo);
+                                $('#rank_id').val(rank).change(); // If using a dropdown, change the selected option
+                                // $('#eno').val(eno);
+                            } else {
+                                alert('Invalid API response structure or missing rank information.');
+                            }
+                        },
+                        error: function(error) {
+                            alert('Invalid API response');
                         }
-                    },
-                    error: function(error) {
-                        alert('Invalid API response');
-                    }
-                });
+                    });
+                }
             });
 
             // When the rank dropdown changes
@@ -391,7 +398,7 @@
                 ++guestIndex;
                 $("#guestsTable tbody").append('<tr>' +
                     '<td><input type="text" name="guests[' + guestIndex + '][name]" placeholder="Enter Name" class="form-control" required/></td>' +
-                    '<td><input type="text" name="guests[' + guestIndex + '][nic]" placeholder="NIC" class="form-control"/></td>' +
+                    '<td><input type="text" name="guests[' + guestIndex + '][nic]" placeholder="NIC" class="form-control" pattern="[0-9VXvx]+"/></td>' +
                     '<td><button type="button" class="btn btn-danger remove-row">Remove</button></td>' +
                     '</tr>');
             });
@@ -406,6 +413,23 @@
 
             $(document).on('click', '.remove-row', function () {
                 $(this).closest('tr').remove();
+            });
+
+            // When the check_in or check_out input fields change
+            $('#check_in, #check_out').on('change', function() {
+                var checkInDate = new Date($('#check_in').val());
+                var checkOutDate = new Date($('#check_out').val());
+
+                // Calculate the difference in days
+                var dateDifference = Math.ceil((checkOutDate - checkInDate) / (1000 * 60 * 60 * 24));
+
+                // Check if the difference is greater than 3 days
+                if (dateDifference > 3) {
+                    // Set check_out date to be exactly 3 days after check_in
+                    var newCheckOutDate = new Date(checkInDate.getTime() + (3 * 24 * 60 * 60 * 1000));
+                    var formattedNewCheckOutDate = newCheckOutDate.toISOString().split('T')[0];
+                    $('#check_out').val(formattedNewCheckOutDate);
+                }
             });
         });
     </script>

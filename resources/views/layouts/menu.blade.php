@@ -43,7 +43,7 @@
         </p>
     </a>
 
-        <ul class="nav nav-treeview">
+        {{-- <ul class="nav nav-treeview">
             <li class="nav-item">
                 <a href="{{route('reports.person_profile')}}" class="nav-link
                 {{ request()->routeIs('reports.person_profile')?'active':'' }}">
@@ -51,7 +51,7 @@
                     <p>Person Profile</p>
                 </a>
             </li>
-        </ul>
+        </ul> --}}
    
 </li>
 
