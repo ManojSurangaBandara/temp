@@ -57,7 +57,7 @@
 
 {{-- @can('card-issuance-status-list','ethnicity-list') --}}
     <li class="nav-item {{ request()->routeIs('directorates*','ranks*','regiments*',
-    'units*')?'menu-open':'' }}">
+    'units*','banks*','cancel_remarks*')?'menu-open':'' }}">
         <a href="#" class="nav-link">
             <i class="nav-icon fas fa-cogs text-blue"></i>
             <p>

@@ -30,19 +30,19 @@ class CancelRemarkDataTable extends DataTable
             ->addColumn('action', function ($cancelRemark) {
                 $id = $cancelRemark->id;
                 $btn = '';
-                    $btn .= '<a href="'.route('cancelRemarks.edit',$id).'"
+                    $btn .= '<a href="'.route('cancel_remarks.edit',$id).'"
                     class="btn btn-xs btn-info" data-toggle="tooltip" title="Edit">
                     <i class="fa fa-pen-alt"></i> </a> ';
 
                     if($cancelRemark->status==1)
                     {
-                        $btn .='<a href="'.route('cancelRemarks.inactive',$id).'"
+                        $btn .='<a href="'.route('cancel_remarks.inactive',$id).'"
                         class="btn btn-xs btn-danger" data-toggle="tooltip"
                         title="Suspend"><i class="fa fa-trash"></i> </a> ';
 
                     }elseif($cancelRemark->status==0)
                     {
-                        $btn .='<a href="'.route('cancelRemarks.activate',$id).'"
+                        $btn .='<a href="'.route('cancel_remarks.activate',$id).'"
                         class="btn btn-xs btn-danger" data-toggle="tooltip"
                         title="Activate"><i class="fa fa-unlock"></i> </a> ';
                     }

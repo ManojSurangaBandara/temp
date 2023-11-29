@@ -367,11 +367,31 @@ class BookingController extends Controller
         
     }
 
-    public function refundBooking(Booking $booking)
+    public function refundBookingView($id)
+    {
+        $booking = Booking::findOrFail($id);
+        
+        $banks = Bank::where('status',1)->get();
+
+        return view('bookings.refund_booking',compact('booking','banks'));
+    }
+
+    public function refundBooking(Request $request, Booking $booking)
     {   
         $booking = Booking::findOrFail($booking->id);
         
         $currentDate = Carbon::now();
+
+        $refundDirectory = public_path('/upload/refund/'.$booking->id.'/');
+
+        if (!File::isDirectory($refundDirectory)) {
+            File::makeDirectory($refundDirectory, 0777, true, true);
+        }
+
+        $extrefund = $request->file('filepath')->extension();
+        $filerefund = $booking->id.'.'.$extrefund;
+
+        $request->file('filepath')->move($refundDirectory, $filerefund);        
         
         try {
             if ($booking) {
@@ -379,6 +399,16 @@ class BookingController extends Controller
                     'refund' => 1,
                     'refund_time' => $currentDate,
                     'refund_user_id' => Auth::user()->id,                     
+                ]);
+
+                $booking->refund()->create([
+                    'bank_id' => $request->bank_id,
+                    'branch' => $request->branch,
+                    'acc_no' => $request->acc_no,
+                    'acc_owner' => $request->acc_owner,
+                    'deposit_date' => $request->deposit_date,
+                    'cheque_no' => $request->cheque_no,
+                    'filepath' => '/upload/refund/'.$booking->id.'/'.$filerefund,
                 ]);
             }
 

@@ -32,7 +32,7 @@
                     </div> --}}
                 </div>
 
-                <form role="form" action="{{ route('cancelRemarks.update',$cancelRemark->id) }}" method="post"
+                <form role="form" action="{{ route('cancel_remarks.update',$cancelRemark->id) }}" method="post"
                     enctype="multipart/form-data">
                     @csrf
                     @method('PUT')

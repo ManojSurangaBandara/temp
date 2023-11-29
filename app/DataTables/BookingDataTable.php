@@ -69,7 +69,7 @@ class BookingDataTable extends DataTable
                 
                 if($booking->filpath && $booking->refund == 0 && ($booking->cancel == 1 || $booking->cancel == 2))
                 {
-                    $btn .='<a href="'.route('bookings.refund_booking',$id).'"
+                    $btn .='<a href="'.route('bookings.refund_booking_view',$id).'"
                             class="btn btn-xs btn-success" data-toggle="tooltip"
                             title="Refund booking"><i class="fa fa-redo"></i> </a> ';
                 }

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Bungalow;
 use App\Models\BookingGuest;
+use App\Models\BookingRefund;
 use App\Models\BookingVehicle;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -64,5 +65,10 @@ class Booking extends Model
     public function bungalow()
     {
         return $this->belongsTo(Bungalow::class, 'bungalow_id', 'id');
+    }
+
+    public function refund()
+    {
+        return $this->hasOne(BookingRefund::class);
     }
 }
