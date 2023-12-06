@@ -793,16 +793,16 @@ class BookingController extends Controller
 
         $validator = Validator::make($request->all(), [
             'booking_id' => 'required|exists:bookings,id', // Ensure the provided booking_id exists
-            'bank_id' => 'required|exists:banks,id',
-            'acc_no' => 'required',
+            // 'bank_id' => 'required|exists:banks,id',
+            // 'acc_no' => 'required',
             'payment' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'level' => 'required',
         ], [
             'booking_id.required' => 'The booking ID is required.',
             'booking_id.exists' => 'The provided booking ID does not exist.',
-            'bank_id.required' => 'The bank ID is required.',
-            'bank_id.exists' => 'The provided bank ID does not exist.',
-            'acc_no.required' => 'The Account number is required.',
+            // 'bank_id.required' => 'The bank ID is required.',
+            // 'bank_id.exists' => 'The provided bank ID does not exist.',
+            // 'acc_no.required' => 'The Account number is required.',
             'payment.required' => 'The payment field is required.',
             'payment.image' => 'The payment must be an image.',
             'payment.mimes' => 'The payment must be a file of type: jpeg, png, jpg, gif.',
@@ -832,8 +832,8 @@ class BookingController extends Controller
             if ($booking) {
                 $booking->update([
                     'filpath' => '/upload/payment/'.$request->booking_id.'/'.$filepayment,
-                    'bank_id' => $request->bank_id,
-                    'acc_no' => $request->acc_no,
+                    // 'bank_id' => $request->bank_id,
+                    // 'acc_no' => $request->acc_no,
                     'level' => $request->level,                     
                 ]);
             }

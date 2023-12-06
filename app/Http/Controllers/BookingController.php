@@ -3,19 +3,20 @@
 namespace App\Http\Controllers;
 
 use Exception;
+use Carbon\Carbon;
 use App\Models\Bank;
 use App\Models\Rank;
 use App\Models\Booking;
 use App\Models\Bungalow;
+use App\Models\CancelRemark;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\DataTables\BookingDataTable;
-use App\Models\CancelRemark;
 use Illuminate\Support\Facades\Auth;
-use Carbon\Carbon;
 
 use Illuminate\Support\Facades\File;
 use function PHPUnit\Framework\returnSelf;
+use App\DataTables\PendingBookingApproveDataTable;
 
 class BookingController extends Controller
 {
@@ -40,6 +41,11 @@ class BookingController extends Controller
     public function bookings(BookingDataTable $dataTable, Bungalow $bungalow){
         //($bungalow); 
         return $dataTable->with(['bungalow'=>$bungalow])->render('bookings.index',compact('bungalow'));
+    }
+
+    public function bookingPending(PendingBookingApproveDataTable $dataTable)
+    {
+        return $dataTable->render('bookings.index');
     }
 
     public function calenderView(Bungalow $bungalow)
@@ -74,6 +80,12 @@ class BookingController extends Controller
     {
         $ranks = Rank::where('status',1)->get();
         return view('bookings.create',compact('ranks'));
+    }
+
+    public function booking_retired()
+    {
+        $ranks = Rank::where('status',1)->get();
+        return view('bookings.create_retired',compact('ranks'));
     }
 
     /**

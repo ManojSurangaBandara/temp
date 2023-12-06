@@ -27,9 +27,19 @@
 @can('booking-list')    
     <li class="nav-item">
         <a href="{{route('bookings.index')}}" class="nav-link
-        {{ request()->routeIs('bookings*')?'active':'' }}">
+        {{ request()->routeIs('bookings.index')?'active':'' }}">
         <i class="nav-icon fas fa-hot-tub text-Aqua"></i>
                 <p>Booking Mgt</p>
+        </a>
+    </li>
+@endcan
+
+@can('booking-list')    
+    <li class="nav-item">
+        <a href="{{route('bookings.booking_pending')}}" class="nav-link
+        {{ request()->routeIs('bookings.booking_pending')?'active':'' }}">
+        <i class="nav-icon fas fa-hourglass text-maroon"></i>
+                <p>Booking Pending</p>
         </a>
     </li>
 @endcan
