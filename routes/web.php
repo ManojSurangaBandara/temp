@@ -86,6 +86,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/bookings/calender/{bungalow}',[BookingController::class,'calenderView'])->name('bookings.calender');
     Route::get('/bookings/retired',[BookingController::class,'booking_retired'])->name('bookings.booking_retired');
     Route::get('/bookings/pending',[BookingController::class,'bookingPending'])->name('bookings.booking_pending');
+    Route::get('/bookings/approve/{booking}',[BookingController::class,'approveBooking'])->name('bookings.booking_approve');
     Route::resource('bookings',BookingController::class);
 
     Route::get('/banks/inactive/{id}',[BankController::class,'inactive'])->name('banks.inactive');

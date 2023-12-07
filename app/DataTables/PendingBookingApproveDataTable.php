@@ -44,6 +44,13 @@ class PendingBookingApproveDataTable extends DataTable
                             title="Cancel booking"><i class="fa fa-times"></i> </a> ';
                 }
 
+                if($booking->filpath)
+                {
+                    $btn .='<a href="'.route('bookings.booking_approve',$id).'"
+                            class="btn btn-xs btn-success" data-toggle="tooltip"
+                            title="Approve booking"><i class="fa fa-check"></i> </a> ';
+                }
+
                 return $btn;
             })
             ->rawColumns(['action','status']);
@@ -56,7 +63,7 @@ class PendingBookingApproveDataTable extends DataTable
     {
         return $model->newQuery()
         ->where('type', 1)
-
+        ->whereDoesntHave('approve')
         ->with('bungalow');
     }
 

@@ -432,4 +432,28 @@ class BookingController extends Controller
         }
         
     }
+
+    public function approveBooking(Booking $booking)
+    {   
+        $currentDate = Carbon::now();              
+        
+        try {
+            if ($booking) {
+                $booking->update([
+                    'approve' => 1,                     
+                ]);
+
+                $booking->approve()->create([
+                    'user_id' => Auth::user()->id,
+                    'approve_date' => $currentDate,                    
+                ]);
+            }
+
+            return redirect()->route('bookings.booking_pending')->with('success', 'Booking Approved');
+           
+        } catch (Exception $e) {
+
+            return redirect()->back()->with('danger', 'Something went wrong');
+        }
+    }
 }
