@@ -51,6 +51,7 @@ class Booking extends Model
         'refund_user_id',
         'refund_recieve',
         'refund_recieve_time',
+        'approve',
     ];
 
     public function bookingguests()

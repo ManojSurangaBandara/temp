@@ -213,7 +213,8 @@ class BookingController extends Controller
                 'type' => $request->type,
                 'save' => 0,
                 'level' => 3,                
-                'paid_amount' =>$request->payment,
+                'paid_amount' => $request->payment,
+                'approve' => $request->approve,
             ]);
 
             $guestData = $request->input('guests');

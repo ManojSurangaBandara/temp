@@ -49,6 +49,15 @@
                                     <span class="text-danger">@error('svc_no') {{ $message }} @enderror</span>
                                 </div>
                             </div>
+
+                            <div class="form-group row" style="display: none;">
+                                <label for="approve" class="col-sm-2 col-form-label">Approve</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control @error('approve')
+                                    is-invalid @enderror" name="approve" value="1" id="approve" autocomplete="off">
+                                    <span class="text-danger">@error('approve') {{ $message }} @enderror</span>
+                                </div>
+                            </div>
                             
                             <div class="form-group row" style="display: none;">
                                 <label for="regiment" class="col-sm-2 col-form-label">Regiment</label>
