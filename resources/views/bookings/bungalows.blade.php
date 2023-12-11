@@ -115,7 +115,7 @@
                     <a href="{{ route('bookings.bungalow_bookings',$item->id) }}">
                       {{  $item->name }}
                       <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning">
-                        {{  $item->bookings->count() }}                          
+                        {{  $item->bookings->where('filpath', '!=', null)->count() }}                          
                       </span>
                     </a>                  
                   </div>

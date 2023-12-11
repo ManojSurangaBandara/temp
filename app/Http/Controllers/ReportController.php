@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Booking;
 use App\Models\Rank;
 use App\Models\Forces;
 use App\Models\Person;
+use App\Models\Bungalow;
 use App\Models\District;
 use App\Models\Province;
 use App\Models\Ethnicity;
@@ -13,26 +15,23 @@ use App\Models\RanaviruType;
 use Illuminate\Http\Request;
 use App\Models\MaritalStatus;
 use App\Models\RegimentDepartment;
+use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Facades\DataTables;
 
 class ReportController extends Controller
 {
-    public function person_profile(Request $request)
+    public function booking_report(Request $request)
     {
         //dd('in');
-        $forces = Forces::where('status',1)->get();
-        $ranaviruTypes = RanaviruType::where('status',1)->get();
-        $regimentDepartments = RegimentDepartment::where('status',1)->get();
-        $ranks = Rank::where('status',1)->get();
-        $maritalStatus = MaritalStatus::where('status',1)->get();
-        $ethnicity = Ethnicity::where('status',1)->get();
-        $provinces = Province::where('status',1)->get();
-        $districts = District::where('status',1)->get();
-        $dsDivisions = DSDivision::where('status',1)->get();
+        $bungalows  = Bungalow::where('status','=',1)
+                        ->where('directorate_id', Auth::user()->directorate_id)
+                        ->get();
         
         if ($request->ajax()) {
-            $data = Person::select('*')->with('force','ranaviru_type','regiment_department','rank',
-                                                'marital_status','ethnicity','province','district','dsdivision');
+
+            $data = Booking::whereHas('bungalow.directorate', function ($query) {
+                        $query->where('id', Auth::user()->directorate_id);
+                    })->with('bungalow');
 
             return Datatables::of($data)
                     ->addIndexColumn()
@@ -42,40 +41,22 @@ class ReportController extends Controller
                     })
                     
                     ->filter(function ($instance) use ($request) {
-                        if ($request->get('force_id')) {
-                            $instance->where('force_id', $request->get('force_id'));
+                        if ($request->get('bungalow_id')) {
+                            $instance->where('bungalow_id', $request->get('bungalow_id'));
                         }
 
-                        if ($request->get('regiment_department_id')) {
-                            $instance->where('regiment_department_id', $request->get('regiment_department_id'));
-                        }                     
-
-                        if ($request->get('rank_id')) {
-                            $instance->where('rank_id', $request->get('rank_id'));
+                        if ($request->get('type')) {
+                            $instance->where('type', $request->get('type'));
                         }
 
-                        if ($request->get('ranaviru_types_id')) {
-                            $instance->where('ranaviru_types_id', $request->get('ranaviru_types_id'));
-                        }
-
-                        if ($request->get('marital_status_id')) {
-                            $instance->where('marital_status_id', $request->get('marital_status_id'));
-                        }
-
-                        if ($request->get('ethnicity_id')) {
-                            $instance->where('ethnicity_id', $request->get('ethnicity_id'));
-                        }
-
-                        if ($request->get('province_id')) {
-                            $instance->where('province_id', $request->get('province_id'));
-                        }
-
-                        if ($request->get('district_id')) {
-                            $instance->where('district_id', $request->get('district_id'));
-                        }
-
-                        if ($request->get('dsdivision_id')) {
-                            $instance->where('dsdivision_id', $request->get('dsdivision_id'));
+                        // Date range filter
+                        if ($request->get('check_in') && $request->get('check_out')) {
+                            $instance->whereBetween('check_in', [$request->get('check_in'), $request->get('check_out')])
+                                ->orWhereBetween('check_out', [$request->get('check_in'), $request->get('check_out')]);
+                        } elseif ($request->get('check_in')) {
+                            $instance->where('check_in', '>=', $request->get('check_in'));
+                        } elseif ($request->get('check_out')) {
+                            $instance->where('check_out', '<=', $request->get('check_out'));
                         }
                         
                         if (!empty($request->get('search'))) {
@@ -95,7 +76,6 @@ class ReportController extends Controller
                     ->make(true);
         }
         
-        return view('reports.person_profile',compact('forces','ranaviruTypes','regimentDepartments','ranks',
-                                                    'maritalStatus','ethnicity','provinces','districts','dsDivisions'));
+        return view('reports.booking_report',compact('bungalows'));
     }
 }

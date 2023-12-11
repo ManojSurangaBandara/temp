@@ -54,7 +54,7 @@
                                 <label for="approve" class="col-sm-2 col-form-label">Approve</label>
                                 <div class="col-sm-6">
                                     <input type="text" class="form-control @error('approve')
-                                    is-invalid @enderror" name="approve" value="{{ old('approve') }}" value="0" id="approve" autocomplete="off">
+                                    is-invalid @enderror" name="approve" value="0" id="approve" autocomplete="off">
                                     <span class="text-danger">@error('approve') {{ $message }} @enderror</span>
                                 </div>
                             </div>

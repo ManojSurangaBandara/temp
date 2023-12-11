@@ -70,6 +70,8 @@ Route::post('/refund-recieve-booking', [BookingController::class, 'refundRecieve
 
 Route::get('/getbanks', [BankController::class, 'index']);
 
+Route::get('/get-booking-count-for-month', [BookingController::class, 'getBookingCountForMonth']);
+
 Route::get('/getContact', [ContactController::class, 'index']);
 
 Route::get('/getcancelremarks', [CancelRemarkController::class, 'index']);

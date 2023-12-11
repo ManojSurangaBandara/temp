@@ -53,15 +53,15 @@
         </p>
     </a>
 
-        {{-- <ul class="nav nav-treeview">
+        <ul class="nav nav-treeview">
             <li class="nav-item">
-                <a href="{{route('reports.person_profile')}}" class="nav-link
-                {{ request()->routeIs('reports.person_profile')?'active':'' }}">
+                <a href="{{route('reports.booking_report')}}" class="nav-link
+                {{ request()->routeIs('reports.booking_report')?'active':'' }}">
                     <i class="far fa-circle nav-icon text-pink"></i>
-                    <p>Person Profile</p>
+                    <p>All Booking Report</p>
                 </a>
             </li>
-        </ul> --}}
+        </ul>
    
 </li>
 

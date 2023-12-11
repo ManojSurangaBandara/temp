@@ -100,7 +100,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/change-password',  [ChangePasswordController::class,'index'])->name('change.index');
     Route::post('/change-password', [ChangePasswordController::class,'store'])->name('change.password');
 
-    Route::get('/reports/person_profile/',[ReportController::class,'person_profile'])->name('reports.person_profile');
+    Route::get('/reports/booking_report/',[ReportController::class,'booking_report'])->name('reports.booking_report');
 
     Route::get('/ajax/getBungalow',[AjaxController::class,'getBungalow'])->name('ajax.getBungalow');
 

@@ -957,4 +957,28 @@ class BookingController extends Controller
         }
         
     }
+
+    public function getBookingCountForMonth(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'checkIn' => 'required|date', 
+        ], [
+            'checkIn.required' => 'The check in date required.',
+            'checkIn.date' => 'The check in must be a date.',             
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['message' => $validator->errors(), 'status' => 0], 200);
+        }
+
+        $checkInMonth = date('Y-m', strtotime($request->checkIn));
+
+        $bookingCount = Booking::where(function ($query) use ($checkInMonth) {
+            $query->whereMonth('check_in', '=', $checkInMonth)
+                ->orWhereMonth('check_out', '=', $checkInMonth);
+        })->count();
+
+        // $bookingCount;
+        return response()->json(['count'=> $bookingCount], 200);
+    }
 }

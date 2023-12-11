@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Rank;
 use App\Models\Booking;
+use App\Models\Directorate;
 use App\Models\BungalowRank;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -35,6 +36,11 @@ class Bungalow extends Model
     public function bookings()
     {
         return $this->hasMany(Booking::class,'bungalow_id');
-    }    
+    }
+    
+    public function directorate()
+    {
+        return $this->belongsTo(Directorate::class, 'directorate_id', 'id');
+    }
     
 }
