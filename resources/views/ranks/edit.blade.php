@@ -11,7 +11,7 @@
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                  <li class="breadcrumb-item"><a href="#">Home</a></li>
+                  <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
                   <li class="breadcrumb-item ">Master Data</li>
                   <li class="breadcrumb-item ">Rank Management</li>
                   <li class="breadcrumb-item active">Update</li>
@@ -43,7 +43,7 @@
                             <label for="name" class="col-sm-2 col-form-label">Name</label>
                             <div class="col-sm-6">
                                 <input type="text" class="form-control @error('name')
-                                is-invalid @enderror" name="name" value="{{ $province->name }}" id="name" autocomplete="off">
+                                is-invalid @enderror" name="name" value="{{ $rank->name }}" id="name" autocomplete="off">
                                 <span class="text-danger">@error('name') {{ $message }} @enderror</span>
                             </div>
                         </div>

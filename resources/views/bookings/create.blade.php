@@ -10,7 +10,7 @@
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                  <li class="breadcrumb-item"><a href="#">Home</a></li>
+                  <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
                   <li class="breadcrumb-item ">Booking</li>
                   <li class="breadcrumb-item active">Create</li>
                 </ol>
@@ -200,9 +200,9 @@
                                         </tr>
                                         <tr>
                                             <td><input type="text" name="guests[0][name]" placeholder="Enter Name"
-                                                       class="form-control" required/></td>
+                                                       class="form-control" required autocomplete="off"/></td>
                                             <td><input type="text" name="guests[0][nic]" placeholder="NIC"
-                                                       class="form-control" pattern="[0-9VXvx]+"/></td>
+                                                       class="form-control" pattern="[0-9VXvx]+" autocomplete="off"/></td>
                                             <td>
                                                 <button type="button" name="addGuest" id="addGuest"
                                                         class="btn btn-dark">
@@ -225,7 +225,7 @@
                                         </tr>
                                         <tr>
                                             <td><input type="text" name="vehicles[0][reg_no]" placeholder="Enter Name"
-                                                       class="form-control" required/></td>
+                                                       class="form-control" required autocomplete="off"/></td>
                                             <td>
                                                 <button type="button" name="addVehicle" id="addVehicle"
                                                         class="btn btn-dark">
@@ -406,8 +406,8 @@
             $("#addGuest").click(function () {
                 ++guestIndex;
                 $("#guestsTable tbody").append('<tr>' +
-                    '<td><input type="text" name="guests[' + guestIndex + '][name]" placeholder="Enter Name" class="form-control" required/></td>' +
-                    '<td><input type="text" name="guests[' + guestIndex + '][nic]" placeholder="NIC" class="form-control" pattern="[0-9VXvx]+"/></td>' +
+                    '<td><input type="text" name="guests[' + guestIndex + '][name]" placeholder="Enter Name" class="form-control" required autocomplete="off"/></td>' +
+                    '<td><input type="text" name="guests[' + guestIndex + '][nic]" placeholder="NIC" class="form-control" pattern="[0-9VXvx]+" autocomplete="false"/></td>' +
                     '<td><button type="button" class="btn btn-danger remove-row">Remove</button></td>' +
                     '</tr>');
             });
@@ -415,7 +415,7 @@
             $("#addVehicle").click(function () {
                 ++vehicleIndex;
                 $("#vehiclesTable tbody").append('<tr>' +
-                    '<td><input type="text" name="vehicles[' + vehicleIndex + '][reg_no]" placeholder="Enter Name" class="form-control" required/></td>' +
+                    '<td><input type="text" name="vehicles[' + vehicleIndex + '][reg_no]" placeholder="Enter Name" class="form-control" required autocomplete="off"/></td>' +
                     '<td><button type="button" class="btn btn-danger remove-row">Remove</button></td>' +
                     '</tr>');
             });

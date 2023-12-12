@@ -148,6 +148,7 @@ class UserDataTable extends DataTable
                     ->dom('Bfrtip')
                     ->orderBy(1)
                     ->selectStyleSingle()
+                    ->scrollX(true)
                     ->buttons([
                         Button::make('add'),
                         Button::make('excel'),
