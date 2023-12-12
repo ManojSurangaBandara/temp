@@ -49,7 +49,7 @@ class BungalowController extends Controller
             'no_guest'=> $request->no_guest,
             'serving_price'=> $request->serving_price,
             'retired_price'=> $request->retired_price,
-            'death_price'=> $request->death_price,
+            'official_price'=> $request->official_price,
             'directorate_id'=> Auth::user()->directorate_id,
         ]);
 
