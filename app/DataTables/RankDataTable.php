@@ -57,7 +57,8 @@ class RankDataTable extends DataTable
      */
     public function query(Rank $model): QueryBuilder
     {
-        return $model->newQuery();
+        return $model->newQuery()
+        ->orderBy('snr','asc');
     }
 
     /**

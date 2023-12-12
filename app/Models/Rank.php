@@ -15,6 +15,7 @@ class Rank extends Model
     protected $fillable = [
         'name',
         'status',
+        'snr',
     ];
 
     public static function getRanksFromAPI()

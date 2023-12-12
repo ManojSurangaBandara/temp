@@ -48,6 +48,15 @@
                             </div>
                         </div>
 
+                        <div class="form-group row">
+                            <label for="snr" class="col-sm-2 col-form-label">Seniorty</label>
+                            <div class="col-sm-6">
+                                <input type="number" class="form-control @error('snr')
+                                is-invalid @enderror" name="snr" value="{{ $rank->snr }}" id="snr" autocomplete="off">
+                                <span class="text-danger">@error('snr') {{ $message }} @enderror</span>
+                            </div>
+                        </div>
+
                     </div>
 
                         <div class="card-footer">
