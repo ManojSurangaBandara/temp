@@ -61,13 +61,13 @@
         </select>
       </div>
 
-      {{-- <div class="col-2">
+      <div class="col-2">
         <input type="date" class="form-control" name="check_in" id="check_in" placeholder="check in date">
       </div>
 
       <div class="col-2">
         <input type="date" class="form-control" name="check_out" id="check_out" placeholder="check out date">
-      </div> --}}
+      </div>
       
     </div>
 
@@ -120,7 +120,9 @@
               url: "{{ route('reports.booking_report') }}",
               data: function (d) {
                     d.bungalow_id = $('#bungalow_id').val(),
-                    d.type = $('#type').val(),                    
+                    d.type = $('#type').val(),
+                    d.check_in = $('#check_in').val(),
+                    d.check_out = $('#check_out').val(),                    
                     d.search = $('input[type="search"]').val()
                 }
             },

@@ -50,12 +50,21 @@ class ReportController extends Controller
                         }
 
                         // Date range filter
-                        if ($request->get('check_in') && $request->get('check_out')) {
-                            $instance->whereBetween('check_in', [$request->get('check_in'), $request->get('check_out')])
-                                ->orWhereBetween('check_out', [$request->get('check_in'), $request->get('check_out')]);
-                        } elseif ($request->get('check_in')) {
+                        // if ($request->get('check_in') && $request->get('check_out')) {
+                        //     $instance->whereBetween('check_in', [$request->get('check_in'), $request->get('check_out')])
+                        //         ->orWhereBetween('check_out', [$request->get('check_in'), $request->get('check_out')]);
+                        // } elseif ($request->get('check_in')) {
+                        //     $instance->where('check_in', '>=', $request->get('check_in'));
+                        // } elseif ($request->get('check_out')) {
+                        //     $instance->where('check_out', '<=', $request->get('check_out'));
+                        // }
+
+                        // Add date filtering conditions
+                        if ($request->get('check_in')) {
                             $instance->where('check_in', '>=', $request->get('check_in'));
-                        } elseif ($request->get('check_out')) {
+                        }
+
+                        if ($request->get('check_out')) {
                             $instance->where('check_out', '<=', $request->get('check_out'));
                         }
                         
