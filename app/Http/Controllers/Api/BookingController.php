@@ -411,7 +411,10 @@ class BookingController extends Controller
         
         $booking = Booking::findOrFail($request->input('booking_id'));
 
-        //$guest = $request->input('guests');       
+        if($booking->bungalow->no_guest <= $booking->bookingguests()->count())
+        {
+            return response()->json(['message' => 'Can not add more than no of max guests'], 200);            
+        }      
         
         try {
             
