@@ -28,7 +28,7 @@ class UpdateBungalowRequest extends FormRequest
             'no_guest' => 'required|numeric',
             'serving_price' => 'required|numeric',
             'retired_price' => 'required|numeric',
-            'death_price' => 'required|numeric',
+            'official_price' => 'required|numeric',
         ];
     }
 
@@ -47,8 +47,8 @@ class UpdateBungalowRequest extends FormRequest
             'serving_price.numeric' => 'This Serving Price must be a number',
             'retired_price.required' => 'The Retired Price field is required.',           
             'retired_price.numeric' => 'This Retired Price must be a number', 
-            'death_price.required' => 'The Death Price field is required.',           
-            'death_price.numeric' => 'This Death Price must be a number',         
+            'official_price.required' => 'The Death Price field is required.',           
+            'official_price.numeric' => 'This Death Price must be a number',         
         ];
     }
 }

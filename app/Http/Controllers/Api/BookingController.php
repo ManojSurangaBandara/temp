@@ -140,26 +140,58 @@ class BookingController extends Controller
             //             ->orderBy('created_at', 'asc')
             //             ->get();
 
-            $bookings = Booking::select('check_in', 'check_out', 'paid_amount', 'created_at', 'level','cancel',
-                                            'refund','refund_recieve', 'bungalow_id', 'id', 'filpath')
-                        ->with('bungalow:id,name') // Specify the attributes you want to retrieve from the Bungalow model
-                        ->where('eno', $request->eno)
-                        ->orderBy('check_in', 'asc')
-                        ->get()
-                        ->map(function ($booking) {
-                            $booking->bungalow = $booking->bungalow->pluck('name')->first();
+            // $bookings = Booking::select('check_in', 'check_out', 'paid_amount', 'created_at', 'level','cancel',
+            //                                 'refund','refund_recieve', 'bungalow_id', 'id', 'filpath')
+            //             ->with('bungalow:id,name') // Specify the attributes you want to retrieve from the Bungalow model
+            //             ->where('eno', $request->eno)
+            //             ->orderBy('check_in', 'asc')
+            //             ->get()
+            //             ->map(function ($booking) {
+                            
+            //                 //$booking->bungalow = $booking->bungalow->pluck('name')->first();
 
-                            // Set $has_refund to 1 if $booking->filpath is not null
-                            $has_refund = ($booking->filpath && ($booking->cancel == 1 || $booking->cancel == 2)) ? 1 : 0;
+            //                 // Set $has_refund to 1 if $booking->filpath is not null
+            //                 $has_refund = ($booking->filpath && ($booking->cancel == 1 || $booking->cancel == 2)) ? 1 : 0;
 
-                            $booking->has_refund = $has_refund;
+            //                 $booking->has_refund = $has_refund;
 
-                            return $booking->only(['check_in', 'check_out', 'paid_amount', 'created_at', 'level',
-                                                    'cancel','refund','refund_recieve', 'id','bungalow_id','bungalow', 'has_refund']);
+            //                 return $booking->only(['check_in', 'check_out', 'paid_amount', 'created_at', 'level',
+            //                                         'cancel','refund','refund_recieve', 'id','bungalow_id','bungalow', 'has_refund']);
+            //             });
+            
+                        $bookings = Booking::select('check_in', 'check_out', 'paid_amount', 'created_at', 'level','cancel',
+                                    'refund','refund_recieve', 'bungalow_id', 'id', 'filpath')
+                                    //->with('bungalow:id,name') // Specify the attributes you want to retrieve from the Bungalow model
+                                    ->where('eno', $request->eno)
+                                    ->orderBy('check_in', 'asc')
+                                    ->get();
+
+                        $transformedBookings = $bookings->map(function ($booking) {                        
+                            
+                            $paid = $booking->filpath ? 1 : 0;                      
+                            
+                        
+                            // // Determine if the student has rf_id
+                            // $hasrfid = $rfIdExists ? 1 : 0;
+                        
+                            return [
+                                'check_in' => $booking->check_in,
+                                'check_out' => $booking->check_out,
+                                'paid_amount' => $booking->paid_amount,
+                                'created_at' => $booking->created_at,
+                                'level' => $booking->level,
+                                'cancel' => $booking->cancel,
+                                'refund' => $booking->refund,
+                                'refund_recieve' => $booking->refund_recieve,
+                                'bungalow_id' => $booking->bungalow_id,
+                                'bungalow' => $booking->bungalow->name,
+                                'id' => $booking->id,
+                                'paid' => $paid,
+                            ];
                         });
             
 
-            return response()->json(['bookings' => $bookings],200);            
+            return response()->json(['bookings' => $transformedBookings],200);            
 
         } catch (Exception $e) {
 
@@ -961,10 +993,12 @@ class BookingController extends Controller
     public function getBookingCountForMonth(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'checkIn' => 'required|date', 
+            'checkIn' => 'required|date',
+            //'eno' => 'required', 
         ], [
             'checkIn.required' => 'The check in date required.',
-            'checkIn.date' => 'The check in must be a date.',             
+            'checkIn.date' => 'The check in must be a date.',
+            //'eno.required' => 'The e-number is required.',             
         ]);
 
         if ($validator->fails()) {
@@ -972,6 +1006,7 @@ class BookingController extends Controller
         }
 
         $checkInMonth = date('Y-m', strtotime($request->checkIn));
+        dd($checkInMonth);
 
         $bookingCount = Booking::where(function ($query) use ($checkInMonth) {
             $query->whereMonth('check_in', '=', $checkInMonth)

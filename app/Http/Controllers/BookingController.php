@@ -17,6 +17,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use function PHPUnit\Framework\returnSelf;
 use App\DataTables\PendingBookingApproveDataTable;
+use App\Models\Regiment;
+use App\Models\Unit;
 
 class BookingController extends Controller
 {
@@ -85,7 +87,10 @@ class BookingController extends Controller
     public function booking_retired()
     {
         $ranks = Rank::where('status',1)->get();
-        return view('bookings.create_retired',compact('ranks'));
+        $regiments = Regiment::where('status',1)->get();
+        $units = Unit::where('status',1)->get();
+
+        return view('bookings.create_retired',compact('ranks','regiments'));
     }
 
     /**
