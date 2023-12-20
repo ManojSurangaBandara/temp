@@ -6,20 +6,34 @@ use App\Models\Rank;
 use App\Models\Bungalow;
 use App\Models\District;
 use App\Models\DSDivision;
+use App\Models\Regiment;
 use Illuminate\Http\Request;
 use App\Models\RegimentDepartment;
+use App\Models\Unit;
 
 class AjaxController extends Controller
 {
-    public function getRanks(Request $request){
+    public function getRanks(Request $request)
+    {
         if($request->ajax()){
             return Rank::select('*')->where('force_id','=',$request->force_id)->get();
         }else{
              return Rank::where('status',1)->get();
         }
-    }    
+    }
+    
+    public function getUnits(Request $request)
+    {
+        //dd($request->regimentId);
+        if($request->ajax()){
+            $regiment_id = Regiment::select('id')->where('name',$request->regiment);
 
-    public function getBungalow(Request $request){
+            return Unit::select('name')->where('regiment_id',$regiment_id)->get();
+        }
+    }
+
+    public function getBungalow(Request $request)
+    {
         //dd($request->rank_id);
         //$rank = Rank::select('name')->where('id',$request->rankId)->get();
 
@@ -59,7 +73,8 @@ class AjaxController extends Controller
         }
     }
 
-    public function getPayment(Request $request){        
+    public function getPayment(Request $request)
+    {        
 
         $type = $request->type;
         $bungalow = $request->bungalow_id;       

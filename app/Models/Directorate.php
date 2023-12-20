@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Bungalow;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Directorate extends Model
 {
@@ -14,5 +15,10 @@ class Directorate extends Model
         'name',
         'status',
     ];
+
+    public function bungalows()
+    {
+        return $this->hasMany(Bungalow::class,'directorate_id');
+    }
     
 }

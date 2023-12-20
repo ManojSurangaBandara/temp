@@ -6,19 +6,20 @@ use Exception;
 use Carbon\Carbon;
 use App\Models\Bank;
 use App\Models\Rank;
+use App\Models\Unit;
 use App\Models\Booking;
 use App\Models\Bungalow;
+use App\Models\Regiment;
+use App\Models\Directorate;
 use App\Models\CancelRemark;
 use Illuminate\Http\Request;
+
 use Illuminate\Validation\Rule;
 use App\DataTables\BookingDataTable;
 use Illuminate\Support\Facades\Auth;
-
 use Illuminate\Support\Facades\File;
 use function PHPUnit\Framework\returnSelf;
 use App\DataTables\PendingBookingApproveDataTable;
-use App\Models\Regiment;
-use App\Models\Unit;
 
 class BookingController extends Controller
 {
@@ -84,13 +85,15 @@ class BookingController extends Controller
         return view('bookings.create',compact('ranks'));
     }
 
-    public function booking_retired()
+    public function createRetired()
     {
         $ranks = Rank::where('status',1)->get();
         $regiments = Regiment::where('status',1)->get();
         $units = Unit::where('status',1)->get();
+        //$directorates = Directorate::where('status',1)->get();
+        $bungalows = Bungalow::where('status',1)->get();
 
-        return view('bookings.create_retired',compact('ranks','regiments'));
+        return view('bookings.create_retired',compact('ranks','regiments','units','bungalows'));
     }
 
     /**
@@ -252,6 +255,126 @@ class BookingController extends Controller
             return redirect()->back()->with('danger', 'Something went wrong');
         }
 
+        
+    }
+
+    public function storeRetired(Request $request)
+    {
+        //dd($request);
+        $this->validate($request,[
+            'svc_no'  => 'required|string',
+            'army_id' => 'required',
+            'bungalow_id' => 'required',
+            'check_in' => 'required|date',
+            'check_out' => 'required|date|after:check_in',
+            'payment' => 'required',
+        ], [
+            'svc_no.required' => 'The service no is required.',
+            'svc_no.string' => 'The service no must be a string.',            
+
+            'army_id.required' => 'The army id is required.',            
+
+            'bungalow_id.required' => 'The bungalow id is required.',
+            'bungalow_id.string' => 'The bungalow id must be a string.',
+
+            'check_in.required' => 'The check in id is required.',
+            'check_in.date' => 'The check in id must be a date.',
+
+            'check_out.required' => 'The check out id is required.',
+            'check_out.date' => 'The check out id must be a date.',
+            'check_out.after' => 'The check out date must be a after check in date.',
+                       
+        ]);
+
+        $checkIn = $request->check_in;
+        $checkOut = $request->check_out;
+        
+
+        $results = Booking::where(function ($query) use ($checkIn, $checkOut) {
+                    $query->where('check_in', '<=', $checkOut)
+                        ->where('check_out', '>=', $checkIn);
+                    })
+                    ->orWhere(function ($query) use ($checkIn, $checkOut) {
+                        $query->where('check_in', '>=', $checkIn)
+                            ->where('check_in', '<=', $checkOut);
+                    })
+                    ->orWhere(function ($query) use ($checkIn, $checkOut) {
+                        $query->where('check_out', '>=', $checkIn)
+                            ->where('check_out', '<=', $checkOut);
+                    })
+                    ->get();
+
+        if (!$results->isEmpty()) 
+        {
+            return redirect()->back()->with('danger', 'Already booked');
+        }        
+
+        try {
+
+            $booking = Booking::create([
+                'regiment' => $request->regiment,
+                'unit'  => $request->unit,
+                'svc_no'  => $request->svc_no,
+                'name' => $request->name,
+                'nic'  => $request->nic,
+                'contact_no' => $request->contact_no,
+                'rank' => $request->rank_id,
+                'army_id' => $request->army_id,
+                'bungalow_id' => $request->bungalow_id,
+                'check_in' => $request->check_in,
+                'check_out' => $request->check_out,
+                'type' => $request->type,
+                'save' => 0,
+                'level' => 3,                
+                'paid_amount' => $request->payment,
+                'approve' => $request->approve,
+            ]);
+
+            $guestData = $request->input('guests');
+
+            if($guestData)
+            {
+                foreach ($guestData as $guest) {
+                    $booking->bookingGuests()->create([
+                        'name' => $guest['name'],
+                        'nic' => $guest['nic'],
+                    ]);
+                }
+            }
+
+            $vehicleData = $request->input('vehicles');
+
+            if($vehicleData)
+            {
+                foreach ($vehicleData as $vehicle) {
+                    $booking->bookingvehicles()->create([
+                        'reg_no' => $vehicle['reg_no'],
+                    ]);
+                }
+            }
+
+            $paymentDirectory = public_path('/upload/payment/'.$booking->id.'/');
+
+            if (!File::isDirectory($paymentDirectory)) {
+                File::makeDirectory($paymentDirectory, 0777, true, true);
+            }
+
+            $extpayment = $request->file('filpath')->extension();
+            $filepayment = $booking->id.'.'.$extpayment;
+
+            $request->file('filpath')->move($paymentDirectory, $filepayment);
+
+            $booking->update([
+                'filpath' => '/upload/payment/'.$booking->id.'/'.$filepayment,
+                'level' => 3,
+            ]);
+    
+            return redirect()->route('bookings.create_retired')->with('success', 'Booking Created');
+
+        } catch (Exception $e) {
+
+            return redirect()->back()->with('danger', 'Something went wrong');
+        }
         
     }
 

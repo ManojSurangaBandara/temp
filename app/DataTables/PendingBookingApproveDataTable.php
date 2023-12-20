@@ -65,6 +65,7 @@ class PendingBookingApproveDataTable extends DataTable
         ->where('type', 1)
         //->whereNotNull('filpath')
         ->where('approve',0)
+        ->where('cancel',0)
         ->whereDoesntHave('approve')
         ->with('bungalow');
     }

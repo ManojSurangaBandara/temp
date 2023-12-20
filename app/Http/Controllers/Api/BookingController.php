@@ -997,24 +997,30 @@ class BookingController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'checkIn' => 'required|date',
-            //'eno' => 'required', 
+            'svc_no' => 'required', 
         ], [
             'checkIn.required' => 'The check in date required.',
             'checkIn.date' => 'The check in must be a date.',
-            //'eno.required' => 'The e-number is required.',             
+            'svc_no.required' => 'The service number is required.',             
         ]);
 
         if ($validator->fails()) {
             return response()->json(['message' => $validator->errors(), 'status' => 0], 200);
         }
 
-        $checkInMonth = date('Y-m', strtotime($request->checkIn));
-        dd($checkInMonth);
+        // Convert the check-in date to a Carbon instance
+        $checkInDate = Carbon::parse($request->checkIn);
 
-        $bookingCount = Booking::where(function ($query) use ($checkInMonth) {
-            $query->whereMonth('check_in', '=', $checkInMonth)
-                ->orWhereMonth('check_out', '=', $checkInMonth);
-        })->count();
+        // Get the first date of the month
+        $firstDateOfMonth = $checkInDate->firstOfMonth()->toDateString();
+
+        // Get the last date of the month
+        $lastDateOfMonth = $checkInDate->lastOfMonth()->toDateString();
+
+        $bookingCount = Booking::where('svc_no', $request->svc_no)
+                        ->where(function ($query) use ($firstDateOfMonth, $lastDateOfMonth) {
+                            $query->whereBetween('check_in', [$firstDateOfMonth, $lastDateOfMonth]);
+                        })->count();
 
         // $bookingCount;
         return response()->json(['count'=> $bookingCount], 200);
