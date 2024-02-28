@@ -14,7 +14,7 @@
     </a>
 </li> --}}
 
-@can('bungalow-list')    
+@can('bungalow-list')
     <li class="nav-item">
         <a href="{{route('bungalows.index')}}" class="nav-link
         {{ request()->routeIs('bungalows*')?'active':'' }}">
@@ -24,7 +24,7 @@
     </li>
 @endcan
 
-@can('booking-list')    
+@can('booking-list')
     <li class="nav-item">
         <a href="{{route('bookings.index')}}" class="nav-link
         {{ request()->routeIs('bookings.index')?'active':'' }}">
@@ -34,7 +34,7 @@
     </li>
 @endcan
 
-@can('booking-list')    
+@can('booking-list')
     <li class="nav-item">
         <a href="{{route('bookings.booking_pending')}}" class="nav-link
         {{ request()->routeIs('bookings.booking_pending')?'active':'' }}">
@@ -62,7 +62,7 @@
                 </a>
             </li>
         </ul>
-   
+
 </li>
 
 {{-- @can('card-issuance-status-list','ethnicity-list') --}}
@@ -74,7 +74,7 @@
                 Master Data
                 <i class="right fas fa-angle-left text-blue"></i>
             </p>
-        </a>        
+        </a>
 
         {{-- @can('user-type-list') --}}
             <ul class="nav nav-treeview">
@@ -155,7 +155,7 @@
                 System Management
                 <i class="right fas fa-angle-left text-purple"></i>
             </p>
-        </a>        
+        </a>
 
         @can('permission-category-list')
             <ul class="nav nav-treeview">

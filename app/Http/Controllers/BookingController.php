@@ -42,7 +42,7 @@ class BookingController extends Controller
     }
 
     public function bookings(BookingDataTable $dataTable, Bungalow $bungalow){
-        //($bungalow); 
+        //($bungalow);
         return $dataTable->with(['bungalow'=>$bungalow])->render('bookings.index',compact('bungalow'));
     }
 
@@ -136,7 +136,7 @@ class BookingController extends Controller
             // 'contact_no.required' => 'The contact number is required.',
             // 'contact_no.string' => 'The contact number must be a string.',
 
-            'army_id.required' => 'The army id is required.',            
+            'army_id.required' => 'The army id is required.',
 
             'bungalow_id.required' => 'The bungalow id is required.',
             'bungalow_id.string' => 'The bungalow id must be a string.',
@@ -153,7 +153,7 @@ class BookingController extends Controller
 
             // 'type.required' => 'The type id is required.',
 
-            // 'level.required' => 'The level id is required.',            
+            // 'level.required' => 'The level id is required.',
         ]);
 
         $checkIn = $request->check_in;
@@ -192,10 +192,10 @@ class BookingController extends Controller
 
         //dd($results);
 
-        if (!$results->isEmpty()) 
+        if (!$results->isEmpty())
         {
             return redirect()->back()->with('danger', 'Already booked');
-        }        
+        }
 
         try {
 
@@ -220,7 +220,7 @@ class BookingController extends Controller
                 'check_out' => $request->check_out,
                 'type' => $request->type,
                 'save' => 0,
-                'level' => 3,                
+                'level' => 3,
                 'paid_amount' => $request->payment,
                 'approve' => $request->approve,
             ]);
@@ -247,7 +247,7 @@ class BookingController extends Controller
                     ]);
                 }
             }
-    
+
             return redirect()->route('bookings.index')->with('success', 'Booking Created');
 
         } catch (Exception $e) {
@@ -255,7 +255,7 @@ class BookingController extends Controller
             return redirect()->back()->with('danger', 'Something went wrong');
         }
 
-        
+
     }
 
     public function storeRetired(Request $request)
@@ -270,9 +270,9 @@ class BookingController extends Controller
             'payment' => 'required',
         ], [
             'svc_no.required' => 'The service no is required.',
-            'svc_no.string' => 'The service no must be a string.',            
+            'svc_no.string' => 'The service no must be a string.',
 
-            'army_id.required' => 'The army id is required.',            
+            'army_id.required' => 'The army id is required.',
 
             'bungalow_id.required' => 'The bungalow id is required.',
             'bungalow_id.string' => 'The bungalow id must be a string.',
@@ -283,12 +283,12 @@ class BookingController extends Controller
             'check_out.required' => 'The check out id is required.',
             'check_out.date' => 'The check out id must be a date.',
             'check_out.after' => 'The check out date must be a after check in date.',
-                       
+
         ]);
 
         $checkIn = $request->check_in;
         $checkOut = $request->check_out;
-        
+
 
         $results = Booking::where(function ($query) use ($checkIn, $checkOut) {
                     $query->where('check_in', '<=', $checkOut)
@@ -304,10 +304,10 @@ class BookingController extends Controller
                     })
                     ->get();
 
-        if (!$results->isEmpty()) 
+        if (!$results->isEmpty())
         {
             return redirect()->back()->with('danger', 'Already booked');
-        }        
+        }
 
         try {
 
@@ -325,7 +325,7 @@ class BookingController extends Controller
                 'check_out' => $request->check_out,
                 'type' => $request->type,
                 'save' => 0,
-                'level' => 3,                
+                'level' => 3,
                 'paid_amount' => $request->payment,
                 'approve' => $request->approve,
             ]);
@@ -368,17 +368,17 @@ class BookingController extends Controller
                 'filpath' => '/upload/payment/'.$booking->id.'/'.$filepayment,
                 'level' => 3,
             ]);
-    
+
             return redirect()->route('bookings.create_retired')->with('success', 'Booking Created');
 
         } catch (Exception $e) {
 
             return redirect()->back()->with('danger', 'Something went wrong');
         }
-        
+
     }
 
-    
+
 
 
     public function checkBookingAvailability(Request $request)
@@ -444,7 +444,7 @@ class BookingController extends Controller
     public function upload_payment_view($id)
     {
         $booking = Booking::find($id);
-        
+
         $banks = Bank::where('status',1)->get();
 
         return view('bookings.upload_payment',compact('booking','banks'));
@@ -480,47 +480,56 @@ class BookingController extends Controller
         $booking = Booking::findOrFail($id);
 
         return view('bookings.cancel_booking',compact('cancelremakrs','booking'));
-        
+
     }
-    
+
     public function cancelBooking(Request $request, Booking $booking)
-    {   
+    {
         $booking = Booking::findOrFail($booking->id);
-        
+
         $currentDate = Carbon::now();
-        
+
         try {
             if ($booking) {
                 $booking->update([
                     'cancelremark_id' => $request->cancelremark_id,
                     'cancel' => 2,
                     'cancel_time' => $currentDate,
-                    'cancel_user_id' => Auth::user()->id,                     
+                    'cancel_user_id' => Auth::user()->id,
                 ]);
+
+                require_once('ESMSWS.php'); // REQUIRED
+
+                $username = 'esmsusr_XyG2K5QR';
+                $password = 'W7DwSiQW';
+
+                $session = createSession('', $username, $password, '');
+                sendMessages($session, 'DRE&Q-AHQ', "We regretfully info you that your reservation has been cancelled due to an official requirement. Your amount will be refunded. Pl contact 0112075315 for more info." , $booking->contact_no, 0);
+                closeSession($session);
             }
 
             return redirect()->route('bookings.bungalow_bookings',$booking->bungalow_id)->with('success', 'Booking Canceled');
-           
+
         } catch (Exception $e) {
 
             return redirect()->back()->with('danger', 'Something went wrong');
         }
-        
+
     }
 
     public function refundBookingView($id)
     {
         $booking = Booking::findOrFail($id);
-        
+
         $banks = Bank::where('status',1)->get();
 
         return view('bookings.refund_booking',compact('booking','banks'));
     }
 
     public function refundBooking(Request $request, Booking $booking)
-    {   
+    {
         $booking = Booking::findOrFail($booking->id);
-        
+
         $currentDate = Carbon::now();
 
         $refundDirectory = public_path('/upload/refund/'.$booking->id.'/');
@@ -532,14 +541,14 @@ class BookingController extends Controller
         $extrefund = $request->file('filepath')->extension();
         $filerefund = $booking->id.'.'.$extrefund;
 
-        $request->file('filepath')->move($refundDirectory, $filerefund);        
-        
+        $request->file('filepath')->move($refundDirectory, $filerefund);
+
         try {
             if ($booking) {
                 $booking->update([
                     'refund' => 1,
                     'refund_time' => $currentDate,
-                    'refund_user_id' => Auth::user()->id,                     
+                    'refund_user_id' => Auth::user()->id,
                 ]);
 
                 $booking->refund()->create([
@@ -554,32 +563,41 @@ class BookingController extends Controller
             }
 
             return redirect()->route('bookings.bungalow_bookings',$booking->bungalow_id)->with('success', 'Booking Refunded');
-           
+
         } catch (Exception $e) {
 
             return redirect()->back()->with('danger', 'Something went wrong');
         }
-        
+
     }
 
     public function approveBooking(Booking $booking)
-    {   
-        $currentDate = Carbon::now();              
-        
+    {
+        $currentDate = Carbon::now();
+
         try {
             if ($booking) {
                 $booking->update([
-                    'approve' => 1,                     
+                    'approve' => 1,
                 ]);
 
                 $booking->approve()->create([
                     'user_id' => Auth::user()->id,
-                    'approve_date' => $currentDate,                    
+                    'approve_date' => $currentDate,
                 ]);
+
+                require_once('ESMSWS.php'); // REQUIRED
+
+                $username = 'esmsusr_XyG2K5QR';
+                $password = 'W7DwSiQW';
+
+                $session = createSession('', $username, $password, '');
+                sendMessages($session, 'DRE&Q-AHQ', "Dear Sir/Madam, \r\n \r\nThank you for choosing bungalows from the Dte of RE & Q. Your reservation has been confirmed on ". date('Y-m-d', strtotime($booking->approve_date)) .". If you have any questions, let us know at 0112075315." , $booking->contact_no, 0);
+                closeSession($session);
             }
 
             return redirect()->route('bookings.booking_pending')->with('success', 'Booking Approved');
-           
+
         } catch (Exception $e) {
 
             return redirect()->back()->with('danger', 'Something went wrong');

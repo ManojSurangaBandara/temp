@@ -32,7 +32,7 @@ class BungalowController extends Controller
      */
     public function create()
     {
-        $ranks = Rank::where('status', 1)->get(); 
+        $ranks = Rank::where('status', 1)->get();
         return view('bungalows.create',compact('ranks'));
     }
 
