@@ -58,6 +58,9 @@ class BookingController extends Controller
 
             $bookings = Booking::select('check_in','check_out',)
                         ->where('bungalow_id',$request->bungalow_id)
+                        ->where('approve',1)
+                        ->where('cancel','!=', 1)
+                        ->where('refund','!=', 1)
                         ->get();
 
             // $allDays = [];

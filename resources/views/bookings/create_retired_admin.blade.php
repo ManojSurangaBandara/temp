@@ -27,7 +27,7 @@
                         <h3 class="card-title">Create New Booking</h3>
                     </div>
 
-                    <form role="form" method="POST" action="{{ route('bookings.store_retired') }}"
+                    <form role="form" method="POST" action="{{ route('bookings.store_retired_admin') }}"
                           enctype="multipart/form-data">
                         @csrf
                         <div class="card-body">
@@ -58,7 +58,7 @@
                                     <span class="text-danger">@error('approve') {{ $message }} @enderror</span>
                                 </div>
                             </div>
-                            
+
                             <div class="form-group row">
                                 <label for="regiment" class="col-sm-2 col-form-label">Regiment</label>
                                 <div class="col-sm-6">
@@ -80,7 +80,7 @@
                                 <div class="col-sm-6">
                                     <select class="form-control @error('unit') is-invalid @enderror"
                                         name="unit" value="{{ old('unit') }}" id="unit" required>
-                                        <option value="">Please Select</option>                                        
+                                        <option value="">Please Select</option>
                                     </select>
                                     <span class="text-danger">@error('unit') {{ $message }} @enderror</span>
                                 </div>
@@ -112,7 +112,7 @@
                                     <span class="text-danger">@error('contact_no') {{ $message }} @enderror</span>
                                 </div>
                             </div>
-                            
+
                             <div class="form-group row" style="display: none;">
                                 <label for="type" class="col-sm-2 col-form-label">Type</label>
                                 <div class="col-sm-6">
@@ -121,7 +121,7 @@
                                         <option value="">Please Select</option>
                                         <option value="0">Serving</option>
                                         <option value="1" selected>Retired</option>
-                                        <option value="2">Official</option>                                        
+                                        <option value="2">Official</option>
                                     </select>
                                     <span class="text-danger">
                                         @error('type')
@@ -156,7 +156,7 @@
                                 <div class="col-sm-6">
                                     <select class="form-control @error('bungalow_id') is-invalid @enderror"
                                         name="bungalow_id" value="{{ old('bungalow_id') }}" id="bungalow_id" required>
-                                        <option value="">Please Select</option>                                            
+                                        <option value="">Please Select</option>
                                     </select>
                                     <span class="text-danger">
                                         @error('bungalow_id')
@@ -256,7 +256,7 @@
                             <div class="form-group row ">
                                 <label for="filpath" class="col-sm-2 col-form-label">Select Image<sup class="text-red">*</sup></label>
                                 <div class="col-sm-6">
-                                    <input type="file" class="form-control @error('filpath') is-invalid @enderror" 
+                                    <input type="file" class="form-control @error('filpath') is-invalid @enderror"
                                     name="filpath" value="{{ old('filpath') }}" required accept=".jpeg,.png,.jpg" required>
                                     <span class="text-danger">@error('filpath') {{ $message }}
                                     @enderror</span>
@@ -286,7 +286,7 @@
 <script src="{{ asset('plugins/select2/js/select2.min.js') }}" defer></script>
     <script>
         $(document).ready(function () {
-            
+
             // Initialize Select2 for the existing select element
             $("#regiment, #rank_id, #unit, #bungalow_id").select2({
                 theme: "default" // You can choose a theme based on your preferences
@@ -323,21 +323,21 @@
 
                 $.ajax({
                     url: '{{ route('ajax.getUnits') }}',
-                    type: 'get', 
+                    type: 'get',
                     data:{'regiment':id,'_token' : $('meta[name="csrf-token"]').attr('content')},
-                    success: function(response){ 
+                    success: function(response){
 
                             $('#unit option').remove();
                             $('#unit').append(new Option( 'Select ',''));
-                            $.each( response, function( key, value ) {                   
+                            $.each( response, function( key, value ) {
                                 $('#unit').append(new Option(value.name, value.id));
-                            }); 
+                            });
                     }
                 });
 
             })
 
-            $('#type, #bungalow_id, #check_in, #check_out').on('change', function () {                
+            $('#type, #bungalow_id, #check_in, #check_out').on('change', function () {
                 updatePayment();
             });
 
@@ -345,7 +345,7 @@
                 var type = $('#type').val();
                 var bungalow = $('#bungalow_id').val();
                 var checkIn = $('#check_in').val();
-                var checkOut = $('#check_out').val();                
+                var checkOut = $('#check_out').val();
 
                 if (checkIn && checkOut) {
                     // Calculate the number of days
@@ -367,10 +367,10 @@
                             // Update the payment amount field
                             var paymentAmount = 0;
 
-                            // var paymentAmount = data[0]['serving_price'] * daysDifference;                            
+                            // var paymentAmount = data[0]['serving_price'] * daysDifference;
                             // $('#payment').val(paymentAmount);
                             console.log(type);
-                            
+
                             var paymentAmount = 0; // Default value
 
                             switch (type) {
@@ -387,7 +387,7 @@
 
                             console.log(paymentAmount); // Move this line outside the switch statement
                             $('#payment').val(paymentAmount);
-                            
+
                         },
                         error: function (error) {
                             console.log(error);

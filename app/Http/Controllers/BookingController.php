@@ -23,15 +23,15 @@ use App\DataTables\PendingBookingApproveDataTable;
 
 class BookingController extends Controller
 {
-    function __construct()
-    {
-         $this->middleware('permission:booking-list|booking-create|booking-edit|booking-delete', ['only' => ['index','store']]);
-         $this->middleware('permission:booking-create', ['only' => ['create','store']]);
-         $this->middleware('permission:booking-edit', ['only' => ['edit','update']]);
-         $this->middleware('permission:booking-delete', ['only' => ['destroy']]);
-         $this->middleware('permission:booking-cancel', ['only' => ['cancelBookingView','cancelBooking']]);
-         $this->middleware('permission:booking-refund', ['only' => ['refundBooking']]);
-    }
+    // function __construct()
+    // {
+    //      $this->middleware('permission:booking-list|booking-create|booking-edit|booking-delete', ['only' => ['index','store']]);
+    //      $this->middleware('permission:booking-create', ['only' => ['create','store']]);
+    //      $this->middleware('permission:booking-edit', ['only' => ['edit','update']]);
+    //      $this->middleware('permission:booking-delete', ['only' => ['destroy']]);
+    //      $this->middleware('permission:booking-cancel', ['only' => ['cancelBookingView','cancelBooking']]);
+    //      $this->middleware('permission:booking-refund', ['only' => ['refundBooking']]);
+    // }
     /**
      * Display a listing of the resource.
      */
@@ -54,7 +54,12 @@ class BookingController extends Controller
     public function calenderView(Bungalow $bungalow)
     {
         //dd($bungalow->id);
-        $bookings = Booking::where('bungalow_id', $bungalow->id)->get();
+        $bookings = Booking::where('bungalow_id', $bungalow->id)
+                    ->where('approve',1)
+                    ->where('cancel','!=', 1)
+                    ->where('refund','!=', 1)
+                    //->where('check_out','<',Carbon::now())
+                    ->get();
 
         // return view('bookings.calender',compact('bookings'));
 
@@ -94,6 +99,17 @@ class BookingController extends Controller
         $bungalows = Bungalow::where('status',1)->get();
 
         return view('bookings.create_retired',compact('ranks','regiments','units','bungalows'));
+    }
+
+    public function createRetiredAdmin()
+    {
+        $ranks = Rank::where('status',1)->get();
+        $regiments = Regiment::where('status',1)->get();
+        $units = Unit::where('status',1)->get();
+        //$directorates = Directorate::where('status',1)->get();
+        $bungalows = Bungalow::where('status',1)->get();
+
+        return view('bookings.create_retired_admin',compact('ranks','regiments','units','bungalows'));
     }
 
     /**
@@ -378,8 +394,125 @@ class BookingController extends Controller
 
     }
 
+    public function storeRetiredAdmin(Request $request)
+    {
+        //dd($request);
+        $this->validate($request,[
+            'svc_no'  => 'required|string',
+            'army_id' => 'required',
+            'bungalow_id' => 'required',
+            'check_in' => 'required|date',
+            'check_out' => 'required|date|after:check_in',
+            'payment' => 'required',
+        ], [
+            'svc_no.required' => 'The service no is required.',
+            'svc_no.string' => 'The service no must be a string.',
+
+            'army_id.required' => 'The army id is required.',
+
+            'bungalow_id.required' => 'The bungalow id is required.',
+            'bungalow_id.string' => 'The bungalow id must be a string.',
+
+            'check_in.required' => 'The check in id is required.',
+            'check_in.date' => 'The check in id must be a date.',
+
+            'check_out.required' => 'The check out id is required.',
+            'check_out.date' => 'The check out id must be a date.',
+            'check_out.after' => 'The check out date must be a after check in date.',
+
+        ]);
+
+        $checkIn = $request->check_in;
+        $checkOut = $request->check_out;
 
 
+        $results = Booking::where(function ($query) use ($checkIn, $checkOut) {
+                    $query->where('check_in', '<=', $checkOut)
+                        ->where('check_out', '>=', $checkIn);
+                    })
+                    ->orWhere(function ($query) use ($checkIn, $checkOut) {
+                        $query->where('check_in', '>=', $checkIn)
+                            ->where('check_in', '<=', $checkOut);
+                    })
+                    ->orWhere(function ($query) use ($checkIn, $checkOut) {
+                        $query->where('check_out', '>=', $checkIn)
+                            ->where('check_out', '<=', $checkOut);
+                    })
+                    ->get();
+
+        if (!$results->isEmpty())
+        {
+            return redirect()->back()->with('danger', 'Already booked');
+        }
+
+        try {
+
+            $booking = Booking::create([
+                'regiment' => $request->regiment,
+                'unit'  => $request->unit,
+                'svc_no'  => $request->svc_no,
+                'name' => $request->name,
+                'nic'  => $request->nic,
+                'contact_no' => $request->contact_no,
+                'rank' => $request->rank_id,
+                'army_id' => $request->army_id,
+                'bungalow_id' => $request->bungalow_id,
+                'check_in' => $request->check_in,
+                'check_out' => $request->check_out,
+                'type' => $request->type,
+                'save' => 0,
+                'level' => 3,
+                'paid_amount' => $request->payment,
+                'approve' => $request->approve,
+            ]);
+
+            $guestData = $request->input('guests');
+
+            if($guestData)
+            {
+                foreach ($guestData as $guest) {
+                    $booking->bookingGuests()->create([
+                        'name' => $guest['name'],
+                        'nic' => $guest['nic'],
+                    ]);
+                }
+            }
+
+            $vehicleData = $request->input('vehicles');
+
+            if($vehicleData)
+            {
+                foreach ($vehicleData as $vehicle) {
+                    $booking->bookingvehicles()->create([
+                        'reg_no' => $vehicle['reg_no'],
+                    ]);
+                }
+            }
+
+            $paymentDirectory = public_path('/upload/payment/'.$booking->id.'/');
+
+            if (!File::isDirectory($paymentDirectory)) {
+                File::makeDirectory($paymentDirectory, 0777, true, true);
+            }
+
+            $extpayment = $request->file('filpath')->extension();
+            $filepayment = $booking->id.'.'.$extpayment;
+
+            $request->file('filpath')->move($paymentDirectory, $filepayment);
+
+            $booking->update([
+                'filpath' => '/upload/payment/'.$booking->id.'/'.$filepayment,
+                'level' => 3,
+            ]);
+
+            return redirect()->route('bookings.create_retired_admin')->with('success', 'Booking Created');
+
+        } catch (Exception $e) {
+
+            return redirect()->back()->with('danger', 'Something went wrong');
+        }
+
+    }
 
     public function checkBookingAvailability(Request $request)
     {
@@ -471,6 +604,15 @@ class BookingController extends Controller
             'level' => 3,
         ]);
 
+        require_once('ESMSWS.php'); // REQUIRED
+
+        $username = 'esmsusr_XyG2K5QR';
+        $password = 'W7DwSiQW';
+
+        $session = createSession('', $username, $password, '');
+        sendMessages($session, 'DRE&Q-AHQ', "Dear Sir/Madam, \r\n \r\nThank you for choosing bungalows from the Dte of RE & Q. Your reservation has been confirmed on ". date('Y-m-d', strtotime($booking->updated_at)) .". If you have any questions, let us know at 0112075315." , $booking->contact_no, 0);
+        closeSession($session);
+
         return redirect()->route('bookings.bungalow_bookings',$booking->bungalow_id)->with('success', 'Booking Created');
     }
 
@@ -545,11 +687,21 @@ class BookingController extends Controller
 
         try {
             if ($booking) {
-                $booking->update([
-                    'refund' => 1,
-                    'refund_time' => $currentDate,
-                    'refund_user_id' => Auth::user()->id,
-                ]);
+                if ($booking->type == 0) {
+                    $booking->update([
+                        'refund' => 1,
+                        'refund_time' => $currentDate,
+                        'refund_user_id' => Auth::user()->id,
+                    ]);
+                }elseif($booking->type == 1){
+                    $booking->update([
+                        'refund' => 1,
+                        'refund_time' => $currentDate,
+                        'refund_user_id' => Auth::user()->id,
+                        'refund_recieve' => 1,
+                        'refund_recieve_time' => $currentDate,
+                    ]);
+                }
 
                 $booking->refund()->create([
                     'bank_id' => $request->bank_id,
@@ -592,7 +744,7 @@ class BookingController extends Controller
                 $password = 'W7DwSiQW';
 
                 $session = createSession('', $username, $password, '');
-                sendMessages($session, 'DRE&Q-AHQ', "Dear Sir/Madam, \r\n \r\nThank you for choosing bungalows from the Dte of RE & Q. Your reservation has been confirmed on ". date('Y-m-d', strtotime($booking->approve_date)) .". If you have any questions, let us know at 0112075315." , $booking->contact_no, 0);
+                sendMessages($session, 'DRE&Q-AHQ', "Dear Sir/Madam, \r\n \r\nThank you for choosing bungalows from the Dte of RE & Q. Your reservation has been confirmed on ". date('Y-m-d', strtotime($currentDate)) .". If you have any questions, let us know at 0112075315." , $booking->contact_no, 0);
                 closeSession($session);
             }
 

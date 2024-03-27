@@ -26,7 +26,7 @@ class ReportController extends Controller
         $bungalows  = Bungalow::where('status','=',1)
                         ->where('directorate_id', Auth::user()->directorate_id)
                         ->get();
-        
+
         if ($request->ajax()) {
 
             $data = Booking::whereHas('bungalow.directorate', function ($query) {
@@ -39,7 +39,7 @@ class ReportController extends Controller
                         static $i = 1;
                         return $i++;
                     })
-                    
+
                     ->filter(function ($instance) use ($request) {
                         if ($request->get('bungalow_id')) {
                             $instance->where('bungalow_id', $request->get('bungalow_id'));
@@ -67,7 +67,7 @@ class ReportController extends Controller
                         if ($request->get('check_out')) {
                             $instance->where('check_out', '<=', $request->get('check_out'));
                         }
-                        
+
                         if (!empty($request->get('search'))) {
                              $instance->where(function($w) use($request){
                                 $search = $request->get('search');
@@ -84,7 +84,7 @@ class ReportController extends Controller
                     })
                     ->make(true);
         }
-        
+
         return view('reports.booking_report',compact('bungalows'));
     }
 }

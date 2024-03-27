@@ -24,7 +24,7 @@
     </li>
 @endcan
 
-@can('booking-list')
+{{-- @can('booking-list') --}}
     <li class="nav-item">
         <a href="{{route('bookings.index')}}" class="nav-link
         {{ request()->routeIs('bookings.index')?'active':'' }}">
@@ -32,9 +32,9 @@
                 <p>Booking Mgt</p>
         </a>
     </li>
-@endcan
+{{-- @endcan --}}
 
-@can('booking-list')
+{{-- @can('booking-list') --}}
     <li class="nav-item">
         <a href="{{route('bookings.booking_pending')}}" class="nav-link
         {{ request()->routeIs('bookings.booking_pending')?'active':'' }}">
@@ -42,7 +42,7 @@
                 <p>Booking Pending</p>
         </a>
     </li>
-@endcan
+{{-- @endcan --}}
 
 <li class="nav-item {{ request()->routeIs('reports*')?'menu-open':'' }}">
     <a href="#" class="nav-link">

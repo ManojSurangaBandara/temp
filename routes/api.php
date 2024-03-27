@@ -7,6 +7,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Api\BankController;
 use App\Http\Controllers\Api\BookingController;
 use App\Http\Controllers\Api\ContactController;
+use App\Http\Controllers\Api\SupportController;
 use App\Http\Controllers\Api\BungalowController;
 use App\Http\Controllers\Api\CancelRemarkController;
 
@@ -36,7 +37,7 @@ Route::post('/verify-otp', [AuthController::class, 'verifyOTP']);
 
 Route::get('/bungalows', [BungalowController::class, 'index']);
 
-Route::get('/bookings', [BookingController::class, 'index']); 
+Route::get('/bookings', [BookingController::class, 'index']);
 
 Route::post('/store-booking', [BookingController::class, 'storeBooking']);
 
@@ -75,6 +76,8 @@ Route::get('/get-booking-count-for-month', [BookingController::class, 'getBookin
 Route::get('/getContact', [ContactController::class, 'index']);
 
 Route::get('/getcancelremarks', [CancelRemarkController::class, 'index']);
+
+Route::get('/geturl', [SupportController::class, 'index']);
 
 
 

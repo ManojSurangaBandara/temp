@@ -85,10 +85,12 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/bookings/refund-booking-view/{id}',[BookingController::class,'refundBookingView'])->name('bookings.refund_booking_view');
     Route::put('/bookings/refund-payment/{booking}',[BookingController::class,'refundBooking'])->name('bookings.refund_booking');
     Route::get('/bookings/calender/{bungalow}',[BookingController::class,'calenderView'])->name('bookings.calender');
-    
+    Route::get('/bookings/create/retired-admin',[BookingController::class,'createRetiredAdmin'])->name('bookings.create_retired_admin');
+    Route::post('/bookings/store/retired-admin',[BookingController::class,'storeRetiredAdmin'])->name('bookings.store_retired_admin');
+
     Route::get('/bookings/pending',[BookingController::class,'bookingPending'])->name('bookings.booking_pending');
     Route::get('/bookings/approve/{booking}',[BookingController::class,'approveBooking'])->name('bookings.booking_approve');
-    
+
     Route::resource('bookings',BookingController::class);
 
     Route::get('/banks/inactive/{id}',[BankController::class,'inactive'])->name('banks.inactive');
@@ -104,7 +106,7 @@ Route::group(['middleware' => ['auth']], function() {
 
     Route::get('/reports/booking_report/',[ReportController::class,'booking_report'])->name('reports.booking_report');
 
-    
+
 });
 
 Route::get('/ajax/getBungalow',[AjaxController::class,'getBungalow'])->name('ajax.getBungalow');
@@ -113,8 +115,8 @@ Route::get('/ajax/getPayment',[AjaxController::class,'getPayment'])->name('ajax.
 
 Route::get('/ajax/getUnits',[AjaxController::class,'getUnits'])->name('ajax.getUnits');
 
-Route::get('/bookings/create/retired',[BookingController::class,'createRetired'])->name('bookings.create_retired');
-Route::post('/bookings/store/retired',[BookingController::class,'storeRetired'])->name('bookings.store_retired');
+// Route::get('/bookings/create/retired',[BookingController::class,'createRetired'])->name('bookings.create_retired');
+// Route::post('/bookings/store/retired',[BookingController::class,'storeRetired'])->name('bookings.store_retired');
 
 Route::get('/bookings/auto/cancel',[Cron::class,'autoCancelBookings'])->name('bookings.auto_cancel');
 
