@@ -59,14 +59,14 @@
                                 </div>
                             </div>
 
-                            <div class="form-group row">
+                            <div class="form-group row" @if(!auth()->user()->can('booking-modify-regiment')) style="display:none" @endif>
                                 <label for="regiment" class="col-sm-2 col-form-label">Regiment</label>
                                 <div class="col-sm-6">
                                     <select class="form-control @error('regiment') is-invalid @enderror"
                                         name="regiment" value="{{ old('regiment') }}" id="regiment" required>
                                         <option value="">Please Select</option>
                                         @foreach ($regiments as $item)
-                                            <option value="{{ $item->name }}">
+                                            <option value="{{ $item->name }}" {{ auth()->user()->regiment_id == $item->id ? 'selected' : '' }}>
                                                 {{ $item->name }}
                                             </option>
                                         @endforeach
@@ -292,6 +292,8 @@
                 theme: "default" // You can choose a theme based on your preferences
             });
 
+
+
             // When the rank dropdown changes
             $('#rank_id').on('change', function() {
                 var rankId = $(this).val();
@@ -316,7 +318,25 @@
                 });
             });
 
-            // When the regiment dropdown changes
+            var userRegimentId = $('#regiment').val();
+
+            if (userRegimentId) {
+                $.ajax({
+                    url: '{{ route('ajax.getUnits') }}',
+                    type: 'get',
+                    data:{'regiment':userRegimentId,'_token' : $('meta[name="csrf-token"]').attr('content')},
+                    success: function(response){
+
+                            $('#unit option').remove();
+                            $('#unit').append(new Option( 'Select ',''));
+                            $.each( response, function( key, value ) {
+                                $('#unit').append(new Option(value.name, value.userRegimentId));
+                            });
+                    }
+                });
+            }
+
+            //When the regiment dropdown changes
             $('#regiment').change(function(){
             var id = $(this).val();
             console.log(id);
@@ -336,6 +356,37 @@
                 });
 
             })
+
+            // function loadUnits(regimentId) {
+            //     $.ajax({
+            //         url: '{{ route('ajax.getUnits') }}',
+            //         type: 'get',
+            //         data: {'regiment': regimentId, '_token': $('meta[name="csrf-token"]').attr('content')},
+            //         success: function(response){
+            //             $('#unit option').remove();
+            //             $('#unit').append(new Option('Select', ''));
+            //             $.each(response, function(key, value) {
+            //                 $('#unit').append(new Option(value.name, value.id));
+            //             });
+            //         }
+            //     });
+            // }
+
+            // // Load units when the page loads
+            // $(document).ready(function() {
+            //     var userRegimentId = $('#regiment').val();
+            //     if (userRegimentId) {
+            //         loadUnits(userRegimentId);
+            //     }
+            // });
+
+            // // Load units when the regiment selection changes
+            // $('#regiment').change(function(){
+            //     var selectedRegimentId = $(this).val();
+            //     if (selectedRegimentId) {
+            //         loadUnits(selectedRegimentId);
+            //     }
+            // });
 
             $('#type, #bungalow_id, #check_in, #check_out').on('change', function () {
                 updatePayment();
