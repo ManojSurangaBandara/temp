@@ -7,6 +7,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Api\BankController;
 use App\Http\Controllers\Api\BookingController;
 use App\Http\Controllers\Api\ContactController;
+use App\Http\Controllers\Api\PaymentController;
 use App\Http\Controllers\Api\SupportController;
 use App\Http\Controllers\Api\BungalowController;
 use App\Http\Controllers\Api\CancelRemarkController;
@@ -78,6 +79,8 @@ Route::get('/getContact', [ContactController::class, 'index']);
 Route::get('/getcancelremarks', [CancelRemarkController::class, 'index']);
 
 Route::get('/geturl', [SupportController::class, 'index']);
+
+Route::post('payment/form', [PaymentController::class, 'generateForm']);
 
 
 
