@@ -15,7 +15,7 @@ class CYBSPEBBasicService
 		$params["access_key"] = $access_key;
 		$params["profile_id"] = $profile_id;
 		$params["signed_field_names"] = "access_key,profile_id,transaction_uuid,signed_field_names,unsigned_field_names,signed_date_time,locale,transaction_type,reference_number,amount,currency";
-		$params["unsigned_field_names"] = "auth_trans_ref_no,bill_to_forename,bill_to_surname,bill_to_address_line1,bill_to_address_city,bill_to_address_country,bill_to_email";
+		$params["unsigned_field_names"] = "auth_trans_ref_no,bill_to_forename,bill_to_surname,bill_to_address_line1,bill_to_address_city,bill_to_address_country,bill_to_address_state,bill_to_email";
 		$params["signed_date_time"] = gmdate("Y-m-d\TH:i:s\Z");
 		$params["locale"] = "en";
 		$params["transaction_type"] = "sale";
@@ -29,6 +29,7 @@ class CYBSPEBBasicService
 		$params["bill_to_address_line1"] = "1295 Charleston Rd";
 		$params["bill_to_address_city"] = "Mountain View";
 		$params["bill_to_address_country"] = "US";
+        $params["bill_to_address_state"]="CA";
 		$params["bill_to_address_postal_code"] = "94043";
 		$params["signature"] = $this->sign($params, $SECRET_KEY);
 
