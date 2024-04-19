@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\PaymentController;
 use App\Http\Controllers\Api\SupportController;
 use App\Http\Controllers\Api\BungalowController;
 use App\Http\Controllers\Api\CancelRemarkController;
+use App\Models\Booking;
 
 /*
 |--------------------------------------------------------------------------
@@ -81,6 +82,10 @@ Route::get('/getcancelremarks', [CancelRemarkController::class, 'index']);
 Route::get('/geturl', [SupportController::class, 'index']);
 
 Route::post('payment/form', [PaymentController::class, 'generateForm']);
+
+Route::post('payment/completed', [PaymentController::class, 'getpayment_responce']);
+
+Route::post('/getbookingcompletion',[BookingController::class,'getBookingcompletion']);
 
 
 
