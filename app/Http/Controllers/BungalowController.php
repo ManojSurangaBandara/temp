@@ -51,6 +51,7 @@ class BungalowController extends Controller
             'retired_price'=> $request->retired_price,
             'official_price'=> $request->official_price,
             'directorate_id'=> Auth::user()->directorate_id,
+	    'location' => $request->location,
         ]);
 
         if($request->ranks){

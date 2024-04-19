@@ -69,6 +69,8 @@ Route::post('/store-booking-payment', [BookingController::class, 'storePayment']
 
 Route::post('/cancel-booking', [BookingController::class, 'cancelBooking']);
 
+Route::get('/getbookingdates', [BookingController::class, 'getbookingdates']);
+
 Route::post('/refund-recieve-booking', [BookingController::class, 'refundRecieveBooking']);
 
 Route::get('/getbanks', [BankController::class, 'index']);
@@ -80,6 +82,8 @@ Route::get('/getContact', [ContactController::class, 'index']);
 Route::get('/getcancelremarks', [CancelRemarkController::class, 'index']);
 
 Route::get('/geturl', [SupportController::class, 'index']);
+
+Route::post('payment/formipgcall', [PaymentController::class, 'generateIPGCall']);
 
 Route::post('payment/form', [PaymentController::class, 'generateForm']);
 

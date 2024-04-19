@@ -72,6 +72,16 @@ class PaymentController extends Controller
 
                 $booking = Booking::where('id', '=', $jsonArray['auth_trans_ref_no'])->first();
 
+		require_once('ESMSWS.php'); // REQUIRED
+
+            	$username = 'esmsusr_XyG2K5QR';
+            	$password = 'W7DwSiQW';
+
+            	$session = createSession('', $username, $password, '');
+            sendMessages($session, 'DRE&Q-AHQ', "Dear Sir/Madam, \r\n \r\nThank you for choosing bungalows from the Dte of RE & Q. Your reservation has been confirmed on ". date('Y-m-d', strtotime($booking->updated_at)) .". If you have any questions, let us know at 0112075315." , $booking->contact_no, 0);
+            closeSession($session);
+
+
                 $formtext = '<!DOCTYPE html>
             <html lang="en">
             <head>
