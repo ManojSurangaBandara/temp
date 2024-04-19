@@ -67,7 +67,7 @@
                                     <span class="text-danger">@error('approve') {{ $message }} @enderror</span>
                                 </div>
                             </div>
-                            
+
                             <div class="form-group row" style="display: none;">
                                 <label for="regiment" class="col-sm-2 col-form-label">Regiment</label>
                                 <div class="col-sm-6">
@@ -112,7 +112,7 @@
                                     <span class="text-danger">@error('contact_no') {{ $message }} @enderror</span>
                                 </div>
                             </div>
-                            
+
                             <div class="form-group row">
                                 <label for="type" class="col-sm-2 col-form-label">Type</label>
                                 <div class="col-sm-6">
@@ -121,7 +121,7 @@
                                         <option value="">Please Select</option>
                                         <option value="0">Serving</option>
                                         <option value="1">Retired</option>
-                                        <option value="2">Official</option>                                        
+                                        <option value="2">Official</option>
                                     </select>
                                     <span class="text-danger">
                                         @error('type')
@@ -156,7 +156,7 @@
                                 <div class="col-sm-6">
                                     <select class="form-control @error('bungalow_id') is-invalid @enderror"
                                         name="bungalow_id" value="{{ old('bungalow_id') }}" id="bungalow_id" required>
-                                        <option value="">Please Select</option>                                            
+                                        <option value="">Please Select</option>
                                     </select>
                                     <span class="text-danger">
                                         @error('bungalow_id')
@@ -209,7 +209,7 @@
                                         </tr>
                                         <tr>
                                             <td><input type="text" name="guests[0][name]" placeholder="Enter Name"
-                                                       class="form-control" required autocomplete="off"/></td>
+                                                       class="form-control" autocomplete="off"/></td>
                                             <td><input type="text" name="guests[0][nic]" placeholder="NIC"
                                                        class="form-control" pattern="[0-9VXvx]+" autocomplete="off"/></td>
                                             <td>
@@ -234,7 +234,7 @@
                                         </tr>
                                         <tr>
                                             <td><input type="text" name="vehicles[0][reg_no]" placeholder="Enter Name"
-                                                       class="form-control" required autocomplete="off"/></td>
+                                                       class="form-control" autocomplete="off"/></td>
                                             <td>
                                                 <button type="button" name="addVehicle" id="addVehicle"
                                                         class="btn btn-dark">
@@ -271,7 +271,7 @@
 @section('third_party_scripts')
     <script>
         $(document).ready(function () {
-            
+
             // When the eno or svc_no input fields change
             $('#eno, #svc_no').on('change', function() {
                 var eno = $('#eno').val();
@@ -299,11 +299,13 @@
                                 var regiment = person.regiment || '';
                                 var unit = person.unit || '';
                                 // var svcNo = person.svc_no || '';
-                                var name = person.name_with_initial || '';
+                                var name = person.name_according_to_part2 || '';
                                 var nic = person.nic || '';
                                 var contactNo = person.phone || '';
                                 var rank = person.rank || '';
                                 // var eno = person.eno || '';
+
+                                console.log('Name' + name)
 
                                 // Set the values in your form fields
                                 $('#regiment').val(regiment);
@@ -349,7 +351,7 @@
                 });
             });
 
-            $('#type, #bungalow_id, #check_in, #check_out').on('change', function () {                
+            $('#type, #bungalow_id, #check_in, #check_out').on('change', function () {
                 updatePayment();
             });
 
@@ -357,7 +359,7 @@
                 var type = $('#type').val();
                 var bungalow = $('#bungalow_id').val();
                 var checkIn = $('#check_in').val();
-                var checkOut = $('#check_out').val();                
+                var checkOut = $('#check_out').val();
 
                 if (checkIn && checkOut) {
                     // Calculate the number of days
@@ -379,10 +381,10 @@
                             // Update the payment amount field
                             var paymentAmount = 0;
 
-                            // var paymentAmount = data[0]['serving_price'] * daysDifference;                            
+                            // var paymentAmount = data[0]['serving_price'] * daysDifference;
                             // $('#payment').val(paymentAmount);
                             console.log(type);
-                            
+
                             var paymentAmount = 0; // Default value
 
                             switch (type) {
@@ -399,7 +401,7 @@
 
                             console.log(paymentAmount); // Move this line outside the switch statement
                             $('#payment').val(paymentAmount);
-                            
+
                         },
                         error: function (error) {
                             console.log(error);

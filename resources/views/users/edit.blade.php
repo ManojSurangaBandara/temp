@@ -61,13 +61,13 @@
                                 <div class="form-group row">
                                     <label for="directorate_id" class="col-sm-2 col-form-label">Directorate</label>
                                     <div class="col-sm-6">
-                                        <select class="form-control @error('directorate_id') is-invalid @enderror" name="directorate_id" id="directorate_id" required>
+                                        <select class="form-control @error('directorate_id') is-invalid @enderror" name="directorate_id" id="directorate_id">
                                             <option value="">Please Select</option>
                                             @foreach ($directorates as $item)
                                                 <option value="{{ $item['id'] }}" {{ $user->directorate_id == $item['id'] ? 'selected':'' }}>
                                                     {{ $item['name'] }}
                                                 </option>
-                                            @endforeach                                                            
+                                            @endforeach
                                         </select>
                                         <span class="text-danger">
                                             @error('directorate_id')
@@ -86,7 +86,7 @@
                                                 <option value="{{ $item['id'] }}" {{ $user->rank_id == $item['id'] ? 'selected':'' }}>
                                                     {{ $item['name'] }}
                                                 </option>
-                                            @endforeach                                                            
+                                            @endforeach
                                         </select>
                                         <span class="text-danger">
                                             @error('rank_id')
@@ -94,7 +94,7 @@
                                             @enderror
                                         </span>
                                     </div>
-                                </div>                                
+                                </div>
 
                                 <div class="form-group row">
                                     <label for="svc_no" class="col-sm-2 col-form-label">Service No</label>
@@ -131,7 +131,7 @@
                                         <span class="text-danger">@error('email') {{ $message }} @enderror</span>
                                     </div>
                                 </div>
-                                
+
                                 <div class="form-group row">
                                     <label for="mobile_no" class="col-sm-2 col-form-label">Mobile No</label>
                                     <div class="col-sm-6">
@@ -159,7 +159,7 @@
                                             </span>
                                         @enderror
                                     </div>
-                                </div>                               
+                                </div>
 
                                 <div class="form-group row">
                                     <label for="password" class="col-sm-2 col-form-label">Password</label>
@@ -194,7 +194,7 @@
         </div>
 
         {{--  --}}
-        
+
 @endsection
 
 @section('third_party_stylesheets')
@@ -210,13 +210,13 @@
         });
     </script> --}}
 
-<script src="{{asset('plugins/select2/js/select2.js')}}" defer></script>        
+<script src="{{asset('plugins/select2/js/select2.js')}}" defer></script>
 
-{{-- <script type="text/javascript">          
-    
+{{-- <script type="text/javascript">
+
 
     // $(document).ready(function() {
-    //     $('.multiple').select2();            
+    //     $('.multiple').select2();
     // });
 
     $('#force_id').change(function(){
@@ -225,15 +225,15 @@
 
         $.ajax({
             url: '{{ route('ajax.getRanks') }}',
-            type: 'get', 
+            type: 'get',
             data:{'force_id':id,'_token' : $('meta[name="csrf-token"]').attr('content')},
-            success: function(response){ 
+            success: function(response){
 
                     $('#rank_id option').remove();
                     $('#rank_id').append(new Option( 'Select ',''));
-                    $.each( response, function( key, value ) {                   
+                    $.each( response, function( key, value ) {
                     $('#rank_id').append(new Option(value.abbr, value.id));
-                    }); 
+                    });
             }
         });
 

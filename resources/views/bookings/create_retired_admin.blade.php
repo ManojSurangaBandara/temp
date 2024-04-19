@@ -74,6 +74,7 @@
                                     <span class="text-danger">@error('regiment') {{ $message }} @enderror</span>
                                 </div>
                             </div>
+                            {{ auth()->user()->regiment_id == $item->id }}
 
                             <div class="form-group row">
                                 <label for="unit" class="col-sm-2 col-form-label">Unit</label>
@@ -209,7 +210,7 @@
                                         </tr>
                                         <tr>
                                             <td><input type="text" name="guests[0][name]" placeholder="Enter Name"
-                                                       class="form-control" required/></td>
+                                                       class="form-control"/></td>
                                             <td><input type="text" name="guests[0][nic]" placeholder="NIC"
                                                        class="form-control" pattern="[0-9VXvx]+"/></td>
                                             <td>
@@ -234,7 +235,7 @@
                                         </tr>
                                         <tr>
                                             <td><input type="text" name="vehicles[0][reg_no]" placeholder="Enter Name"
-                                                       class="form-control" required/></td>
+                                                       class="form-control"/></td>
                                             <td>
                                                 <button type="button" name="addVehicle" id="addVehicle"
                                                         class="btn btn-dark">

@@ -35,7 +35,7 @@
                               enctype="multipart/form-data">
                             @csrf
                             <div class="card-body">
-                                                                
+
                                 <div class="form-group row">
                                     <label for="regiment_id" class="col-sm-2 col-form-label">Regiment</label>
                                     <div class="col-sm-6">
@@ -59,13 +59,13 @@
                                 <div class="form-group row">
                                     <label for="directorate_id" class="col-sm-2 col-form-label">Directorate</label>
                                     <div class="col-sm-6">
-                                        <select class="form-control @error('directorate_id') is-invalid @enderror" name="directorate_id" id="directorate_id" required>
+                                        <select class="form-control @error('directorate_id') is-invalid @enderror" name="directorate_id" id="directorate_id">
                                             <option value="">Please Select</option>
                                             @foreach ($directorates as $item)
                                                 <option value="{{ $item['id'] }}">
                                                     {{ $item['name'] }}
                                                 </option>
-                                            @endforeach                                                            
+                                            @endforeach
                                         </select>
                                         <span class="text-danger">
                                             @error('directorate_id')
@@ -74,7 +74,7 @@
                                         </span>
                                     </div>
                                 </div>
-                                
+
                                 <div class="form-group row">
                                     <label for="rank_id" class="col-sm-2 col-form-label">Rank</label>
                                     <div class="col-sm-6">
@@ -84,7 +84,7 @@
                                                 <option value="{{ $item['id'] }}">
                                                     {{ $item['name'] }}
                                                 </option>
-                                            @endforeach                                                            
+                                            @endforeach
                                         </select>
                                         <span class="text-danger">
                                             @error('rank_id')
@@ -137,7 +137,7 @@
                                         is-invalid @enderror" name="mobile_no" value="{{ old('mobile_no') }}" id="mobile_no" autocomplete="off">
                                         <span class="text-danger">@error('mobile_no') {{ $message }} @enderror</span>
                                     </div>
-                                </div>                                
+                                </div>
 
                                 <div class="form-group row">
                                     <label class="col-sm-2 col-form-label" for="roles">Role</label>
@@ -154,7 +154,7 @@
                                         </span>
                                         @enderror
                                     </div>
-                                </div>                                
+                                </div>
 
                                 <div class="form-group row">
                                     <label for="password" class="col-sm-2 col-form-label">Password</label>
@@ -190,7 +190,7 @@
                 </div>
             </div>
         </div>
-                
+
 @endsection
 
 
@@ -210,7 +210,7 @@
     {{-- <script type="text/javascript">
 
         // $(document).ready(function() {
-        //     $('.multiple').select2();            
+        //     $('.multiple').select2();
         // });
 
         $('#force_id').change(function(){
@@ -219,15 +219,15 @@
 
             $.ajax({
                 url: '{{ route('ajax.getRanks') }}',
-                type: 'get', 
+                type: 'get',
                 data:{'force_id':id,'_token' : $('meta[name="csrf-token"]').attr('content')},
-                success: function(response){ 
+                success: function(response){
 
                         $('#rank_id option').remove();
                         $('#rank_id').append(new Option( 'Select ',''));
-                        $.each( response, function( key, value ) {                   
+                        $.each( response, function( key, value ) {
                         $('#rank_id').append(new Option(value.abbr, value.id));
-                        }); 
+                        });
                 }
             });
 
@@ -238,7 +238,7 @@
         $('#force_id').change(function () {
             var id = $(this).val();
             console.log("in");
-    
+
             $.ajax({
                 url: '{{ route('ajax.getRanks') }}',
                 type: 'get',
@@ -252,7 +252,7 @@
                     $.each(response, function (key, value) {
                         $('#rank_id').append(new Option(value.abbr, value.id));
                     });
-    
+
                     // Add an additional AJAX call to populate regiment_department_id
                     $.ajax({
                         url: '{{ route('ajax.getRegementDepartment') }}',

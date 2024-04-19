@@ -92,11 +92,15 @@
             </h3>
 
             <div class="card-tools">
+                @can('booking-create-retired')
                 <a href="{{ route('bookings.create_retired_admin') }}" class="btn btn-sm bg-warning">
                     <i class="fa fa-plus"></i> Create Retired Reservation </a>
+                @endcan
 
+                @can('booking-create')
                 <a href="{{ route('bookings.create') }}" class="btn btn-sm bg-dark">
                     <i class="fa fa-plus"></i> Create Reservation </a>
+                @endcan
             </div>
         </div>
             <div class="card-body">

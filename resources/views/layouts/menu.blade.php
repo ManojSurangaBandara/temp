@@ -24,7 +24,7 @@
     </li>
 @endcan
 
-{{-- @can('booking-list') --}}
+@can('booking-list')
     <li class="nav-item">
         <a href="{{route('bookings.index')}}" class="nav-link
         {{ request()->routeIs('bookings.index')?'active':'' }}">
@@ -32,9 +32,9 @@
                 <p>Booking Mgt</p>
         </a>
     </li>
-{{-- @endcan --}}
+@endcan
 
-{{-- @can('booking-list') --}}
+@can('booking-list-pending')
     <li class="nav-item">
         <a href="{{route('bookings.booking_pending')}}" class="nav-link
         {{ request()->routeIs('bookings.booking_pending')?'active':'' }}">
@@ -42,30 +42,31 @@
                 <p>Booking Pending</p>
         </a>
     </li>
-{{-- @endcan --}}
+@endcan
 
-<li class="nav-item {{ request()->routeIs('reports*')?'menu-open':'' }}">
-    <a href="#" class="nav-link">
-        <i class="nav-icon fas fa-file text-pink"></i>
-        <p>
-            Report Management
-            <i class="right fas fa-angle-left text-pink"></i>
-        </p>
-    </a>
+@can('report-mgt')
+    <li class="nav-item {{ request()->routeIs('reports*')?'menu-open':'' }}">
+        <a href="#" class="nav-link">
+            <i class="nav-icon fas fa-file text-pink"></i>
+            <p>
+                Report Management
+                <i class="right fas fa-angle-left text-pink"></i>
+            </p>
+        </a>
 
-        <ul class="nav nav-treeview">
-            <li class="nav-item">
-                <a href="{{route('reports.booking_report')}}" class="nav-link
-                {{ request()->routeIs('reports.booking_report')?'active':'' }}">
-                    <i class="far fa-circle nav-icon text-pink"></i>
-                    <p>All Booking Report</p>
-                </a>
-            </li>
-        </ul>
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a href="{{route('reports.booking_report')}}" class="nav-link
+                    {{ request()->routeIs('reports.booking_report')?'active':'' }}">
+                        <i class="far fa-circle nav-icon text-pink"></i>
+                        <p>All Booking Report</p>
+                    </a>
+                </li>
+            </ul>
+    </li>
+@endcan
 
-</li>
-
-{{-- @can('card-issuance-status-list','ethnicity-list') --}}
+@can('master-data')
     <li class="nav-item {{ request()->routeIs('directorates*','ranks*','regiments*',
     'units*','banks*','cancel_remarks*')?'menu-open':'' }}">
         <a href="#" class="nav-link">
@@ -145,7 +146,7 @@
     </ul>
 
     </li>
-    {{-- @endcan --}}
+@endcan
 
 @can('role-list','user-list','permission-category-list','permission-list')
     <li class="nav-item {{ request()->routeIs('users*', 'roles*','permissioncategories*','permissions*')?'menu-open':'' }}">

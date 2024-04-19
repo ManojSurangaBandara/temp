@@ -23,21 +23,31 @@ use App\DataTables\PendingBookingApproveDataTable;
 
 class BookingController extends Controller
 {
-    // function __construct()
-    // {
-    //      $this->middleware('permission:booking-list|booking-create|booking-edit|booking-delete', ['only' => ['index','store']]);
-    //      $this->middleware('permission:booking-create', ['only' => ['create','store']]);
-    //      $this->middleware('permission:booking-edit', ['only' => ['edit','update']]);
-    //      $this->middleware('permission:booking-delete', ['only' => ['destroy']]);
-    //      $this->middleware('permission:booking-cancel', ['only' => ['cancelBookingView','cancelBooking']]);
-    //      $this->middleware('permission:booking-refund', ['only' => ['refundBooking']]);
-    // }
+    function __construct()
+    {
+         $this->middleware('permission:booking-list|booking-create|booking-edit|booking-delete', ['only' => ['index','store']]);
+         $this->middleware('permission:booking-create', ['only' => ['create','store']]);
+         $this->middleware('permission:booking-edit', ['only' => ['edit','update']]);
+         $this->middleware('permission:booking-delete', ['only' => ['destroy']]);
+         $this->middleware('permission:booking-cancel', ['only' => ['cancelBookingView','cancelBooking']]);
+         $this->middleware('permission:booking-refund', ['only' => ['refundBooking']]);
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $bungalows  = Bungalow::where('status','=',1)->where('directorate_id', Auth::user()->directorate_id)->get();
+        $user = Auth::user();
+        if ($user->directorate_id === null) {
+            // If directorate_id is null, get all bungalows
+            $bungalows = Bungalow::where('status', 1)->get();
+        } else {
+            // If directorate_id is not null, filter by directorate_id
+            $bungalows = Bungalow::where('status', 1)
+                ->where('directorate_id', $user->directorate_id)
+                ->get();
+        }
+
         return view('bookings.bungalows',compact('bungalows'));
     }
 
@@ -117,6 +127,7 @@ class BookingController extends Controller
      */
     public function store(Request $request)
     {
+
         //dd($request);
         $this->validate($request,[
             // 'regiment' => 'required|string',
@@ -192,19 +203,38 @@ class BookingController extends Controller
         //             })
         //             ->get();
 
-        $results = Booking::where(function ($query) use ($checkIn, $checkOut) {
-                    $query->where('check_in', '<=', $checkOut)
-                        ->where('check_out', '>=', $checkIn);
+        // $results = Booking::where('bungalow_id', $request->bungalow_id)
+		//             ->where(function ($query) use ($checkIn, $checkOut) {
+        //             $query->where('check_in', '<=', $checkOut)
+        //                 ->where('check_out', '>=', $checkIn);
+        //             })
+        //             ->orWhere(function ($query) use ($checkIn, $checkOut) {
+        //                 $query->where('check_in', '>=', $checkIn)
+        //                     ->where('check_in', '<=', $checkOut);
+        //             })
+        //             ->orWhere(function ($query) use ($checkIn, $checkOut) {
+        //                 $query->where('check_out', '>=', $checkIn)
+        //                     ->where('check_out', '<=', $checkOut);
+        //             })
+        //             ->get();
+
+        $results = Booking::where('bungalow_id', $request->bungalow_id)
+                    ->where(function ($query) use ($checkIn, $checkOut) {
+                        $query->where('check_in', '<=', $checkOut)
+                            ->where('check_out', '>=', $checkIn);
                     })
-                    ->orWhere(function ($query) use ($checkIn, $checkOut) {
-                        $query->where('check_in', '>=', $checkIn)
+                    ->orWhere(function ($query) use ($checkIn, $checkOut, $request) {
+                        $query->where('bungalow_id', $request->bungalow_id)
+                            ->where('check_in', '>=', $checkIn)
                             ->where('check_in', '<=', $checkOut);
                     })
-                    ->orWhere(function ($query) use ($checkIn, $checkOut) {
-                        $query->where('check_out', '>=', $checkIn)
+                    ->orWhere(function ($query) use ($checkIn, $checkOut, $request) {
+                        $query->where('bungalow_id', $request->bungalow_id)
+                            ->where('check_out', '>=', $checkIn)
                             ->where('check_out', '<=', $checkOut);
                     })
                     ->get();
+
 
         //dd($results);
 
@@ -243,24 +273,33 @@ class BookingController extends Controller
 
             $guestData = $request->input('guests');
 
-            if($guestData)
+            //dd($guestData);
+
+            if(!empty($guestData) || isset($guestData))
             {
                 foreach ($guestData as $guest) {
-                    $booking->bookingGuests()->create([
-                        'name' => $guest['name'],
-                        'nic' => $guest['nic'],
-                    ]);
+                    if($guest['name'] != null)
+                    {
+                        $booking->bookingGuests()->create([
+                            'name' => $guest['name'],
+                            'nic' => $guest['nic'],
+                        ]);
+                    }
+
                 }
             }
 
             $vehicleData = $request->input('vehicles');
 
-            if($vehicleData)
+            if(!empty($vehicleData) || isset($vehicleData))
             {
                 foreach ($vehicleData as $vehicle) {
-                    $booking->bookingvehicles()->create([
-                        'reg_no' => $vehicle['reg_no'],
-                    ]);
+                    if($vehicle['reg_no'] != null)
+                    {
+                        $booking->bookingvehicles()->create([
+                            'reg_no' => $vehicle['reg_no'],
+                        ]);
+                    }
                 }
             }
 
@@ -351,10 +390,13 @@ class BookingController extends Controller
             if($guestData)
             {
                 foreach ($guestData as $guest) {
-                    $booking->bookingGuests()->create([
-                        'name' => $guest['name'],
-                        'nic' => $guest['nic'],
-                    ]);
+                    if($guest['name'] != null)
+                    {
+                        $booking->bookingGuests()->create([
+                            'name' => $guest['name'],
+                            'nic' => $guest['nic'],
+                        ]);
+                    }
                 }
             }
 
@@ -363,9 +405,12 @@ class BookingController extends Controller
             if($vehicleData)
             {
                 foreach ($vehicleData as $vehicle) {
-                    $booking->bookingvehicles()->create([
-                        'reg_no' => $vehicle['reg_no'],
-                    ]);
+                    if($vehicle['reg_no'] != null)
+                    {
+                        $booking->bookingvehicles()->create([
+                            'reg_no' => $vehicle['reg_no'],
+                        ]);
+                    }
                 }
             }
 
@@ -471,10 +516,13 @@ class BookingController extends Controller
             if($guestData)
             {
                 foreach ($guestData as $guest) {
-                    $booking->bookingGuests()->create([
-                        'name' => $guest['name'],
-                        'nic' => $guest['nic'],
-                    ]);
+                    if($guest['name'] != null)
+                    {
+                        $booking->bookingGuests()->create([
+                            'name' => $guest['name'],
+                            'nic' => $guest['nic'],
+                        ]);
+                    }
                 }
             }
 
@@ -483,9 +531,12 @@ class BookingController extends Controller
             if($vehicleData)
             {
                 foreach ($vehicleData as $vehicle) {
-                    $booking->bookingvehicles()->create([
-                        'reg_no' => $vehicle['reg_no'],
-                    ]);
+                    if($vehicle['reg_no'] != null)
+                    {
+                        $booking->bookingvehicles()->create([
+                            'reg_no' => $vehicle['reg_no'],
+                        ]);
+                    }
                 }
             }
 
