@@ -396,7 +396,7 @@ class BookingController extends Controller
 
     public function storeRetiredAdmin(Request $request)
     {
-        dd($request);
+        //dd($request);
         $this->validate($request,[
             'svc_no'  => 'required|string',
             'army_id' => 'required',
