@@ -11,8 +11,9 @@ class Cron extends Controller
     public function autoCancelBookings()
     {
         $twentyFourHoursAgo = Carbon::now()->subDay();
-        
+
         $bookingsToUpdate = Booking::where('created_at', '<', $twentyFourHoursAgo)
+                            ->where('level','!=',3)
                             ->where('cancel',0)
                             ->get();
 
@@ -21,7 +22,8 @@ class Cron extends Controller
         foreach ($bookingsToUpdate as $booking) {
             // Update logic goes here
             $booking->update([
-                'cancel'=>1,
+                'cancel' => 1,
+                'cancelremark_id' => 5,
                 'cancel_time'=>Carbon::now(),
             ]);
         }
