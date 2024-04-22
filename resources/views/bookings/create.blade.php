@@ -122,6 +122,7 @@
                                         <option value="0">Serving</option>
                                         <option value="1">Retired</option>
                                         <option value="2">Official</option>
+                                        <option value="3">Official(Free)</option>
                                     </select>
                                     <span class="text-danger">
                                         @error('type')
@@ -396,6 +397,9 @@
                                     break;
                                 case '2':
                                     paymentAmount = data[0]['official_price'] * daysDifference;
+                                    break;
+                                case '3':
+                                    paymentAmount = 0.00;
                                     break;
                             }
 
