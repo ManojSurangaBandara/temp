@@ -51,7 +51,8 @@ class BookingController extends Controller
         return view('bookings.bungalows',compact('bungalows'));
     }
 
-    public function bookings(BookingDataTable $dataTable, Bungalow $bungalow){
+    public function bookings(BookingDataTable $dataTable, Bungalow $bungalow)
+    {
         //($bungalow);
         return $dataTable->with(['bungalow'=>$bungalow])->render('bookings.index',compact('bungalow'));
     }
@@ -77,14 +78,26 @@ class BookingController extends Controller
         $events = [];
 
         foreach ($bookings as $booking) {
-            // Add each booking as an event
-            $events[] = [
-                'title' => $booking->name,
-                'start' => $booking->check_in,
-                'end' => $booking->check_out,
-                // You can add more properties if needed
-            ];
+            if (Auth::user()->can('view-booking-owner')) {
+                // User has the required privilege level, so add the booking as an event
+                $events[] = [
+                    'title' => $booking->name,
+                    'start' => $booking->check_in,
+                    'end' => $booking->check_out,
+                    // You can add more properties if needed
+                ];
+
+            } else {
+                // User does not have the required privilege level, so handle the event differently
+                $events[] = [
+                    'title' => 'Booked',
+                    'start' => $booking->check_in,
+                    'end' => $booking->check_out,
+                    // You can add more properties if needed
+                ];
+            }
         }
+
         //dd($events);
 
         // Pass the events to the view
