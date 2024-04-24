@@ -25,18 +25,18 @@ class PendingBookingApproveDataTable extends DataTable
             ->addIndexColumn()
             ->addColumn('status', function($booking){
 
-                if($booking->filpath)
+                if($booking->filpath || $booking->level == 3)
                 {
-                    return '<h5><span class="badge badge-pill badge-warning">Paid</span></h5>';
+                    return '<h5><span class="badge badge-pill badge-info">Paid</span></h5>';
                 }else{
                     return '<h5><span class="badge badge-pill badge-warning">Not-Paid</span></h5>';
                 }
 
-            })            
+            })
             ->addColumn('action', function ($booking) {
                 $id = $booking->id;
-                $btn = ' ';                
-                
+                $btn = ' ';
+
                 if($booking->cancel == 0)
                 {
                     $btn .='<a href="'.route('bookings.cancel_booking_view',$id).'"
@@ -113,7 +113,7 @@ class PendingBookingApproveDataTable extends DataTable
                   ->exportable(false)
                   ->printable(false)
                   ->width(100)
-                  ->addClass('text-center'),  
+                  ->addClass('text-center'),
         ];
     }
 

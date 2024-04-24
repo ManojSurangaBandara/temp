@@ -21,14 +21,14 @@ class BookingDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             ->addIndexColumn()
-            ->addColumn('status', function($booking){                
+            ->addColumn('status', function($booking){
 
-                if($booking->filpath &&($booking->cancel == 1 || $booking->cancel == 2) && $booking->refund == 1 
+                if($booking->filpath &&($booking->cancel == 1 || $booking->cancel == 2) && $booking->refund == 1
                 && $booking->refund_recieve == 1)
                 {
                     return '<h5><span class="badge badge-pill badge-success">Refund Recieve</span></h5>';
                 }
-                
+
                 if($booking->filpath && ($booking->cancel == 1 || $booking->cancel == 2) && $booking->refund == 1 && $booking->refund_recieve == 0)
                 {
                     return '<h5><span class="badge badge-pill badge-info">Refund Recieve Pending</span></h5>';
@@ -39,9 +39,9 @@ class BookingDataTable extends DataTable
                     return '<h5><span class="badge badge-pill badge-info">Refund Pending</span></h5>';
                 }
 
-                if($booking->filpath && $booking->cancel == 0)
+                if($booking->filpath && $booking->cancel == 0 || $booking->level == 3)
                 {
-                    return '<h5><span class="badge badge-pill badge-warning">Paid</span></h5>';
+                    return '<h5><span class="badge badge-pill badge-info">Paid</span></h5>';
                 }else{
                     return '<h5><span class="badge badge-pill badge-warning">Not-Paid</span></h5>';
                 }
@@ -51,20 +51,20 @@ class BookingDataTable extends DataTable
                 $id = $booking->id;
                 $btn = ' ';
 
-                if(!$booking->filpath && $booking->cancel == 0)
+                if(!$booking->filpath && $booking->cancel == 0 && $booking->level < 3)
                 {
                     $btn .= '<a href="'.route('bookings.upload_payment_view',$id).'"
                     class="btn btn-xs btn-warning" data-toggle="tooltip" title="Upload Payment">
-                    <i class="fa fa-upload"></i> </a> '; 
+                    <i class="fa fa-upload"></i> </a> ';
                 }
-                
+
                 if($booking->cancel == 0)
                 {
                     $btn .='<a href="'.route('bookings.cancel_booking_view',$id).'"
                             class="btn btn-xs btn-danger" data-toggle="tooltip"
                             title="Cancel booking"><i class="fa fa-times"></i> </a> ';
                 }
-                
+
                 if($booking->filpath && $booking->refund == 0 && ($booking->cancel == 1 || $booking->cancel == 2))
                 {
                     $btn .='<a href="'.route('bookings.refund_booking_view',$id).'"
@@ -85,7 +85,7 @@ class BookingDataTable extends DataTable
         return $model->newQuery()
         ->where('bungalow_id',$this->bungalow->id)
         ->with('bungalow');
-        //dd($this->bungalow->id); 
+        //dd($this->bungalow->id);
         //return $this->bungalow->bookings();
     }
 
