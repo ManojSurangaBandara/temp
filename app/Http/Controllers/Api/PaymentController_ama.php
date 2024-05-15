@@ -24,8 +24,6 @@ class PaymentController_old extends Controller
         $orderID = $request->input('booking_id');
         $purchaseAmt = $request->input('amount');
 
-        return response()->json(['payment_url'=>$request->booking_id]);
-
         $cybsService = new CYBSPEBBasicService();
 
         $formtext = "<!DOCTYPE html>
@@ -164,6 +162,4 @@ class PaymentController_old extends Controller
 	// {
 	// 	return implode(",", $dataToSign);
 	// }
-
-
 }

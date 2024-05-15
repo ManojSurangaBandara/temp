@@ -4,16 +4,16 @@ namespace App\Http\Controllers\Api;
 
 use Exception;
 use Carbon\Carbon;
-use App\Models\ApiKey;
 use App\Models\Booking;
-use App\Models\Contact;
 use App\Models\BookingGuest;
 use Illuminate\Http\Request;
 use App\Models\BookingVehicle;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\File;
+use App\Models\ApiKey;
+use App\Models\Contact;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\File;
 
 class BookingController extends Controller
 {
@@ -59,8 +59,9 @@ class BookingController extends Controller
 
             $bookings = Booking::select('check_in','check_out',)
                         ->where('bungalow_id',$request->bungalow_id)
-                        // ->where('approve',1)
-                        ->where('cancel','!=', 1)
+                        //->where('approve',1)
+			->whereNotIn('cancel', [1,2])
+                        //->where('cancel','!=', 1)
                         ->where('refund','!=', 1)
                         ->get();
 
@@ -1062,15 +1063,13 @@ class BookingController extends Controller
 
     public function getbookingdates()
     {
-        $booking = Booking::select('bungalow.name','bookings.check_in','bookings.check_out')
-                    ->where('cancel','!=', 1)
-                    ->where('refund','!=', 1)
-                    ->where('bookings.check_in', '>=', DB::raw('CURDATE()'))
-                    ->orWhere('bookings.check_out', '>=', DB::raw('CURDATE()'))
-                    ->with('bungalow')
-                    ->get();
+        $booking = DB::table('bookings')
+    ->join('bungalows', 'bookings.bungalow_id', '=', 'bungalows.id')
+    ->select('bungalows.name', 'bookings.check_in', 'bookings.check_out')
+    ->where('bookings.check_in', '>=', DB::raw('CURDATE()'))
+    ->orWhere('bookings.check_out', '>=', DB::raw('CURDATE()'))
+    ->get();
 
         return response()->json(['booking'=>$booking],200);
     }
-
 }

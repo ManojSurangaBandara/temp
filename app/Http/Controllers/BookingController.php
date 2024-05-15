@@ -31,6 +31,7 @@ class BookingController extends Controller
          $this->middleware('permission:booking-delete', ['only' => ['destroy']]);
          $this->middleware('permission:booking-cancel', ['only' => ['cancelBookingView','cancelBooking']]);
          $this->middleware('permission:booking-refund', ['only' => ['refundBooking']]);
+         $this->middleware('permission:view-booking-owner', ['only' => ['bookings']]);
     }
     /**
      * Display a listing of the resource.
@@ -66,8 +67,8 @@ class BookingController extends Controller
     {
         //dd($bungalow->id);
         $bookings = Booking::where('bungalow_id', $bungalow->id)
-                    ->where('approve',1)
-                    ->where('cancel','!=', 1)
+                    //->where('approve',1)
+                    ->whereNotIn('cancel',[1,2])
                     ->where('refund','!=', 1)
                     //->where('check_out','<',Carbon::now())
                     ->get();
@@ -381,19 +382,24 @@ class BookingController extends Controller
 
 
         $results = Booking::where('bungalow_id', $request->bungalow_id)
+                    ->where('cancel', 0)
                     ->where(function ($query) use ($checkIn, $checkOut) {
-                        $query->where('check_in', '<=', $checkOut)
-                            ->where('check_out', '>=', $checkIn);
+                        $query->where('check_in', '<=', $checkIn)
+                            ->where('check_out', '>=', $checkOut);
                     })
                     ->orWhere(function ($query) use ($checkIn, $checkOut, $request) {
                         $query->where('bungalow_id', $request->bungalow_id)
+                            ->where('cancel', 0)
                             ->where('check_in', '>=', $checkIn)
-                            ->where('check_in', '<=', $checkOut);
+                            ->where('check_in', '<', $checkOut)
+                            ->where('check_out', '>', $checkOut);
                     })
                     ->orWhere(function ($query) use ($checkIn, $checkOut, $request) {
                         $query->where('bungalow_id', $request->bungalow_id)
-                            ->where('check_out', '>=', $checkIn)
-                            ->where('check_out', '<=', $checkOut);
+                            ->where('cancel', 0)
+                            ->where('check_out', '>', $checkIn)
+                            ->where('check_out', '<=', $checkOut)
+                            ->where('check_in', '<', $checkIn);
                     })
                     ->get();
 
@@ -510,19 +516,24 @@ class BookingController extends Controller
 
 
         $results = Booking::where('bungalow_id', $request->bungalow_id)
+                    ->where('cancel', 0)
                     ->where(function ($query) use ($checkIn, $checkOut) {
-                        $query->where('check_in', '<=', $checkOut)
-                            ->where('check_out', '>=', $checkIn);
+                        $query->where('check_in', '<=', $checkIn)
+                            ->where('check_out', '>=', $checkOut);
                     })
                     ->orWhere(function ($query) use ($checkIn, $checkOut, $request) {
                         $query->where('bungalow_id', $request->bungalow_id)
+                            ->where('cancel', 0)
                             ->where('check_in', '>=', $checkIn)
-                            ->where('check_in', '<=', $checkOut);
+                            ->where('check_in', '<', $checkOut)
+                            ->where('check_out', '>', $checkOut);
                     })
                     ->orWhere(function ($query) use ($checkIn, $checkOut, $request) {
                         $query->where('bungalow_id', $request->bungalow_id)
-                            ->where('check_out', '>=', $checkIn)
-                            ->where('check_out', '<=', $checkOut);
+                            ->where('cancel', 0)
+                            ->where('check_out', '>', $checkIn)
+                            ->where('check_out', '<=', $checkOut)
+                            ->where('check_in', '<', $checkIn);
                     })
                     ->get();
 

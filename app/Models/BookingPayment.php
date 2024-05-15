@@ -19,6 +19,7 @@ class BookingPayment extends Model
         'amount',
         'decision',
         'message',
+	'transaction_id',
         'booking_id',
         'created_at',
         'updated_at',

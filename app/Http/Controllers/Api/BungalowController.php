@@ -31,14 +31,14 @@ class BungalowController extends Controller
         // API key is valid
         return true;
     }
-
+    
     public function index(Request $request)
     {
         // if(!$this->validateApiKey($request))
         // {
         //     return response()->json(['message' => 'Invalid API key.'], 200);
         // }
-
+        
 
         $validator = Validator::make($request->all(), [
             'rank' => 'required|string',
@@ -52,13 +52,12 @@ class BungalowController extends Controller
         }
 
         $nameToFilter = $request->rank;
-
-        try {
+        
+        try {            
             $bungalows = Bungalow::select('id','name','no_ac_room','no_none_ac_room','no_guest','serving_price','retired_price','official_price','location')
                         ->whereHas('ranks', function ($query) use ($nameToFilter) {
                             $query->where('name', $nameToFilter);
                         })
-                        ->where('status',1)
                         ->get();
 
             return response()->json(['bungalows' => $bungalows],200);
@@ -67,6 +66,6 @@ class BungalowController extends Controller
 
             return response()->json(['error' => 'An error occurred.'], 500);
         }
-
+        
     }
 }
