@@ -55,10 +55,10 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'https://10.7.113.93/army/rrs/rrs/'),
+    'url' => env('APP_URL', 'https://10.7.113.84/ama/rrs/rrs/'),
 
-    'asset_url' => env('ASSET_URL', 'https://10.7.113.93/army/rrs/rrs/public/'),
-    'mix_url' => env('MIX_ASSET_URL', 'https://10.7.113.93/army/rrs/rrs/public/'),
+    'asset_url' => env('ASSET_URL', 'https://10.7.113.84/ama/rrs/rrs/public/'),
+    'mix_url' => env('MIX_ASSET_URL', 'https://10.7.113.84/ama/rrs/rrs/public/'),
 
     /*
     |--------------------------------------------------------------------------
