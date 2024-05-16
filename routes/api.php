@@ -3,7 +3,6 @@
 use App\Models\Booking;
 use App\Models\CancelRemark;
 use Illuminate\Http\Request;
-use App\Models\Calendareligibilty;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Api\BankController;
@@ -12,6 +11,7 @@ use App\Http\Controllers\Api\ContactController;
 use App\Http\Controllers\Api\PaymentController;
 use App\Http\Controllers\Api\SupportController;
 use App\Http\Controllers\Api\BungalowController;
+use App\Http\Controllers\Api\CalendareligibiltyController;
 use App\Http\Controllers\Api\CancelRemarkController;
 
 /*
@@ -92,7 +92,7 @@ Route::post('payment/completed', [PaymentController::class, 'getpayment_responce
 
 Route::post('/getbookingcompletion',[BookingController::class,'getBookingcompletion']);
 
-Route::post('/calendareligibilty',[Calendareligibilty::class,'calendareligibilty']);
+Route::post('/calendareligibilty',[CalendareligibiltyController::class,'index']);
 
 
 

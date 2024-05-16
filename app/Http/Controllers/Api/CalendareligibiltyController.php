@@ -7,19 +7,17 @@ use Illuminate\Http\Request;
 use App\Models\Calendareligibilty;
 use App\Http\Controllers\Controller;
 
-class Calendareligibilty extends Controller
+class CalendareligibiltyController extends Controller
 {
     public function index()
     {
-
         try {
-            $no_of_days = Calendareligibilty::select('no_of_days')->where('active','=','1')->latest()->get();
+            $no_of_days = Calendareligibilty::select('no_of_days')->where('active','=','1')->latest()->first();
 
-            return response()->json(['no_of_days' => $no_of_days],200);
+            return response()->json(['calendar_dates' => $no_of_days],200);
 
         } catch (Exception $e) {
             return response()->json(['error' => 'An error occurred.'], 500);
         }
-
     }
 }
